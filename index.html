@@ -250,7 +250,8 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
     <div class="running-row"><div class="dot-live"></div><div style="font-size:13px;color:var(--gx-green-dark);font-weight:600" id="running-label"></div></div>
     <div class="elapsed" id="elapsed">00:00:00</div>
   </div>
-  <div class="field"><label>Baustelle / Projekt</label><select id="proj-stamp"></select></div>
+  <div class="field"><label>Baustelle / Projekt</label><select id="proj-stamp" onchange="checkSonstiges('stamp')"></select></div>
+  <div class="field" id="field-sonstiges-stamp" style="display:none"><label>Auftragsbezeichnung</label><input type="text" id="stamp-sonstiges" placeholder="z.B. Reparatur Einfahrt Müller"></div>
   <div class="success-msg" id="stamp-ok">✓ Zeit gespeichert!</div>
   <div class="error-msg" id="stamp-err"></div>
   <button class="stamp-btn ein" id="btn-ein" onclick="einStempeln()">▶ Einloggen</button>
@@ -268,7 +269,9 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="calc-box"><span style="font-size:13px;color:var(--gx-muted);font-weight:500">Nettostunden</span><span class="calc-val" id="calc-net">8,5 h</span></div>
   <div class="field"><label>Datum</label><input type="date" id="man-datum"></div>
   <div class="field"><label>Baustelle / Projekt</label><select id="proj-man"></select></div>
-  <div class="field"><label>Notiz</label><input type="text" id="man-notiz" placeholder="z.B. Krankheit, Sonderaufgabe…"></div>
+  <div class="field"><label>Baustelle / Projekt</label><select id="proj-man" onchange="checkSonstiges('man')"></select></div>
+  <div class="field" id="field-sonstiges-man" style="display:none"><label>Auftragsbezeichnung (Pflichtfeld)</label><input type="text" id="man-sonstiges" placeholder="z.B. Reparatur Einfahrt Müller"></div>
+  <div class="field"><label>Notiz</label><input type="text" id="man-notiz" placeholder="z.B. Besonderheiten, Material…"></div>
   <div class="error-msg" id="man-error"></div>
   <div class="success-msg" id="man-ok">✓ Eintrag gespeichert — wartet auf Freigabe</div>
   <button class="btn-primary" onclick="saveManual()">Eintrag speichern</button>
@@ -377,10 +380,9 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMel0O3XuZbUkZkAam7
 
 const ADMIN_PIN = "0000"; // Admin-PIN — bitte ändern!
 
-const PROJEKTE = [
-  "Garten Müller, Leipzig","Park Renovierung Südvorstadt",
-  "Bepflanzung Neubau Lindenstr.","Pflege Firmengelände Koch AG","Wegebau Gohlis-Mitte"
-];
+// Projekte werden dynamisch aus Google Kalender geladen
+let PROJEKTE = ["Wird geladen…"];
+const PROJ_SONSTIGES = "⚒ Kleinauftrag / Sonstiges";
 
 const FALLBACK_WORKERS = [
   {name:"Max Bauer",pin:"1234"},{name:"Lisa Kern",pin:"2345"},
@@ -405,6 +407,7 @@ function showMsg(id,dur=2500){const el=document.getElementById(id);el.style.disp
 // Load
 async function init(){
   fillProjekte();
+  ladeProjekte();
   const stored=localStorage.getItem('gx_entries');
   if(stored)try{allEntries=JSON.parse(stored)}catch{}
   const storedU=localStorage.getItem('gx_urlaub');
@@ -421,10 +424,25 @@ async function init(){
   renderWorkerGrid();updateAdminBadge();
 }
 
-function fillProjekte(){
+function fillProjekte(liste){
+  const opts=(liste||PROJEKTE).map(p=>`<option>${p}</option>`).join('');
   ['proj-stamp','proj-man'].forEach(id=>{
-    document.getElementById(id).innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');
+    const el=document.getElementById(id);
+    if(el)el.innerHTML=opts;
   });
+}
+
+async function ladeProjekte(){
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
+  try{
+    const r=await fetch(SCRIPT_URL+'?action=getProjekte');
+    const d=await r.json();
+    if(d.ok&&d.projekte&&d.projekte.length>0){
+      PROJEKTE=[...d.projekte.map(p=>p.name),PROJ_SONSTIGES];
+      fillProjekte(PROJEKTE);
+      if(d.lastSync)setStatus('Projekte geladen (Sync: '+d.lastSync+')','ok');
+    }
+  }catch{}
 }
 
 function renderWorkerGrid(){
@@ -591,7 +609,12 @@ async function ausStempeln(){
   clearInterval(elapsedTimer);elapsedTimer=null;
   const end=new Date(),start=new Date(stampStart);
   const diffMin=Math.round((end-start)/60000);
-  const entry={worker:currentWorker.name,datum:start.toISOString().slice(0,10),von:`${pad(start.getHours())}:${pad(start.getMinutes())}`,bis:`${pad(end.getHours())}:${pad(end.getMinutes())}`,pause:0,netto:parseFloat((diffMin/60).toFixed(2)),proj:document.getElementById('proj-stamp').value,art:'Stempel',status:'auto',savedAt:new Date().toISOString()};
+  let stampProj=document.getElementById('proj-stamp').value;
+  if(stampProj===PROJ_SONSTIGES){
+    const st=document.getElementById('stamp-sonstiges').value.trim();
+    stampProj=st?'Kleinauftrag: '+st:PROJ_SONSTIGES;
+  }
+  const entry={worker:currentWorker.name,datum:start.toISOString().slice(0,10),von:`${pad(start.getHours())}:${pad(start.getMinutes())}`,bis:`${pad(end.getHours())}:${pad(end.getMinutes())}`,pause:0,netto:parseFloat((diffMin/60).toFixed(2)),proj:stampProj,art:'Stempel',status:'auto',savedAt:new Date().toISOString()};
   stampStart=null;
   document.getElementById('running-block').style.display='none';
   document.getElementById('btn-ein').style.display='flex';
@@ -601,6 +624,14 @@ async function ausStempeln(){
 }
 
 // Manuelle Eingabe
+function checkSonstiges(prefix){
+  const sel=document.getElementById('proj-'+prefix);
+  const field=document.getElementById('field-sonstiges-'+prefix);
+  if(sel&&field){
+    field.style.display=sel.value===PROJ_SONSTIGES?'block':'none';
+  }
+}
+
 function recalcManual(){
   const von=document.getElementById('man-von').value,bis=document.getElementById('man-bis').value,pause=parseInt(document.getElementById('man-pause').value)||0;
   if(von&&bis){const diff=timeToMin(bis)-timeToMin(von)-pause;document.getElementById('calc-net').textContent=diff>0?(diff/60).toFixed(1).replace('.',',')+' h':'– h';}
@@ -620,7 +651,13 @@ async function saveManual(){
   const now=new Date();
   const diffH=(now-entryDate)/3600000;
   const status=diffH>36?'locked':diffH>12?'pending':'pending';
-  const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),proj:document.getElementById('proj-man').value,art:'Manuell',status,savedAt:now.toISOString(),notiz:document.getElementById('man-notiz').value};
+  let projName=document.getElementById('proj-man').value;
+  if(projName===PROJ_SONSTIGES){
+    const sonstText=document.getElementById('man-sonstiges').value.trim();
+    if(!sonstText){document.getElementById('man-error').textContent='Bitte Auftragsbezeichnung eingeben.';document.getElementById('man-error').style.display='block';return;}
+    projName='Kleinauftrag: '+sonstText;
+  }
+  const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),proj:projName,art:'Manuell',status,savedAt:now.toISOString(),notiz:document.getElementById('man-notiz').value};
   await saveEntry(entry,'man-ok');
   document.getElementById('man-notiz').value='';
   checkLateWarning();updateAdminBadge();
