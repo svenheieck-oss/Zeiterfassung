@@ -411,7 +411,7 @@ async function enterWorker(){
   document.getElementById('dash-name').textContent=currentWorker.name;
   document.getElementById('dash-date').textContent=now.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('man-datum').value=now.toISOString().slice(0,10);
-  switchMain('dashboard');
+  goTo ('v-dashboard');
   // Erst aus Sheets laden, DANN rendern
   if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
     const today=new Date();
