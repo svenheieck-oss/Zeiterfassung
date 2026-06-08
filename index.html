@@ -234,8 +234,8 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="success-msg" id="man-ok">✓ Eintrag gespeichert — wartet auf Freigabe</div>
   <button class="btn-primary" onclick="saveManual()">Eintrag speichern</button>
   <div style="margin-top:16px">
-    <div class="section-label">Letzte Einträge</div>
-    <div class="card" style="padding:8px 12px"><div id="recent-entries-list"><div class="empty-hint" style="padding:10px">Wird geladen…</div></div></div>
+    <div class="section-label">Letzte Einträge &amp; Status</div>
+    <div class="card" style="padding:8px 12px"><div id="manuell-verlauf"><div class="empty-hint" style="padding:10px 0">Wird geladen…</div></div></div>
   </div>
 </div>
 
@@ -374,38 +374,21 @@ function switchMain(name){
   goTo('v-'+name);
   if(name==='dashboard')renderDashboard();
   if(name==='urlaub')renderUrlaubList();
-  if(name==='manuell')syncEntriesFromSheets();
+  if(name==='manuell')renderManuellVerlauf();
 }
 
-function renderRecentEntries(){
-  const list=document.getElementById('recent-entries-list');
+async function renderManuellVerlauf(){
+  await syncStatusFromSheets();
+  const list=document.getElementById('manuell-verlauf');
   if(!list)return;
   const mine=allEntries.filter(e=>e.worker===currentWorker.name).slice().reverse().slice(0,8);
-  if(!mine.length){list.innerHTML='<div class="empty-hint" style="padding:10px">Noch keine Einträge</div>';return;}
+  if(!mine.length){list.innerHTML='<div class="empty-hint" style="padding:10px 0">Noch keine Einträge</div>';return;}
   list.innerHTML=mine.map(e=>`
     <div class="entry-row">
-      <div><div class="entry-main">${e.proj.split(',')[0]}</div><div class="entry-sub">${e.datum} · ${e.von}–${e.bis}${e.pause>0?' · Pause '+e.pause+' min':''}</div></div>
+      <div><div class="entry-main">${e.proj.split(',')[0]}</div>
+      <div class="entry-sub">${e.datum} · ${e.von}–${e.bis}${e.pause>0?' · Pause '+e.pause+' min':''}</div></div>
       <div class="entry-right"><div class="entry-h">${(+e.netto).toFixed(1)} h</div>${statusBadge(e.status)}</div>
     </div>`).join('');
-}
-
-async function syncEntriesFromSheets(){
-  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
-  try{
-    const today=new Date();
-    const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
-    const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
-    const d=await r.json();
-    if(d.ok&&d.entries){
-      d.entries.forEach(se=>{
-        const local=allEntries.find(e=>String(e.id)===String(se.id));
-        if(local){local.status=se.status;}
-        else if(se.worker===currentWorker.name){allEntries.push(se);}
-      });
-      localStorage.setItem('gx_entries',JSON.stringify(allEntries));
-      renderRecentEntries();
-    }
-  }catch{}
 }
 
 // Worker select & PIN
@@ -461,23 +444,33 @@ function enterAdmin(){
 function goBack(){document.getElementById('bottom-nav').style.display='none';goTo('v-worker');currentWorker=null;if(elapsedTimer){clearInterval(elapsedTimer);elapsedTimer=null;stampStart=null;}}
 
 // Dashboard
+async function syncStatusFromSheets(){
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
+  try{
+    const today=new Date();
+    const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
+    const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
+    const d=await r.json();
+    if(d.ok&&d.entries){
+      d.entries.forEach(se=>{
+        // Match by ID first, then by datum+von+bis as fallback
+        const key = String(se.datum)+'_'+String(se.von)+'_'+String(se.bis);
+        const local=allEntries.find(e=>
+          String(e.id)===String(se.id) ||
+          (e.worker===se.worker && String(e.datum)+'_'+String(e.von)+'_'+String(e.bis)===key)
+        );
+        if(local){
+          local.status=se.status;
+          if(!local.id&&se.id)local.id=se.id;
+        }
+      });
+      localStorage.setItem('gx_entries',JSON.stringify(allEntries));
+    }
+  }catch{}
+}
+
 async function renderDashboard(){
-  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-    try{
-      const today=new Date();
-      const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
-      const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
-      const d=await r.json();
-      if(d.ok&&d.entries){
-        d.entries.forEach(se=>{
-          const local=allEntries.find(e=>e.id==se.id);
-          if(local){local.status=se.status;}
-          else if(se.worker===currentWorker.name){allEntries.push(se);}
-        });
-        localStorage.setItem('gx_entries',JSON.stringify(allEntries));
-      }
-    }catch{}
-  }
+  await syncStatusFromSheets();
   const mine=allEntries.filter(e=>e.worker===currentWorker.name);
   const recent=mine.slice().reverse().slice(0,5);
   const list=document.getElementById('dash-entries');
