@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gartenxclusiv Admin</title>
+<style>
+:root{
+  --gx-dark:#1a2e1a;--gx-green:#4caf50;--gx-green-dark:#388e3c;
+  --gx-green-light:#e8f5e9;--gx-gold:#c8a84b;--gx-gold-light:#f5ecd4;
+  --gx-bg:#f7f5f0;--gx-border:#d8d8cc;--gx-text:#1a1a1a;--gx-muted:#666;
+  --red:#d32f2f;--red-light:#ffebee;--amber:#f59f00;--amber-light:#fff8e1;--blue:#1565c0;--blue-light:#e3f2fd;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-height:100vh}
+.topbar{background:var(--gx-dark);padding:14px 24px;display:flex;align-items:center;gap:12px;border-bottom:2px solid var(--gx-gold)}
+.logo{width:36px;height:36px;border-radius:8px;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--gx-dark)}
+.title{color:#fff;font-size:16px;font-weight:700;flex:1}
+.subtitle{color:var(--gx-gold);font-size:11px;letter-spacing:.06em}
+.logout-btn{background:none;border:1px solid #444;color:#aaa;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer}
+.logout-btn:hover{border-color:var(--gx-gold);color:var(--gx-gold)}
+
+/* Login */
+.login-wrap{max-width:360px;margin:80px auto;padding:0 16px}
+.login-card{background:#fff;border-radius:16px;border:1px solid var(--gx-border);padding:32px;text-align:center}
+.login-logo{width:64px;height:64px;border-radius:14px;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:var(--gx-dark);margin:0 auto 16px}
+.pin-display{display:flex;gap:14px;justify-content:center;margin:20px 0 16px}
+.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--gx-border);transition:all .15s}
+.pin-dot.filled{background:var(--gx-green);border-color:var(--gx-green)}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:260px;margin:0 auto}
+.num-btn{background:var(--gx-bg);border:1px solid var(--gx-border);border-radius:10px;padding:15px;font-size:18px;font-weight:500;cursor:pointer;text-align:center;user-select:none}
+.num-btn:active{background:var(--gx-green-light)}
+.num-btn.empty{background:none;border-color:transparent;cursor:default}
+.error-msg{background:var(--red-light);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--red);margin-bottom:10px;display:none}
+
+/* Dashboard */
+.dashboard{max-width:1100px;margin:0 auto;padding:24px 20px;display:none}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.metric{background:#fff;border:1px solid var(--gx-border);border-radius:12px;padding:16px}
+.m-label{font-size:12px;color:var(--gx-muted);margin-bottom:6px;font-weight:500}
+.m-val{font-size:28px;font-weight:700}
+.m-val.green{color:var(--gx-green-dark)}
+.m-val.amber{color:#e65100}
+.m-val.red{color:var(--red)}
+.m-val.blue{color:var(--blue)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.card{background:#fff;border:1px solid var(--gx-border);border-radius:12px;padding:18px}
+.card-title{font-size:14px;font-weight:700;color:var(--gx-text);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.card-title span{font-size:12px;font-weight:400;color:var(--gx-muted)}
+
+.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--gx-border);margin-bottom:16px}
+.tab{padding:10px 20px;font-size:13px;font-weight:500;color:var(--gx-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.tab.active{color:var(--gx-green);border-bottom-color:var(--gx-green);font-weight:700}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;font-weight:700;color:var(--gx-muted);text-transform:uppercase;letter-spacing:.05em;padding:8px 10px;border-bottom:1px solid var(--gx-border)}
+td{padding:10px 10px;border-bottom:0.5px solid var(--gx-border);color:var(--gx-text)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--gx-bg)}
+
+.sbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.sbadge.green{background:var(--gx-green-light);color:var(--gx-green-dark)}
+.sbadge.amber{background:var(--amber-light);color:#e65100}
+.sbadge.red{background:var(--red-light);color:var(--red)}
+.sbadge.gray{background:var(--gx-bg);color:var(--gx-muted)}
+.sbadge.auto{background:#e8eaf6;color:#283593}
+
+.action-btns{display:flex;gap:5px}
+.btn-ok{padding:4px 12px;border-radius:6px;background:var(--gx-green-light);color:var(--gx-green-dark);border:1px solid #a5d6a7;font-size:12px;font-weight:600;cursor:pointer}
+.btn-no{padding:4px 12px;border-radius:6px;background:var(--red-light);color:var(--red);border:1px solid #ffcdd2;font-size:12px;font-weight:600;cursor:pointer}
+.btn-ok:hover{background:#c8e6c9}
+.btn-no:hover{background:#ffcdd2}
+
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.bar-label{width:180px;font-size:13px;color:var(--gx-text);flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:14px;background:var(--gx-bg);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;background:var(--gx-green);border-radius:4px}
+.bar-val{width:50px;text-align:right;font-size:13px;font-weight:600;color:var(--gx-green-dark);flex-shrink:0}
+
+.filter-row{display:flex;gap:10px;margin-bottom:16px;align-items:center;flex-wrap:wrap}
+.filter-row select,.filter-row input{padding:8px 12px;border:1px solid var(--gx-border);border-radius:8px;font-size:13px;background:#fff;color:var(--gx-text)}
+.btn-export{padding:8px 16px;border-radius:8px;background:var(--gx-green);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer}
+.btn-export:hover{background:var(--gx-green-dark)}
+.btn-refresh{padding:8px 12px;border-radius:8px;background:#fff;color:var(--gx-text);border:1px solid var(--gx-border);font-size:13px;cursor:pointer}
+
+.status-bar{text-align:center;font-size:12px;color:var(--gx-muted);padding:8px}
+.empty-hint{text-align:center;color:#aaa;padding:24px;font-size:13px}
+.badge-num{background:var(--red);color:#fff;border-radius:10px;font-size:10px;font-weight:700;padding:1px 6px;margin-left:6px}
+
+@media(max-width:700px){
+  .metrics{grid-template-columns:1fr 1fr}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">GX</div>
+  <div style="flex:1"><div class="title">Gartenxclusiv</div><div class="subtitle">ADMIN-DASHBOARD</div></div>
+  <div id="status-bar-top" class="status-bar" style="padding:0;color:var(--gx-gold);font-size:12px"></div>
+  <button class="logout-btn" onclick="logout()" style="margin-left:16px">Abmelden</button>
+</div>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-area">
+  <div class="login-card">
+    <div class="login-logo">GX</div>
+    <div style="font-size:18px;font-weight:700;margin-bottom:4px">Admin-Bereich</div>
+    <div style="font-size:13px;color:var(--gx-muted);margin-bottom:4px">Gartenxclusiv Zeiterfassung</div>
+    <div class="pin-display"><div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div><div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div></div>
+    <div class="error-msg" id="pin-error">Falscher PIN. Nochmal versuchen.</div>
+    <div class="numpad">
+      <div class="num-btn" onclick="pinKey('1')">1</div><div class="num-btn" onclick="pinKey('2')">2</div><div class="num-btn" onclick="pinKey('3')">3</div>
+      <div class="num-btn" onclick="pinKey('4')">4</div><div class="num-btn" onclick="pinKey('5')">5</div><div class="num-btn" onclick="pinKey('6')">6</div>
+      <div class="num-btn" onclick="pinKey('7')">7</div><div class="num-btn" onclick="pinKey('8')">8</div><div class="num-btn" onclick="pinKey('9')">9</div>
+      <div class="num-btn empty"></div><div class="num-btn" onclick="pinKey('0')">0</div>
+      <div class="num-btn" onclick="pinDel()" style="color:var(--gx-muted)">⌫</div>
+    </div>
+    <div style="font-size:12px;color:#bbb;margin-top:16px">Standard-PIN: 0000 — bitte im Apps Script ändern</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+  <!-- Metriken -->
+  <div class="metrics">
+    <div class="metric"><div class="m-label">Offene Freigaben</div><div class="m-val red" id="m-pending">–</div></div>
+    <div class="metric"><div class="m-label">Urlaubsanträge</div><div class="m-val amber" id="m-urlaub">–</div></div>
+    <div class="metric"><div class="m-label">Stunden (Monat)</div><div class="m-val green" id="m-stunden">–</div></div>
+    <div class="metric"><div class="m-label">Einträge (Monat)</div><div class="m-val blue" id="m-eintraege">–</div></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <div class="tab active" id="tab-freigaben" onclick="switchTab('freigaben')">Freigaben <span id="badge-freigaben" class="badge-num" style="display:none">0</span></div>
+    <div class="tab" id="tab-urlaub" onclick="switchTab('urlaub')">Urlaub <span id="badge-urlaub" class="badge-num" style="display:none">0</span></div>
+    <div class="tab" id="tab-auswertung" onclick="switchTab('auswertung')">Auswertung</div>
+    <div class="tab" id="tab-alle" onclick="switchTab('alle')">Alle Einträge</div>
+  </div>
+
+  <!-- Freigaben -->
+  <div id="tc-freigaben">
+    <div class="card">
+      <div class="card-title">Offene Zeiteinträge <span>manuelle Einträge die geprüft werden müssen</span></div>
+      <div id="freigaben-list"><div class="empty-hint">Keine offenen Freigaben ✓</div></div>
+    </div>
+  </div>
+
+  <!-- Urlaub -->
+  <div id="tc-urlaub" style="display:none">
+    <div class="card">
+      <div class="card-title">Urlaubsanträge <span>warten auf Genehmigung</span></div>
+      <div id="urlaub-list"><div class="empty-hint">Keine offenen Anträge ✓</div></div>
+    </div>
+  </div>
+
+  <!-- Auswertung -->
+  <div id="tc-auswertung" style="display:none">
+    <div class="filter-row">
+      <select id="filter-monat" onchange="loadSummary()"></select>
+      <button class="btn-refresh" onclick="loadSummary()">↻ Aktualisieren</button>
+      <button class="btn-export" onclick="exportCSV()">⬇ CSV Export</button>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title">Stunden nach Mitarbeiter</div>
+        <div id="chart-worker"><div class="empty-hint">Lädt…</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Stunden nach Projekt</div>
+        <div id="chart-proj"><div class="empty-hint">Lädt…</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alle Einträge -->
+  <div id="tc-alle" style="display:none">
+    <div class="card">
+      <div class="filter-row" style="margin-bottom:12px">
+        <select id="filter-worker" onchange="loadAlleEntries()"><option value="alle">Alle Mitarbeiter</option></select>
+        <select id="filter-monat2" onchange="loadAlleEntries()"></select>
+        <button class="btn-export" onclick="exportCSV()">⬇ CSV Export</button>
+      </div>
+      <table>
+        <thead><tr><th>Datum</th><th>Mitarbeiter</th><th>Von</th><th>Bis</th><th>Netto</th><th>Projekt</th><th>Art</th><th>Status</th></tr></thead>
+        <tbody id="alle-tbody"><tr><td colspan="8" class="empty-hint">Lädt…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+const SCRIPT_URL = "EURE_URL_HIER_EINTRAGEN";
+const ADMIN_PIN  = "0000";
+// ============================================================
+
+let pinInput = '';
+let cachedEntries = [];
+let cachedSummary = {};
+
+function pad(n){return String(n).padStart(2,'0')}
+function setStatus(m,c=''){const b=document.getElementById('status-bar-top');b.textContent=m;b.style.color=c||'var(--gx-gold)'}
+
+// PIN
+function updateDots(){for(let i=0;i<4;i++)document.getElementById('d'+i).classList.toggle('filled',i<pinInput.length)}
+function pinKey(k){if(pinInput.length>=4)return;pinInput+=k;updateDots();document.getElementById('pin-error').style.display='none';if(pinInput.length===4)setTimeout(checkPin,150)}
+function pinDel(){pinInput=pinInput.slice(0,-1);updateDots()}
+
+async function checkPin(){
+  let ok = pinInput === ADMIN_PIN;
+  if(!ok && SCRIPT_URL && !SCRIPT_URL.includes('EURE_URL')){
+    try{
+      const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'checkAdminPin',pin:pinInput})});
+      const d=await r.json();ok=d.ok;
+    }catch{}
+  }
+  if(ok){
+    document.getElementById('login-area').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    initDashboard();
+  } else {
+    document.getElementById('pin-error').style.display='block';
+    pinInput='';updateDots();
+  }
+}
+
+function logout(){document.getElementById('login-area').style.display='block';document.getElementById('dashboard').style.display='none';pinInput='';updateDots();}
+
+// Init
+async function initDashboard(){
+  fillMonatFilter();
+  await Promise.all([loadPending(), loadSummary(), loadWorkerFilter()]);
+}
+
+function fillMonatFilter(){
+  const now=new Date();
+  const opts=[];
+  for(let i=0;i<6;i++){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    const val=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;
+    const label=d.toLocaleDateString('de-DE',{month:'long',year:'numeric'});
+    opts.push(`<option value="${val}">${label}</option>`);
+  }
+  ['filter-monat','filter-monat2'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.innerHTML=opts.join('');
+  });
+}
+
+async function loadWorkerFilter(){
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
+  try{
+    const r=await fetch(SCRIPT_URL+'?action=getWorkers');
+    const d=await r.json();
+    if(d.ok){
+      const sel=document.getElementById('filter-worker');
+      d.workers.forEach(w=>{
+        const o=document.createElement('option');o.value=w.name;o.textContent=w.name;sel.appendChild(o);
+      });
+    }
+  }catch{}
+}
+
+// Pending
+async function loadPending(){
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){
+    setStatus('Demo-Modus — Sheets-URL eintragen','#e08080');
+    renderPending({entries:[],urlaub:[]});return;
+  }
+  setStatus('Lädt…','#aaa');
+  try{
+    const r=await fetch(SCRIPT_URL+'?action=getPending');
+    const d=await r.json();
+    if(d.ok){renderPending(d);setStatus('Verbunden ✓');}
+    else setStatus('Fehler: '+d.error,'#e08080');
+  }catch{setStatus('Verbindungsfehler','#e08080');}
+}
+
+function renderPending(d){
+  document.getElementById('m-pending').textContent=d.entries.length;
+  document.getElementById('m-urlaub').textContent=d.urlaub.length;
+
+  const bf=document.getElementById('badge-freigaben');
+  bf.textContent=d.entries.length;bf.style.display=d.entries.length>0?'inline':'none';
+  const bu=document.getElementById('badge-urlaub');
+  bu.textContent=d.urlaub.length;bu.style.display=d.urlaub.length>0?'inline':'none';
+
+  // Freigaben
+  const fl=document.getElementById('freigaben-list');
+  if(!d.entries.length){fl.innerHTML='<div class="empty-hint">Keine offenen Freigaben ✓</div>';}
+  else{
+    fl.innerHTML=`<table><thead><tr><th>Mitarbeiter</th><th>Datum</th><th>Zeit</th><th>Stunden</th><th>Projekt</th><th>Notiz</th><th>Aktion</th></tr></thead><tbody>`+
+    d.entries.map(e=>`<tr>
+      <td><strong>${e.worker}</strong></td>
+      <td>${e.datum}</td>
+      <td>${e.von}–${e.bis}</td>
+      <td><strong>${parseFloat(e.netto).toFixed(1)} h</strong></td>
+      <td>${String(e.proj).split(',')[0]}</td>
+      <td style="color:var(--gx-muted)">${e.notiz||'–'}</td>
+      <td><div class="action-btns">
+        <button class="btn-ok" onclick="doAction('${e.id}','approved','entry')">✓ Freigeben</button>
+        <button class="btn-no" onclick="doAction('${e.id}','rejected','entry')">✗ Ablehnen</button>
+      </div></td></tr>`).join('')+
+    `</tbody></table>`;
+  }
+
+  // Urlaub
+  const ul=document.getElementById('urlaub-list');
+  if(!d.urlaub.length){ul.innerHTML='<div class="empty-hint">Keine offenen Anträge ✓</div>';}
+  else{
+    ul.innerHTML=`<table><thead><tr><th>Mitarbeiter</th><th>Von</th><th>Bis</th><th>Tage</th><th>Notiz</th><th>Aktion</th></tr></thead><tbody>`+
+    d.urlaub.map(u=>`<tr>
+      <td><strong>${u.worker}</strong></td>
+      <td>${u.von}</td><td>${u.bis}</td>
+      <td><strong>${u.tage}</strong></td>
+      <td style="color:var(--gx-muted)">${u.notiz||'–'}</td>
+      <td><div class="action-btns">
+        <button class="btn-ok" onclick="doAction('${u.id}','approved','urlaub')">✓ Genehmigen</button>
+        <button class="btn-no" onclick="doAction('${u.id}','rejected','urlaub')">✗ Ablehnen</button>
+      </div></td></tr>`).join('')+
+    `</tbody></table>`;
+  }
+}
+
+async function doAction(id, status, type){
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){alert('Sheets-URL nicht eingetragen!');return;}
+  try{
+    const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'updateStatus',id,status,type})});
+    const d=await r.json();
+    if(d.ok)loadPending();
+    else alert('Fehler: '+d.error);
+  }catch{alert('Verbindungsfehler');}
+}
+
+// Auswertung
+async function loadSummary(){
+  const monat=document.getElementById('filter-monat').value;
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){renderSummary({summary:{},projekte:{}});return;}
+  try{
+    const r=await fetch(`${SCRIPT_URL}?action=getSummary&monat=${monat}`);
+    const d=await r.json();
+    if(d.ok){cachedSummary=d;renderSummary(d);}
+  }catch{setStatus('Fehler beim Laden','#e08080');}
+}
+
+function renderSummary(d){
+  const workers=Object.entries(d.summary||{}).sort((a,b)=>b[1].total-a[1].total);
+  const projs=Object.entries(d.projekte||{}).sort((a,b)=>b[1]-a[1]);
+  const maxW=workers.length?workers[0][1].total:1;
+  const maxP=projs.length?projs[0][1]:1;
+  let totalH=0;workers.forEach(([,v])=>totalH+=v.total);
+  document.getElementById('m-stunden').textContent=(Math.round(totalH*10)/10)+' h';
+  document.getElementById('m-eintraege').textContent=workers.reduce((s,[,v])=>s+v.tage,0);
+
+  document.getElementById('chart-worker').innerHTML=workers.length?
+    workers.map(([name,v])=>`<div class="bar-row"><div class="bar-label">${name}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(v.total/maxW*100)}%"></div></div><div class="bar-val">${v.total} h</div></div>`).join('')
+    :'<div class="empty-hint">Keine Daten</div>';
+
+  document.getElementById('chart-proj').innerHTML=projs.length?
+    projs.map(([proj,h])=>`<div class="bar-row"><div class="bar-label">${proj.split(',')[0]}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(h/maxP*100)}%;background:var(--gx-gold)"></div></div><div class="bar-val">${h} h</div></div>`).join('')
+    :'<div class="empty-hint">Keine Daten</div>';
+}
+
+// Alle Einträge
+async function loadAlleEntries(){
+  const worker=document.getElementById('filter-worker').value;
+  const monat=document.getElementById('filter-monat2').value;
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){document.getElementById('alle-tbody').innerHTML='<tr><td colspan="8" class="empty-hint">Sheets-URL eintragen</td></tr>';return;}
+  try{
+    const r=await fetch(`${SCRIPT_URL}?action=getEntries&worker=${encodeURIComponent(worker)}&monat=${monat}`);
+    const d=await r.json();
+    if(d.ok){cachedEntries=d.entries;renderAlleEntries(d.entries);}
+  }catch{document.getElementById('alle-tbody').innerHTML='<tr><td colspan="8" class="empty-hint">Fehler beim Laden</td></tr>';}
+}
+
+function statusBadge(s){
+  const map={approved:'<span class="sbadge green">✓ Freigegeben</span>',pending:'<span class="sbadge amber">⏳ Ausstehend</span>',rejected:'<span class="sbadge red">✗ Abgelehnt</span>',auto:'<span class="sbadge auto">Auto</span>',locked:'<span class="sbadge gray">🔒 Gesperrt</span>'};
+  return map[s]||`<span class="sbadge gray">${s}</span>`;
+}
+
+function renderAlleEntries(entries){
+  const tbody=document.getElementById('alle-tbody');
+  if(!entries.length){tbody.innerHTML='<tr><td colspan="8" class="empty-hint">Keine Einträge gefunden</td></tr>';return;}
+  tbody.innerHTML=entries.map(e=>`<tr>
+    <td>${e.datum}</td><td>${e.worker}</td>
+    <td>${e.von}</td><td>${e.bis}</td>
+    <td><strong>${parseFloat(e.netto).toFixed(1)} h</strong></td>
+    <td>${String(e.proj).split(',')[0]}</td>
+    <td><span class="sbadge ${e.art==='Stempel'?'green':'amber'}">${e.art}</span></td>
+    <td>${statusBadge(e.status)}</td>
+  </tr>`).join('');
+}
+
+// CSV Export
+function exportCSV(){
+  const entries=cachedEntries.length?cachedEntries:[];
+  if(!entries.length){alert('Keine Daten zum Exportieren. Bitte zuerst "Alle Einträge" laden.');return;}
+  const monat=document.getElementById('filter-monat2')?.value||document.getElementById('filter-monat').value;
+  const header='Datum,Mitarbeiter,Von,Bis,Pause (min),Netto (h),Projekt,Art,Status,Notiz';
+  const rows=entries.map(e=>[e.datum,e.worker,e.von,e.bis,e.pause,e.netto,`"${e.proj}"`,e.art,e.status,`"${e.notiz||''}"`].join(','));
+  const csv='\uFEFF'+header+'\n'+rows.join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download=`gartenxclusiv_zeiten_${monat}.csv`;a.click();
+}
+
+// Tab switch
+function switchTab(name){
+  ['freigaben','urlaub','auswertung','alle'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('active',t===name);
+    document.getElementById('tc-'+t).style.display=t===name?'block':'none';
+  });
+  if(name==='auswertung')loadSummary();
+  if(name==='alle')loadAlleEntries();
+}
+</script>
+</body>
+</html>
