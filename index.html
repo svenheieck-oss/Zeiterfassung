@@ -145,45 +145,27 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 .divider{height:0.5px;background:var(--gx-border);margin:10px 0}
 .empty-hint{font-size:13px;color:#aaa;text-align:center;padding:20px 0}
 .user-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.user-avatar{width:40px;height:40px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gx-dark);flex-shrink:0}
-/* Kalender */
-.month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.month-btn{width:32px;height:32px;border-radius:8px;background:var(--gx-bg);border:1px solid var(--gx-border);cursor:pointer;font-size:16px;color:var(--gx-muted);display:flex;align-items:center;justify-content:center}
-.month-btn:active{background:var(--gx-green-light)}
-.month-title{font-size:15px;font-weight:700;color:var(--gx-text)}
-.kal-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
-.kal-sum{background:var(--gx-bg);border-radius:10px;padding:8px 10px;text-align:center}
-.kal-sum-val{font-size:17px;font-weight:700}
-.kal-sum-label{font-size:10px;color:var(--gx-muted);margin-top:1px}
-.kal-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
-.kal-leg{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gx-muted)}
-.kal-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.kal-list{display:flex;flex-direction:column;gap:3px}
-.kal-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px;background:#fff;border:0.5px solid var(--gx-border)}
-.kal-row.weekend{background:var(--gx-bg);border-color:transparent}
-.kal-row.today{background:var(--gx-green-light);border-color:#a5d6a7}
-.kal-row.feiertag{background:#fdf8f0;border-color:#e8d8a0}
-.kal-num{width:26px;font-size:13px;font-weight:700;color:var(--gx-text);flex-shrink:0;text-align:center}
-.kal-name{width:22px;font-size:10px;color:#aaa;flex-shrink:0}
-.kal-dot-big{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.kal-info{flex:1;min-width:0}
-.kal-proj{font-size:12px;font-weight:600;color:var(--gx-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kal-sub{font-size:10px;color:var(--gx-muted)}
-.kal-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;white-space:nowrap;flex-shrink:0}
-.kal-badge.approved{background:var(--gx-green-light);color:var(--gx-green-dark)}
-.kal-badge.pending{background:var(--amber-light);color:#e65100}
-.kal-badge.urlaub{background:var(--blue-light);color:var(--blue)}
-.kal-badge.krank{background:var(--red-light);color:var(--red)}
-.kal-badge.auto{background:var(--gx-green-light);color:var(--gx-green-dark)}
-.kal-badge.feiertag{background:#f5ecd4;color:#633806}
-/* Erinnerung */
-.reminder-box{background:#b71c1c;border-radius:12px;padding:14px 16px;margin-bottom:14px;display:none}
-.reminder-title{color:#fff;font-size:14px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.reminder-text{color:#ffcdd2;font-size:12px;line-height:1.5;margin-bottom:10px}
-.reminder-days{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
-.reminder-day{background:rgba(255,255,255,.15);border-radius:6px;padding:5px 10px;font-size:12px;color:#fff;font-weight:500}
-.reminder-btn{background:#fff;color:#b71c1c;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;width:100%}
 
+/* Tagesbericht */
+.tb-section{margin-bottom:14px}
+.tb-sec-label{font-size:10px;font-weight:700;color:var(--gx-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.tb-ma-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--gx-border)}
+.tb-ma-row:last-child{border:none}
+.tb-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--gx-border);background:var(--gx-bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:transparent}
+.tb-check.checked{background:var(--gx-green);border-color:var(--gx-green);color:#fff}
+.tb-ma-name{flex:1;font-size:13px;color:var(--gx-text)}
+.tb-ma-h{width:56px;font-size:13px;padding:6px 8px;border:1px solid var(--gx-border);border-radius:8px;background:#fff;color:var(--gx-text);text-align:center}
+.tb-mat-grid{display:grid;grid-template-columns:1fr 60px 48px 52px;gap:5px;margin-bottom:6px;align-items:center}
+.tb-mat-head{font-size:10px;color:var(--gx-muted);text-align:center}
+.tb-mat-head:first-child{text-align:left}
+.tb-mat-inp{font-size:12px;padding:6px 7px;border:1px solid var(--gx-border);border-radius:8px;background:#fff;color:var(--gx-text);width:100%;text-align:center}
+.tb-mat-inp.name{text-align:left}
+.tb-mat-intern{font-size:12px;padding:6px 7px;border:1px solid #e8d8a0;border-radius:8px;background:#fdf8f0;color:#633806;width:100%;text-align:center}
+.tb-add-btn{width:100%;padding:8px;border:1px dashed var(--gx-border);border-radius:9px;background:none;color:var(--gx-muted);font-size:12px;cursor:pointer;margin-top:4px}
+.tb-step-bar{display:flex;gap:6px;margin-bottom:14px}
+.tb-step{flex:1;padding:7px 4px;border-radius:8px;background:var(--gx-bg);border:1px solid var(--gx-border);text-align:center;font-size:11px;color:var(--gx-muted);cursor:pointer}
+.tb-step.active{background:var(--gx-green-light);border-color:var(--gx-green);color:var(--gx-green-dark);font-weight:700}
+.user-avatar{width:40px;height:40px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gx-dark);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -224,8 +206,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 
 <!-- MITARBEITER: Dashboard -->
 <div class="view" id="v-dashboard">
-  <div id="reminder-box" class="reminder-box"><div class="reminder-title">⚠️ Eintrag fehlt!</div><div class="reminder-text">Für folgende Arbeitstage fehlt noch ein Eintrag. Bitte schnell nachholen!</div><div class="reminder-days" id="reminder-days"></div><button class="reminder-btn" onclick="switchMain('manuell')">Jetzt eintragen</button></div>
-<div class="user-row">
+  <div class="user-row">
     <div class="user-avatar" id="dash-avatar"></div>
     <div style="flex:1"><div style="font-size:15px;font-weight:700" id="dash-name"></div><div style="font-size:12px;color:var(--gx-muted)" id="dash-date"></div></div>
   </div>
@@ -250,8 +231,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
     <div class="running-row"><div class="dot-live"></div><div style="font-size:13px;color:var(--gx-green-dark);font-weight:600" id="running-label"></div></div>
     <div class="elapsed" id="elapsed">00:00:00</div>
   </div>
-  <div class="field"><label>Baustelle / Projekt</label><select id="proj-stamp" onchange="checkSonstiges('stamp')"></select></div>
-  <div class="field" id="field-sonstiges-stamp" style="display:none"><label>Auftragsbezeichnung</label><input type="text" id="stamp-sonstiges" placeholder="z.B. Reparatur Einfahrt Müller"></div>
+  <div class="field"><label>Baustelle / Projekt</label><select id="proj-stamp"></select></div>
   <div class="success-msg" id="stamp-ok">✓ Zeit gespeichert!</div>
   <div class="error-msg" id="stamp-err"></div>
   <button class="stamp-btn ein" id="btn-ein" onclick="einStempeln()">▶ Einloggen</button>
@@ -269,9 +249,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="calc-box"><span style="font-size:13px;color:var(--gx-muted);font-weight:500">Nettostunden</span><span class="calc-val" id="calc-net">8,5 h</span></div>
   <div class="field"><label>Datum</label><input type="date" id="man-datum"></div>
   <div class="field"><label>Baustelle / Projekt</label><select id="proj-man"></select></div>
-  <div class="field"><label>Baustelle / Projekt</label><select id="proj-man" onchange="checkSonstiges('man')"></select></div>
-  <div class="field" id="field-sonstiges-man" style="display:none"><label>Auftragsbezeichnung (Pflichtfeld)</label><input type="text" id="man-sonstiges" placeholder="z.B. Reparatur Einfahrt Müller"></div>
-  <div class="field"><label>Notiz</label><input type="text" id="man-notiz" placeholder="z.B. Besonderheiten, Material…"></div>
+  <div class="field"><label>Notiz</label><input type="text" id="man-notiz" placeholder="z.B. Krankheit, Sonderaufgabe…"></div>
   <div class="error-msg" id="man-error"></div>
   <div class="success-msg" id="man-ok">✓ Eintrag gespeichert — wartet auf Freigabe</div>
   <button class="btn-primary" onclick="saveManual()">Eintrag speichern</button>
@@ -297,6 +275,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="section-label" style="margin-top:4px">Meine Anträge</div>
   <div class="card" style="padding:8px 12px"><div id="urlaub-list"><div class="empty-hint">Keine Anträge</div></div></div>
 </div>
+
 
 
 <!-- MITARBEITER: Krank -->
@@ -333,6 +312,100 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="kal-list" id="kal-list"></div>
 </div>
 
+<!-- TAGESBERICHT -->
+<div class="view" id="v-tagesbericht">
+  <div class="tb-step-bar">
+    <div class="tb-step active" id="tbstep-allgemein" onclick="tbGoStep('allgemein')">Allgemein</div>
+    <div class="tb-step" id="tbstep-team" onclick="tbGoStep('team')">Team</div>
+    <div class="tb-step" id="tbstep-material" onclick="tbGoStep('material')">Material</div>
+    <div class="tb-step" id="tbstep-abschluss" onclick="tbGoStep('abschluss')">Abschluss</div>
+  </div>
+  <div id="tbp-allgemein">
+    <div class="tb-section">
+      <div class="tb-sec-label">Baustelle & Datum</div>
+      <div class="row2" style="margin-bottom:10px">
+        <div class="field"><label>Datum</label><input type="date" id="tb-datum"></div>
+        <div class="field"><label>Auftraggeber</label><input type="text" id="tb-auftraggeber" placeholder="z.B. Bachmann"></div>
+      </div>
+      <div class="field"><label>Baustelle / Projekt</label><select id="tb-proj"></select></div>
+      <div class="row2">
+        <div class="field"><label>Arbeitsbeginn</label><input type="time" id="tb-von" value="07:00" oninput="tbCalcNetto()"></div>
+        <div class="field"><label>Arbeitsende</label><input type="time" id="tb-bis" value="16:30" oninput="tbCalcNetto()"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Pause (min)</label><input type="number" id="tb-pause" value="30" min="0" step="15" oninput="tbCalcNetto()"></div>
+        <div class="field"><label>Nettostunden</label><input type="text" id="tb-netto" readonly style="color:var(--gx-green-dark);font-weight:700"></div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="tbGoStep('team')">Weiter: Team →</button>
+  </div>
+  <div id="tbp-team" style="display:none">
+    <div class="tb-section">
+      <div class="tb-sec-label">Anwesende Mitarbeiter auswählen</div>
+      <div id="tb-ma-liste"></div>
+    </div>
+    <div class="row2">
+      <button class="btn-outline" onclick="tbGoStep('allgemein')">← Zurück</button>
+      <button class="btn-primary" onclick="tbGoStep('material')">Weiter →</button>
+    </div>
+  </div>
+  <div id="tbp-material" style="display:none">
+    <div class="tb-section">
+      <div class="tb-sec-label">Materialverbrauch</div>
+      <div class="tb-mat-grid" style="margin-bottom:4px">
+        <div class="tb-mat-head">Material</div><div class="tb-mat-head">Menge</div>
+        <div class="tb-mat-head">Einheit</div>
+        <div class="tb-mat-head" style="background:#fdf8f0;border-radius:5px;padding:2px;color:#633806">Intern</div>
+      </div>
+      <div id="tb-mat-rows">
+        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Schotter 16/32"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="to"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div>
+        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Oberboden"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="m³"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div>
+      </div>
+      <button class="tb-add-btn" onclick="tbAddMatRow('tb-mat-rows')">+ Material hinzufügen</button>
+    </div>
+    <div class="tb-section">
+      <div class="tb-sec-label">Maschineneinsatz</div>
+      <div class="tb-mat-grid" style="margin-bottom:4px">
+        <div class="tb-mat-head">Maschine</div><div class="tb-mat-head">Std.</div>
+        <div class="tb-mat-head">Einheit</div><div class="tb-mat-head"></div>
+      </div>
+      <div id="tb-masch-rows">
+        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. LKW Arocs"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div></div>
+      </div>
+      <button class="tb-add-btn" onclick="tbAddMaschRow()">+ Maschine hinzufügen</button>
+    </div>
+    <div class="tb-section">
+      <div class="tb-sec-label">Materialrückgabe</div>
+      <div class="tb-mat-grid" style="margin-bottom:4px">
+        <div class="tb-mat-head">Material</div><div class="tb-mat-head">Menge</div>
+        <div class="tb-mat-head">Einheit</div>
+        <div class="tb-mat-head" style="background:#fdf8f0;border-radius:5px;padding:2px;color:#633806">Intern</div>
+      </div>
+      <div id="tb-rueck-rows">
+        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Gartenabfall"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="cbm"><input class="tb-mat-intern" type="text" placeholder="GO/LA"></div>
+      </div>
+      <button class="tb-add-btn" onclick="tbAddMatRow('tb-rueck-rows','cbm','GO/LA')">+ Rückgabe hinzufügen</button>
+    </div>
+    <div class="row2">
+      <button class="btn-outline" onclick="tbGoStep('team')">← Zurück</button>
+      <button class="btn-primary" onclick="tbGoStep('abschluss')">Weiter →</button>
+    </div>
+  </div>
+  <div id="tbp-abschluss" style="display:none">
+    <div class="tb-section">
+      <div class="tb-sec-label">Notizen / Besonderheiten</div>
+      <textarea id="tb-notiz" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;color:var(--gx-text);resize:none;height:80px" placeholder="z.B. Schlechtwetter ab 14 Uhr…"></textarea>
+    </div>
+    <div class="card" style="background:var(--gx-bg);padding:12px 14px;margin-bottom:14px" id="tb-zusammenfassung"></div>
+    <div class="success-msg" id="tb-ok">✓ Tagesbericht gespeichert!</div>
+    <div class="error-msg" id="tb-err">Bitte alle Pflichtfelder ausfüllen.</div>
+    <div class="row2" style="margin-bottom:10px">
+      <button class="btn-outline" onclick="tbGoStep('material')">← Zurück</button>
+      <button class="btn-primary" onclick="saveTagesbericht()">Speichern ✓</button>
+    </div>
+  </div>
+</div>
+
 <!-- ADMIN: Dashboard -->
 <div class="view" id="v-admin">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -348,13 +421,11 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="tab-bar">
     <div class="tab active" id="atab-freigaben" onclick="switchAdminTab('freigaben')">Freigaben</div>
     <div class="tab" id="atab-urlaub" onclick="switchAdminTab('urlaub')">Urlaub</div>
-    <div class="tab" id="atab-alle" onclick="switchAdminTab('alle')">Einträge</div>
-    <div class="tab" id="atab-stamm" onclick="switchAdminTab('stamm')">Team</div>
+    <div class="tab" id="atab-alle" onclick="switchAdminTab('alle')">Alle Einträge</div>
   </div>
   <div id="atc-freigaben"><div class="empty-hint" id="freigaben-empty" style="display:none">Keine offenen Freigaben ✓</div><div id="freigaben-list"></div></div>
   <div id="atc-urlaub" style="display:none"><div class="empty-hint" id="urlaub-empty" style="display:none">Keine Anträge ✓</div><div id="admin-urlaub-list"></div></div>
   <div id="atc-alle" style="display:none"><div id="alle-list"></div></div>
-  <div id="atc-stamm" style="display:none"><div id="stamm-list"></div></div>
 </div>
 
 <!-- Bottom Nav (nur wenn eingeloggt) -->
@@ -365,6 +436,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <button class="nav-btn" id="nav-urlaub" onclick="switchMain('urlaub')"><i class="ti ti-beach" aria-hidden="true"></i><span>Urlaub</span></button>
   <button class="nav-btn" id="nav-krank" onclick="switchMain('krank')"><i class="ti ti-stethoscope" aria-hidden="true"></i><span>Krank</span></button>
   <button class="nav-btn" id="nav-kalender" onclick="switchMain('kalender')"><i class="ti ti-calendar" aria-hidden="true"></i><span>Kalender</span></button>
+  <button class="nav-btn" id="nav-tagesbericht" onclick="switchMain('tagesbericht')" style="display:none"><i class="ti ti-clipboard-list" aria-hidden="true"></i><span>Bericht</span></button>
 </div>
 
 <div class="status-bar" id="status-bar">Verbinde…</div>
@@ -380,9 +452,10 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMel0O3XuZbUkZkAam7
 
 const ADMIN_PIN = "0000"; // Admin-PIN — bitte ändern!
 
-// Projekte werden dynamisch aus Google Kalender geladen
-let PROJEKTE = ["Wird geladen…"];
-const PROJ_SONSTIGES = "⚒ Kleinauftrag / Sonstiges";
+const PROJEKTE = [
+  "Garten Müller, Leipzig","Park Renovierung Südvorstadt",
+  "Bepflanzung Neubau Lindenstr.","Pflege Firmengelände Koch AG","Wegebau Gohlis-Mitte"
+];
 
 const FALLBACK_WORKERS = [
   {name:"Max Bauer",pin:"1234"},{name:"Lisa Kern",pin:"2345"},
@@ -395,7 +468,7 @@ const FALLBACK_WORKERS = [
 ];
 
 let currentWorker=null,pinInput='',stampStart=null,elapsedTimer=null,workers=[];
-let allEntries=[],urlaubAntraege=[],stammdaten={};
+let allEntries=[],urlaubAntraege=[];
 let isAdmin=false;
 
 function pad(n){return String(n).padStart(2,'0')}
@@ -407,7 +480,6 @@ function showMsg(id,dur=2500){const el=document.getElementById(id);el.style.disp
 // Load
 async function init(){
   fillProjekte();
-  ladeProjekte();
   const stored=localStorage.getItem('gx_entries');
   if(stored)try{allEntries=JSON.parse(stored)}catch{}
   const storedU=localStorage.getItem('gx_urlaub');
@@ -424,25 +496,10 @@ async function init(){
   renderWorkerGrid();updateAdminBadge();
 }
 
-function fillProjekte(liste){
-  const opts=(liste||PROJEKTE).map(p=>`<option>${p}</option>`).join('');
+function fillProjekte(){
   ['proj-stamp','proj-man'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el)el.innerHTML=opts;
+    document.getElementById(id).innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');
   });
-}
-
-async function ladeProjekte(){
-  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
-  try{
-    const r=await fetch(SCRIPT_URL+'?action=getProjekte');
-    const d=await r.json();
-    if(d.ok&&d.projekte&&d.projekte.length>0){
-      PROJEKTE=[...d.projekte.map(p=>p.name),PROJ_SONSTIGES];
-      fillProjekte(PROJEKTE);
-      if(d.lastSync)setStatus('Projekte geladen (Sync: '+d.lastSync+')','ok');
-    }
-  }catch{}
 }
 
 function renderWorkerGrid(){
@@ -466,7 +523,6 @@ function switchMain(name){
   goTo('v-'+name);
   if(name==='dashboard')renderDashboard();
   if(name==='urlaub')renderUrlaubList();
-  if(name==='kalender')renderKalender();
 }
 
 // Worker select & PIN
@@ -508,9 +564,58 @@ async function enterWorker(){
   document.getElementById('dash-name').textContent=currentWorker.name;
   document.getElementById('dash-date').textContent=now.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('man-datum').value=now.toISOString().slice(0,10);
+  document.getElementById('dash-entries').innerHTML='<div class="empty-hint">Lädt…</div>';
+  goTo('v-dashboard');
+  ['dashboard','stempel','manuell','urlaub','krank','kalender','tagesbericht'].forEach(n=>{
+    const el=document.getElementById('nav-'+n);if(el)el.classList.toggle('active',n==='dashboard');
+  });
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+    const today=new Date();
+    const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
+    try{
+      const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
+      const d=await r.json();
+      if(d.ok&&d.entries){
+        allEntries=allEntries.filter(e=>!(e.worker===currentWorker.name&&String(e.datum).startsWith(monat)));
+        d.entries.forEach(e=>allEntries.push(e));
+        localStorage.setItem('gx_entries',JSON.stringify(allEntries));
+      }
+    }catch{}
+    try{
+      const rs=await fetch(SCRIPT_URL+'?action=getStammdaten&worker='+encodeURIComponent(currentWorker.name));
+      const ds=await rs.json();
+      if(ds.ok&&ds.stammdaten)stammdaten=ds.stammdaten;
+    }catch{}
+  }
+  const rolle=stammdaten.rolle||'Mitarbeiter';
+  const tbBtn=document.getElementById('nav-tagesbericht');
+  if(tbBtn)tbBtn.style.display=(rolle==='Vorarbeiter'||rolle==='Facharbeiter'||rolle==='Admin')?'flex':'none';
   checkLateWarning();
   renderDashboard();
-  switchMain('dashboard');
+  updateDashboardMetrics();
+}
+
+function updateDashboardMetrics(){
+  const soll=stammdaten.wochenstunden||40;
+  const now=new Date();
+  const dayOfWeek=now.getDay();
+  const monday=new Date(now);
+  monday.setDate(now.getDate()-(dayOfWeek===0?6:dayOfWeek-1));
+  const mondayStr=monday.toISOString().slice(0,10);
+  const sundayStr=new Date(monday.getTime()+6*86400000).toISOString().slice(0,10);
+  const wocheH=allEntries.filter(e=>e.worker===currentWorker.name&&e.datum>=mondayStr&&e.datum<=sundayStr).reduce((s,e)=>s+(parseFloat(e.netto)||0),0);
+  const pct=Math.min(100,Math.round(wocheH/soll*100));
+  document.getElementById('week-label').textContent=wocheH.toFixed(1)+' / '+soll+' h';
+  document.getElementById('week-bar').style.width=pct+'%';
+  let urlaubGesamt=stammdaten.urlaubstage||30;
+  if(stammdaten.eintrittsdatum){const eintr=new Date(stammdaten.eintrittsdatum);if(eintr.getFullYear()===now.getFullYear()){urlaubGesamt=Math.round(urlaubGesamt*(12-eintr.getMonth())/12);}}
+  const genommen=urlaubAntraege.filter(u=>u.worker===currentWorker.name&&u.status==='approved'&&u.von&&u.von.startsWith(now.getFullYear()+'')).reduce((s,u)=>s+(parseInt(u.tage)||0),0);
+  document.getElementById('m-urlaub').textContent=Math.max(0,urlaubGesamt-genommen)+' Tage';
+  const diffH=wocheH-soll;
+  const ueberEl=document.getElementById('m-ueber');
+  ueberEl.textContent=(diffH>=0?'+':'')+diffH.toFixed(1)+' h';
+  ueberEl.className='m-val '+(diffH>=0?'green':'red');
+  if(stammdaten.probezeit){const probzEnd=new Date(stammdaten.probezeit);const diffDays=Math.ceil((probzEnd-now)/86400000);if(diffDays>0&&diffDays<=30){const el=document.getElementById('late-warn');el.textContent='⏰ Probezeit endet in '+diffDays+' Tagen ('+stammdaten.probezeit+')';el.style.display='block';}}
 }
 
 function enterAdmin(){
@@ -551,39 +656,6 @@ function checkLateWarning(){
     return (savedDate-entryDate)>12*3600*1000;
   }).length;
   document.getElementById('late-warn').style.display=lateCount>=3?'block':'none';
-  checkMissingDays();
-}
-
-function checkMissingDays(){
-  const now=new Date();
-  const missing=[];
-  const feiertage=getBayernFeiertage(now.getFullYear());
-  for(let i=1;i<=7;i++){
-    const d=new Date(now);
-    d.setDate(d.getDate()-i);
-    const dow=d.getDay();
-    if(dow===0||dow===6)continue;
-    const ds=d.toISOString().slice(0,10);
-    if(feiertage[ds])continue;
-    const hasEntry=allEntries.some(e=>e.worker===currentWorker.name&&e.datum===ds);
-    const isUrlaub=urlaubAntraege.some(u=>u.worker===currentWorker.name&&u.status==='approved'&&ds>=u.von&&ds<=u.bis);
-    if(!hasEntry&&!isUrlaub){
-      const deadline=new Date(ds+'T18:00:00');
-      deadline.setDate(deadline.getDate()+1);
-      if(now>deadline)missing.push(ds);
-    }
-  }
-  const box=document.getElementById('reminder-box');
-  const daysEl=document.getElementById('reminder-days');
-  if(missing.length>0){
-    box.style.display='block';
-    daysEl.innerHTML=missing.slice(0,5).map(ds=>{
-      const d=new Date(ds+'T12:00:00');
-      return '<div class="reminder-day">'+d.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'})+'</div>';
-    }).join('');
-  } else {
-    box.style.display='none';
-  }
 }
 
 function updateAdminBadge(){
@@ -609,12 +681,7 @@ async function ausStempeln(){
   clearInterval(elapsedTimer);elapsedTimer=null;
   const end=new Date(),start=new Date(stampStart);
   const diffMin=Math.round((end-start)/60000);
-  let stampProj=document.getElementById('proj-stamp').value;
-  if(stampProj===PROJ_SONSTIGES){
-    const st=document.getElementById('stamp-sonstiges').value.trim();
-    stampProj=st?'Kleinauftrag: '+st:PROJ_SONSTIGES;
-  }
-  const entry={worker:currentWorker.name,datum:start.toISOString().slice(0,10),von:`${pad(start.getHours())}:${pad(start.getMinutes())}`,bis:`${pad(end.getHours())}:${pad(end.getMinutes())}`,pause:0,netto:parseFloat((diffMin/60).toFixed(2)),proj:stampProj,art:'Stempel',status:'auto',savedAt:new Date().toISOString()};
+  const entry={worker:currentWorker.name,datum:start.toISOString().slice(0,10),von:`${pad(start.getHours())}:${pad(start.getMinutes())}`,bis:`${pad(end.getHours())}:${pad(end.getMinutes())}`,pause:0,netto:parseFloat((diffMin/60).toFixed(2)),proj:document.getElementById('proj-stamp').value,art:'Stempel',status:'auto',savedAt:new Date().toISOString()};
   stampStart=null;
   document.getElementById('running-block').style.display='none';
   document.getElementById('btn-ein').style.display='flex';
@@ -624,14 +691,6 @@ async function ausStempeln(){
 }
 
 // Manuelle Eingabe
-function checkSonstiges(prefix){
-  const sel=document.getElementById('proj-'+prefix);
-  const field=document.getElementById('field-sonstiges-'+prefix);
-  if(sel&&field){
-    field.style.display=sel.value===PROJ_SONSTIGES?'block':'none';
-  }
-}
-
 function recalcManual(){
   const von=document.getElementById('man-von').value,bis=document.getElementById('man-bis').value,pause=parseInt(document.getElementById('man-pause').value)||0;
   if(von&&bis){const diff=timeToMin(bis)-timeToMin(von)-pause;document.getElementById('calc-net').textContent=diff>0?(diff/60).toFixed(1).replace('.',',')+' h':'– h';}
@@ -651,13 +710,7 @@ async function saveManual(){
   const now=new Date();
   const diffH=(now-entryDate)/3600000;
   const status=diffH>36?'locked':diffH>12?'pending':'pending';
-  let projName=document.getElementById('proj-man').value;
-  if(projName===PROJ_SONSTIGES){
-    const sonstText=document.getElementById('man-sonstiges').value.trim();
-    if(!sonstText){document.getElementById('man-error').textContent='Bitte Auftragsbezeichnung eingeben.';document.getElementById('man-error').style.display='block';return;}
-    projName='Kleinauftrag: '+sonstText;
-  }
-  const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),proj:projName,art:'Manuell',status,savedAt:now.toISOString(),notiz:document.getElementById('man-notiz').value};
+  const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),proj:document.getElementById('proj-man').value,art:'Manuell',status,savedAt:now.toISOString(),notiz:document.getElementById('man-notiz').value};
   await saveEntry(entry,'man-ok');
   document.getElementById('man-notiz').value='';
   checkLateWarning();updateAdminBadge();
@@ -715,47 +768,10 @@ function renderAdmin(){
 }
 
 function switchAdminTab(name){
-  ['freigaben','urlaub','alle','stamm'].forEach(t=>{
+  ['freigaben','urlaub','alle'].forEach(t=>{
     document.getElementById('atab-'+t).classList.toggle('active',t===name);
     document.getElementById('atc-'+t).style.display=t===name?'block':'none';
   });
-  if(name==='stamm')renderAdminStamm();
-}
-
-async function renderAdminStamm(){
-  const list=document.getElementById('stamm-list');
-  list.innerHTML='<div class="empty-hint">Lädt…</div>';
-  let alle=[];
-  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-    try{
-      const r=await fetch(SCRIPT_URL+'?action=getAllStammdaten');
-      const d=await r.json();
-      if(d.ok)alle=d.alle;
-    }catch{}
-  }
-  if(!alle.length){list.innerHTML='<div class="empty-hint">Keine Stammdaten vorhanden.<br>Bitte setupStammdatenTabelle() im Apps Script ausführen.</div>';return;}
-  const now=new Date();
-  const today=now.toISOString().slice(5,10);
-  const birthdays=alle.filter(m=>m.geburtstag&&m.geburtstag.slice(5)===today);
-  list.innerHTML='';
-  if(birthdays.length) list.innerHTML+='<div style="background:#FFF8E1;border:1px solid #f59f00;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#633806">🎂 <strong>Geburtstag heute:</strong> '+birthdays.map(b=>b.name).join(', ')+'</div>';
-  const probAlerts=alle.filter(m=>{if(!m.probezeit)return false;const diff=Math.ceil((new Date(m.probezeit)-now)/86400000);return diff>0&&diff<=30;});
-  if(probAlerts.length) list.innerHTML+='<div style="background:#fff3e0;border:1px solid #ffb74d;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#e65100">⏰ <strong>Probezeit endet bald:</strong> '+probAlerts.map(m=>m.name+' ('+m.probezeit+')').join(', ')+'</div>';
-  list.innerHTML+=alle.map(m=>`
-    <div class="card" style="padding:10px 12px;margin-bottom:8px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
-        <div style="font-size:14px;font-weight:700">${m.name}</div>
-        <span style="font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;background:${m.rolle==='Admin'?'#e3f2fd':m.rolle==='Vorarbeiter'?'#f5ecd4':'var(--gx-bg)'};color:${m.rolle==='Admin'?'#0c447c':m.rolle==='Vorarbeiter'?'#633806':'var(--gx-muted)'}">${m.rolle||'Mitarbeiter'}</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:12px;color:var(--gx-muted)">
-        <div>📅 Seit: <strong style="color:var(--gx-text)">${m.eintrittsdatum||'–'}</strong></div>
-        <div>⏱ ${m.wochenstunden||40}h/Woche</div>
-        <div>🏖 ${m.urlaubstage||30} Tage Urlaub</div>
-        <div>🎂 ${m.geburtstag||'–'}</div>
-        ${m.probezeit?'<div style="grid-column:span 2">⏰ Probezeit bis: <strong style="color:#e65100">'+m.probezeit+'</strong></div>':''}
-        ${m.austrittsdatum?'<div style="grid-column:span 2">🚪 Austritt: <strong style="color:var(--red)">'+m.austrittsdatum+'</strong></div>':''}
-      </div>
-    </div>`).join('');
 }
 
 function renderFreigaben(){
@@ -798,56 +814,159 @@ function adminAction(type,idx,action){
 }
 
 
+// ============================================================
+//  Tagesbericht
+// ============================================================
+function tbGoStep(step){
+  ['allgemein','team','material','abschluss'].forEach(s=>{
+    document.getElementById('tbp-'+s).style.display=s===step?'block':'none';
+    document.getElementById('tbstep-'+s).classList.toggle('active',s===step);
+  });
+  if(step==='team')tbRenderTeam();
+  if(step==='abschluss')tbRenderZusammenfassung();
+}
 
-function updateDashboardMetrics(){
-  const soll=stammdaten.wochenstunden||40;
+function tbInit(){
   const now=new Date();
-  const dayOfWeek=now.getDay();
-  const monday=new Date(now);
-  monday.setDate(now.getDate()-(dayOfWeek===0?6:dayOfWeek-1));
-  const mondayStr=monday.toISOString().slice(0,10);
-  const sundayStr=new Date(monday.getTime()+6*86400000).toISOString().slice(0,10);
-  const wocheH=allEntries
-    .filter(e=>e.worker===currentWorker.name&&e.datum>=mondayStr&&e.datum<=sundayStr)
-    .reduce((s,e)=>s+(parseFloat(e.netto)||0),0);
-  const pct=Math.min(100,Math.round(wocheH/soll*100));
-  document.getElementById('week-label').textContent=wocheH.toFixed(1)+' / '+soll+' h';
-  document.getElementById('week-bar').style.width=pct+'%';
-  let urlaubGesamt=stammdaten.urlaubstage||30;
-  if(stammdaten.eintrittsdatum){
-    const eintr=new Date(stammdaten.eintrittsdatum);
-    if(eintr.getFullYear()===now.getFullYear()){
-      const monate=12-eintr.getMonth();
-      urlaubGesamt=Math.round(urlaubGesamt*monate/12);
-    }
-  }
-  const genommen=urlaubAntraege
-    .filter(u=>u.worker===currentWorker.name&&u.status==='approved'&&u.von&&u.von.startsWith(now.getFullYear()+''))
-    .reduce((s,u)=>s+(parseInt(u.tage)||0),0);
-  const rest=Math.max(0,urlaubGesamt-genommen);
-  document.getElementById('m-urlaub').textContent=rest+' Tage';
-  const diffH=wocheH-soll;
-  const ueberEl=document.getElementById('m-ueber');
-  ueberEl.textContent=(diffH>=0?'+':'')+diffH.toFixed(1)+' h';
-  ueberEl.className='m-val '+(diffH>=0?'green':'red');
-  if(stammdaten.probezeit){
-    const probzEnd=new Date(stammdaten.probezeit);
-    const diffDays=Math.ceil((probzEnd-now)/86400000);
-    if(diffDays>0&&diffDays<=30){
-      const el=document.getElementById('late-warn');
-      el.textContent='⏰ Deine Probezeit endet in '+diffDays+' Tagen ('+stammdaten.probezeit+')';
-      el.style.display='block';
-    }
+  document.getElementById('tb-datum').value=now.toISOString().slice(0,10);
+  tbCalcNetto();
+  const sel=document.getElementById('tb-proj');
+  sel.innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');
+  tbGoStep('allgemein');
+}
+
+function tbCalcNetto(){
+  const von=document.getElementById('tb-von').value;
+  const bis=document.getElementById('tb-bis').value;
+  const pause=parseInt(document.getElementById('tb-pause').value)||0;
+  if(von&&bis){
+    const v=von.split(':').map(Number);
+    const b=bis.split(':').map(Number);
+    const diff=((b[0]*60+b[1])-(v[0]*60+v[1])-pause)/60;
+    document.getElementById('tb-netto').value=diff>0?diff.toFixed(1).replace('.',',')+' h':'–';
   }
 }
+
+function tbRenderTeam(){
+  const liste=document.getElementById('tb-ma-liste');
+  liste.innerHTML=workers.map((w,i)=>`
+    <div class="tb-ma-row">
+      <div class="tb-check${w.name===currentWorker.name?' checked':''}" onclick="tbToggleMA(this)">✓</div>
+      <div class="tb-ma-name">${w.name}</div>
+      <input class="tb-ma-h" type="number" value="${w.name===currentWorker.name?document.getElementById('tb-netto').value.replace(',','.').replace(' h',''):''}" placeholder="h" min="0" max="14" step="0.5" ${w.name!==currentWorker.name?'disabled':''}>
+      <span style="font-size:11px;color:var(--gx-muted)">h</span>
+    </div>`).join('');
+}
+
+function tbToggleMA(el){
+  const checked=el.classList.toggle('checked');
+  const row=el.closest('.tb-ma-row');
+  const inp=row.querySelector('.tb-ma-h');
+  if(checked){
+    inp.disabled=false;
+    if(!inp.value){const n=document.getElementById('tb-netto').value.replace(',','.').replace(' h','');inp.value=parseFloat(n)||'';}
+  } else {inp.disabled=true;inp.value='';}
+}
+
+function tbAddMatRow(containerId,einheit,intern){
+  const c=document.getElementById(containerId);
+  const div=document.createElement('div');
+  div.className='tb-mat-grid';
+  div.innerHTML=`<input class="tb-mat-inp name" type="text" placeholder="Material…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="${einheit||'Einh.'}"><input class="tb-mat-intern" type="text" placeholder="${intern||'EN/LA'}">`;
+  c.appendChild(div);
+}
+
+function tbAddMaschRow(){
+  const c=document.getElementById('tb-masch-rows');
+  const div=document.createElement('div');
+  div.className='tb-mat-grid';
+  div.innerHTML='<input class="tb-mat-inp name" type="text" placeholder="Maschine…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div>';
+  c.appendChild(div);
+}
+
+function tbGetMatRows(containerId){
+  const rows=[];
+  document.getElementById(containerId).querySelectorAll('.tb-mat-grid').forEach(row=>{
+    const inputs=row.querySelectorAll('input');
+    if(inputs[0]&&inputs[0].value.trim()){
+      rows.push({name:inputs[0].value.trim(),menge:inputs[1]?inputs[1].value:'',einheit:inputs[2]?inputs[2].value:'',intern:inputs[3]?inputs[3].value:''});
+    }
+  });
+  return rows;
+}
+
+function tbRenderZusammenfassung(){
+  const datum=document.getElementById('tb-datum').value;
+  const proj=document.getElementById('tb-proj').value;
+  const von=document.getElementById('tb-von').value;
+  const bis=document.getElementById('tb-bis').value;
+  const netto=document.getElementById('tb-netto').value;
+  const auftr=document.getElementById('tb-auftraggeber').value;
+  const anwesend=[];
+  document.getElementById('tb-ma-liste').querySelectorAll('.tb-ma-row').forEach(row=>{
+    if(row.querySelector('.tb-check').classList.contains('checked')){
+      const name=row.querySelector('.tb-ma-name').textContent;
+      const h=row.querySelector('.tb-ma-h').value;
+      anwesend.push(name+(h?' ('+h+' h)':''));
+    }
+  });
+  document.getElementById('tb-zusammenfassung').innerHTML=`
+    <div style="font-size:12px;color:var(--gx-muted);margin-bottom:4px">Zusammenfassung</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:3px">${proj}</div>
+    <div style="font-size:12px;color:var(--gx-muted)">${datum} · ${von}–${bis} · ${netto}${auftr?' · '+auftr:''}</div>
+    <div style="font-size:12px;margin-top:6px">👥 ${anwesend.join(', ')||'Niemand ausgewählt'}</div>`;
+}
+
+async function saveTagesbericht(){
+  const datum=document.getElementById('tb-datum').value;
+  const proj=document.getElementById('tb-proj').value;
+  const von=document.getElementById('tb-von').value;
+  const bis=document.getElementById('tb-bis').value;
+  const pause=parseInt(document.getElementById('tb-pause').value)||0;
+  const auftr=document.getElementById('tb-auftraggeber').value;
+  const notiz=document.getElementById('tb-notiz').value;
+  document.getElementById('tb-err').style.display='none';
+  if(!datum||!proj||!von||!bis){document.getElementById('tb-err').style.display='block';return;}
+  const v=von.split(':').map(Number);const b=bis.split(':').map(Number);
+  const nettoH=parseFloat((((b[0]*60+b[1])-(v[0]*60+v[1])-pause)/60).toFixed(2));
+  const anwesend=[];
+  document.getElementById('tb-ma-liste').querySelectorAll('.tb-ma-row').forEach(row=>{
+    if(row.querySelector('.tb-check').classList.contains('checked')){
+      const name=row.querySelector('.tb-ma-name').textContent;
+      const h=parseFloat(row.querySelector('.tb-ma-h').value)||nettoH;
+      anwesend.push({name,h});
+    }
+  });
+  const material=tbGetMatRows('tb-mat-rows');
+  const maschinen=tbGetMatRows('tb-masch-rows');
+  const rueckgabe=tbGetMatRows('tb-rueck-rows');
+  for(const ma of anwesend){
+    const entry={worker:ma.name,datum,von,bis,pause,netto:ma.h,proj,art:'Tagesbericht',status:'approved',savedAt:new Date().toISOString(),notiz:'TB: '+auftr+(notiz?' · '+notiz:'')};
+    allEntries=allEntries.filter(e=>!(e.worker===ma.name&&e.datum===datum&&e.art==='Tagesbericht'));
+    allEntries.push(entry);
+    if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+      try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveEntry',entry})});}catch{}
+    }
+  }
+  localStorage.setItem('gx_entries',JSON.stringify(allEntries));
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+    try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveTagesbericht',bericht:{datum,proj,von,bis,pause,netto:nettoH,auftraggeber:auftr,ersteller:currentWorker.name,notiz,mitarbeiter:anwesend,material,maschinen,rueckgabe,savedAt:new Date().toISOString()}})});}catch{}
+  }
+  showMsg('tb-ok',3000);
+  setStatus('Tagesbericht gespeichert ✓','ok');
+  setTimeout(()=>{
+    document.getElementById('tb-auftraggeber').value='';
+    document.getElementById('tb-notiz').value='';
+    tbGoStep('allgemein');
+  },2500);
+}
+
 
 // Kalender
 let kalYear=new Date().getFullYear();
 let kalMonth=new Date().getMonth();
-
 function kalPrevMonth(){if(kalMonth===0){kalMonth=11;kalYear--;}else kalMonth--;renderKalender();}
 function kalNextMonth(){if(kalMonth===11){kalMonth=0;kalYear++;}else kalMonth++;renderKalender();}
-
 function getBayernFeiertage(year){
   const a=year%19,b=Math.floor(year/100),c=year%100;
   const d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25);
@@ -860,24 +979,15 @@ function getBayernFeiertage(year){
   const fmt=d=>d.toISOString().slice(0,10);
   const add=n=>{const x=new Date(ostern);x.setDate(x.getDate()+n);return fmt(x);};
   const feste={};
-  feste[year+'-01-01']='Neujahr';
-  feste[year+'-01-06']='Heilige Drei Könige';
-  feste[year+'-05-01']='Tag der Arbeit';
-  feste[year+'-08-15']='Mariä Himmelfahrt';
-  feste[year+'-10-03']='Tag der Deutschen Einheit';
-  feste[year+'-11-01']='Allerheiligen';
-  feste[year+'-12-25']='1. Weihnachtstag';
-  feste[year+'-12-26']='2. Weihnachtstag';
-  feste[add(-2)]='Karfreitag';
-  feste[fmt(ostern)]='Ostersonntag';
-  feste[add(1)]='Ostermontag';
-  feste[add(39)]='Christi Himmelfahrt';
-  feste[add(49)]='Pfingstsonntag';
-  feste[add(50)]='Pfingstmontag';
-  feste[add(60)]='Fronleichnam';
+  feste[year+'-01-01']='Neujahr';feste[year+'-01-06']='Heilige Drei Könige';
+  feste[year+'-05-01']='Tag der Arbeit';feste[year+'-08-15']='Mariä Himmelfahrt';
+  feste[year+'-10-03']='Tag der Deutschen Einheit';feste[year+'-11-01']='Allerheiligen';
+  feste[year+'-12-25']='1. Weihnachtstag';feste[year+'-12-26']='2. Weihnachtstag';
+  feste[add(-2)]='Karfreitag';feste[fmt(ostern)]='Ostersonntag';feste[add(1)]='Ostermontag';
+  feste[add(39)]='Christi Himmelfahrt';feste[add(49)]='Pfingstsonntag';
+  feste[add(50)]='Pfingstmontag';feste[add(60)]='Fronleichnam';
   return feste;
 }
-
 function renderKalender(){
   const monatStr=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'][kalMonth];
   document.getElementById('kal-month-title').textContent=monatStr+' '+kalYear;
@@ -887,54 +997,60 @@ function renderKalender(){
   const feiertage=getBayernFeiertage(kalYear);
   const tage=new Date(kalYear,kalMonth+1,0).getDate();
   const heute=new Date().toISOString().slice(0,10);
-  let totalH=0,urlaubTage=0,krankTage=0;
+  let totalH=0,urlaubTage=0;
   const rows=[];
   for(let d=1;d<=tage;d++){
     const ds=kalYear+'-'+String(kalMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
     const dow=new Date(ds+'T12:00:00').getDay();
-    const isWE=dow===0||dow===6;
-    const isHeute=ds===heute;
-    const isFeiertag=!!feiertage[ds];
-    const feiertagName=feiertage[ds]||'';
+    const isWE=dow===0||dow===6;const isHeute=ds===heute;
+    const isFeiertag=!!feiertage[ds];const feiertagName=feiertage[ds]||'';
     const eintrag=mine.find(e=>e.datum===ds);
     const isUrlaub=!eintrag&&myUrlaub.some(u=>ds>=u.von&&ds<=u.bis);
     let dotColor='#e0e0e0',info='–',sub='',badge='',badgeClass='',rowExtra='';
     if((isWE||isFeiertag)&&!eintrag&&!isUrlaub){
-      info=isFeiertag?feiertagName:'Wochenende';
-      badge=isFeiertag?'Feiertag':'';
-      badgeClass=isFeiertag?'feiertag':'';
-      rowExtra=isFeiertag?' feiertag':' weekend';
+      info=isFeiertag?feiertagName:'Wochenende';badge=isFeiertag?'Feiertag':'';
+      badgeClass=isFeiertag?'feiertag':'';rowExtra=isFeiertag?' feiertag':' weekend';
       rows.push({ds,d,isWE,isFeiertag,isHeute,dotColor:isFeiertag?'#c8a84b':'#e0e0e0',info,sub:isFeiertag?'Bayern':'',badge,badgeClass,rowExtra});
       continue;
     }
-    if(isUrlaub){
-      dotColor='#1565c0';info='Urlaub';sub='genehmigt';badge='Urlaub';badgeClass='urlaub';urlaubTage++;
-    } else if(eintrag){
+    if(isUrlaub){dotColor='#1565c0';info='Urlaub';sub='genehmigt';badge='Urlaub';badgeClass='urlaub';urlaubTage++;}
+    else if(eintrag){
       const s=eintrag.status;
       if(s==='approved'||s==='auto'){dotColor='#4caf50';badge='✓';badgeClass='approved';}
       else if(s==='pending'){dotColor='#f59f00';badge='Ausstehend';badgeClass='pending';}
-      else{dotColor='#e0e0e0';badge='';badgeClass='';}
-      info=eintrag.proj.split(',')[0];
-      sub=eintrag.von+'–'+eintrag.bis+' · '+(+eintrag.netto).toFixed(1)+' h';
+      else{dotColor='#e0e0e0';}
+      info=eintrag.proj.split(',')[0];sub=eintrag.von+'–'+eintrag.bis+' · '+(+eintrag.netto).toFixed(1)+' h';
       totalH+=parseFloat(eintrag.netto)||0;
     }
     rows.push({ds,d,isWE,isFeiertag:false,isHeute,dotColor,info,sub,badge,badgeClass,rowExtra:isWE?' weekend':''});
   }
   document.getElementById('kal-arbeit').textContent=(Math.round(totalH*10)/10)+' h';
   document.getElementById('kal-urlaub').textContent=urlaubTage+' T';
-  document.getElementById('kal-krank').textContent=krankTage+' T';
-  document.getElementById('kal-list').innerHTML=rows.map(r=>`
-    <div class="kal-row${r.rowExtra}${r.isHeute?' today':''}">
-      <div class="kal-num">${r.d}</div>
-      <div class="kal-name">${['So','Mo','Di','Mi','Do','Fr','Sa'][new Date(r.ds+'T12:00:00').getDay()]}</div>
-      <div class="kal-dot-big" style="background:${r.dotColor}"></div>
-      <div class="kal-info">
-        <div class="kal-proj">${r.info}</div>
-        ${r.sub?'<div class="kal-sub">'+r.sub+'</div>':''}
-      </div>
-      ${r.badge?'<span class="kal-badge '+r.badgeClass+'">'+r.badge+'</span>':''}
-    </div>`).join('');
+  document.getElementById('kal-krank').textContent='0 T';
+  document.getElementById('kal-list').innerHTML=rows.map(r=>`<div class="kal-row${r.rowExtra}${r.isHeute?' today':''}"><div class="kal-num">${r.d}</div><div class="kal-name">${['So','Mo','Di','Mi','Do','Fr','Sa'][new Date(r.ds+'T12:00:00').getDay()]}</div><div class="kal-dot-big" style="background:${r.dotColor}"></div><div class="kal-info"><div class="kal-proj">${r.info}</div>${r.sub?'<div class="kal-sub">'+r.sub+'</div>':''}</div>${r.badge?'<span class="kal-badge '+r.badgeClass+'">'+r.badge+'</span>':''}</div>`).join('');
 }
+
+// checkMissingDays
+function checkMissingDays(){
+  const now=new Date();const missing=[];
+  const feiertage=getBayernFeiertage(now.getFullYear());
+  for(let i=1;i<=7;i++){
+    const d=new Date(now);d.setDate(d.getDate()-i);
+    const dow=d.getDay();if(dow===0||dow===6)continue;
+    const ds=d.toISOString().slice(0,10);
+    if(feiertage[ds])continue;
+    const hasEntry=allEntries.some(e=>e.worker===currentWorker.name&&e.datum===ds);
+    const isUrlaub=urlaubAntraege.some(u=>u.worker===currentWorker.name&&u.status==='approved'&&ds>=u.von&&ds<=u.bis);
+    if(!hasEntry&&!isUrlaub){const deadline=new Date(ds+'T18:00:00');deadline.setDate(deadline.getDate()+1);if(now>deadline)missing.push(ds);}
+  }
+  const box=document.getElementById('reminder-box');
+  const daysEl=document.getElementById('reminder-days');
+  if(missing.length>0){
+    box.style.display='block';
+    daysEl.innerHTML=missing.slice(0,5).map(ds=>{const d=new Date(ds+'T12:00:00');return '<div class="reminder-day">'+d.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'})+'</div>';}).join('');
+  } else {box.style.display='none';}
+}
+
 
 // Krank
 const KRANK_FORM_URL='https://forms.gle/M44kwaPUZKKUFB3V6';
