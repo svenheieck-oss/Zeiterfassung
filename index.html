@@ -233,6 +233,10 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="error-msg" id="man-error"></div>
   <div class="success-msg" id="man-ok">✓ Eintrag gespeichert — wartet auf Freigabe</div>
   <button class="btn-primary" onclick="saveManual()">Eintrag speichern</button>
+  <div style="margin-top:16px">
+    <div class="section-label">Letzte Einträge</div>
+    <div class="card" style="padding:8px 12px"><div id="recent-entries-list"><div class="empty-hint" style="padding:10px">Wird geladen…</div></div></div>
+  </div>
 </div>
 
 <!-- MITARBEITER: Urlaub -->
@@ -370,6 +374,38 @@ function switchMain(name){
   goTo('v-'+name);
   if(name==='dashboard')renderDashboard();
   if(name==='urlaub')renderUrlaubList();
+  if(name==='manuell')syncEntriesFromSheets();
+}
+
+function renderRecentEntries(){
+  const list=document.getElementById('recent-entries-list');
+  if(!list)return;
+  const mine=allEntries.filter(e=>e.worker===currentWorker.name).slice().reverse().slice(0,8);
+  if(!mine.length){list.innerHTML='<div class="empty-hint" style="padding:10px">Noch keine Einträge</div>';return;}
+  list.innerHTML=mine.map(e=>`
+    <div class="entry-row">
+      <div><div class="entry-main">${e.proj.split(',')[0]}</div><div class="entry-sub">${e.datum} · ${e.von}–${e.bis}${e.pause>0?' · Pause '+e.pause+' min':''}</div></div>
+      <div class="entry-right"><div class="entry-h">${(+e.netto).toFixed(1)} h</div>${statusBadge(e.status)}</div>
+    </div>`).join('');
+}
+
+async function syncEntriesFromSheets(){
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
+  try{
+    const today=new Date();
+    const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
+    const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
+    const d=await r.json();
+    if(d.ok&&d.entries){
+      d.entries.forEach(se=>{
+        const local=allEntries.find(e=>String(e.id)===String(se.id));
+        if(local){local.status=se.status;}
+        else if(se.worker===currentWorker.name){allEntries.push(se);}
+      });
+      localStorage.setItem('gx_entries',JSON.stringify(allEntries));
+      renderRecentEntries();
+    }
+  }catch{}
 }
 
 // Worker select & PIN
@@ -558,13 +594,11 @@ function stelleUrlaubsantrag(){
 
 async function renderUrlaubList(){
   const list=document.getElementById('urlaub-list');
-  // Frisch aus Sheets laden wenn möglich
   if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
     try{
       const r=await fetch(SCRIPT_URL+'?action=getUrlaub&worker='+encodeURIComponent(currentWorker.name));
       const d=await r.json();
       if(d.ok&&d.urlaub){
-        // Lokale Liste mit Sheets-Status synchronisieren
         d.urlaub.forEach(su=>{
           const local=urlaubAntraege.find(u=>u.id==su.id);
           if(local)local.status=su.status;
