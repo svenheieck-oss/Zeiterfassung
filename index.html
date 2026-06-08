@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="GX Zeit">
 <style>
 :root{
-  --gx-dark:#37a337;
+  --gx-dark:#1a2e1a;
   --gx-green:#4caf50;
   --gx-green-dark:#388e3c;
   --gx-green-light:#e8f5e9;
@@ -233,10 +233,6 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="error-msg" id="man-error"></div>
   <div class="success-msg" id="man-ok">✓ Eintrag gespeichert — wartet auf Freigabe</div>
   <button class="btn-primary" onclick="saveManual()">Eintrag speichern</button>
-  <div style="margin-top:16px">
-    <div class="section-label">Letzte Einträge &amp; Status</div>
-    <div class="card" style="padding:8px 12px"><div id="manuell-verlauf"><div class="empty-hint" style="padding:10px 0">Wird geladen…</div></div></div>
-  </div>
 </div>
 
 <!-- MITARBEITER: Urlaub -->
@@ -374,21 +370,6 @@ function switchMain(name){
   goTo('v-'+name);
   if(name==='dashboard')renderDashboard();
   if(name==='urlaub')renderUrlaubList();
-  if(name==='manuell')renderManuellVerlauf();
-}
-
-async function renderManuellVerlauf(){
-  await syncStatusFromSheets();
-  const list=document.getElementById('manuell-verlauf');
-  if(!list)return;
-  const mine=allEntries.filter(e=>e.worker===currentWorker.name).slice().reverse().slice(0,8);
-  if(!mine.length){list.innerHTML='<div class="empty-hint" style="padding:10px 0">Noch keine Einträge</div>';return;}
-  list.innerHTML=mine.map(e=>`
-    <div class="entry-row">
-      <div><div class="entry-main">${e.proj.split(',')[0]}</div>
-      <div class="entry-sub">${e.datum} · ${e.von}–${e.bis}${e.pause>0?' · Pause '+e.pause+' min':''}</div></div>
-      <div class="entry-right"><div class="entry-h">${(+e.netto).toFixed(1)} h</div>${statusBadge(e.status)}</div>
-    </div>`).join('');
 }
 
 // Worker select & PIN
@@ -423,13 +404,15 @@ function checkPin(){
   }
 }
 
-function enterWorker(){
+async function enterWorker(){
   document.getElementById('bottom-nav').style.display='flex';
   const now=new Date();
   document.getElementById('dash-avatar').textContent=initials(currentWorker.name);
   document.getElementById('dash-name').textContent=currentWorker.name;
   document.getElementById('dash-date').textContent=now.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('man-datum').value=now.toISOString().slice(0,10);
+  // Einträge immer frisch aus Sheets laden beim Login
+  await loadEntriesFromSheets();
   checkLateWarning();
   renderDashboard();
   switchMain('dashboard');
@@ -444,33 +427,31 @@ function enterAdmin(){
 function goBack(){document.getElementById('bottom-nav').style.display='none';goTo('v-worker');currentWorker=null;if(elapsedTimer){clearInterval(elapsedTimer);elapsedTimer=null;stampStart=null;}}
 
 // Dashboard
-async function syncStatusFromSheets(){
+async function loadEntriesFromSheets(){
+  // Beim Login: Einträge des aktuellen Monats frisch aus Sheets laden
+  // Lokale Einträge des Mitarbeiters werden damit überschrieben
   if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
   try{
     const today=new Date();
     const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
     const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
     const d=await r.json();
-    if(d.ok&&d.entries){
-      d.entries.forEach(se=>{
-        // Match by ID first, then by datum+von+bis as fallback
-        const key = String(se.datum)+'_'+String(se.von)+'_'+String(se.bis);
-        const local=allEntries.find(e=>
-          String(e.id)===String(se.id) ||
-          (e.worker===se.worker && String(e.datum)+'_'+String(e.von)+'_'+String(e.bis)===key)
-        );
-        if(local){
-          local.status=se.status;
-          if(!local.id&&se.id)local.id=se.id;
-        }
-      });
+    if(d.ok&&d.entries&&d.entries.length>=0){
+      // Lokale Einträge dieses Mitarbeiters für diesen Monat ersetzen
+      allEntries=allEntries.filter(e=>
+        e.worker!==currentWorker.name ||
+        !String(e.datum).startsWith(monat)
+      );
+      d.entries.forEach(e=>allEntries.push(e));
       localStorage.setItem('gx_entries',JSON.stringify(allEntries));
     }
-  }catch{}
+  }catch(err){
+    // Offline — lokale Daten behalten
+    console.log('Offline, lokale Daten werden verwendet');
+  }
 }
 
-async function renderDashboard(){
-  await syncStatusFromSheets();
+function renderDashboard(){
   const mine=allEntries.filter(e=>e.worker===currentWorker.name);
   const recent=mine.slice().reverse().slice(0,5);
   const list=document.getElementById('dash-entries');
@@ -557,6 +538,7 @@ async function saveManual(){
   await saveEntry(entry,'man-ok');
   document.getElementById('man-notiz').value='';
   checkLateWarning();updateAdminBadge();
+  renderDashboard();
 }
 
 async function saveEntry(entry,okId){
@@ -592,10 +574,8 @@ async function renderUrlaubList(){
       const r=await fetch(SCRIPT_URL+'?action=getUrlaub&worker='+encodeURIComponent(currentWorker.name));
       const d=await r.json();
       if(d.ok&&d.urlaub){
-        d.urlaub.forEach(su=>{
-          const local=urlaubAntraege.find(u=>u.id==su.id);
-          if(local)local.status=su.status;
-        });
+        urlaubAntraege=urlaubAntraege.filter(u=>u.worker!==currentWorker.name);
+        d.urlaub.forEach(u=>urlaubAntraege.push(u));
         localStorage.setItem('gx_urlaub',JSON.stringify(urlaubAntraege));
       }
     }catch{}
