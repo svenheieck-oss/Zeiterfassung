@@ -504,10 +504,11 @@ async function saveManual(){
   document.getElementById('man-error').style.display='none';document.getElementById('man-ok').style.display='none';
   const diff=timeToMin(bis)-timeToMin(von)-pause;
   if(!von||!bis||diff<=0||!datum){document.getElementById('man-error').textContent='Bitte alle Felder korrekt ausfüllen.';document.getElementById('man-error').style.display='block';return;}
-  const entryDate=new Date(datum);
+  const entryDate=new Date(datum+'T23:59:59');
   const now=new Date();
   const diffH=(now-entryDate)/3600000;
-  const status=diffH>36?'locked':diffH>12?'pending':'pending';
+  // pending: gleicher Tag oder bis 12h nach Tagesende; locked: älter als das
+  const status=diffH>12?'locked':'pending';
   const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),proj:document.getElementById('proj-man').value,art:'Manuell',status,savedAt:now.toISOString(),notiz:document.getElementById('man-notiz').value};
   await saveEntry(entry,'man-ok');
   document.getElementById('man-notiz').value='';
@@ -515,7 +516,6 @@ async function saveManual(){
 }
 
 async function saveEntry(entry,okId){
-  if(!entry.id) entry.id = Date.now()+Math.random().toString(36).slice(2);
   allEntries.push(entry);
   localStorage.setItem('gx_entries',JSON.stringify(allEntries));
   showMsg(okId);
@@ -529,22 +529,16 @@ async function saveEntry(entry,okId){
 }
 
 // Urlaub
-async function stelleUrlaubsantrag(){
+function stelleUrlaubsantrag(){
   const von=document.getElementById('urlaub-von').value,bis=document.getElementById('urlaub-bis').value;
   document.getElementById('urlaub-err').style.display='none';document.getElementById('urlaub-ok').style.display='none';
   if(!von||!bis||von>bis){document.getElementById('urlaub-err').style.display='block';return;}
   const tage=Math.round((new Date(bis)-new Date(von))/86400000)+1;
-  const antrag={id:Date.now()+Math.random().toString(36).slice(2),worker:currentWorker.name,von,bis,tage,notiz:document.getElementById('urlaub-notiz').value,status:'pending',datum:new Date().toISOString()};
+  const antrag={id:Date.now(),worker:currentWorker.name,von,bis,tage,notiz:document.getElementById('urlaub-notiz').value,status:'pending',datum:new Date().toISOString()};
   urlaubAntraege.push(antrag);
   localStorage.setItem('gx_urlaub',JSON.stringify(urlaubAntraege));
   showMsg('urlaub-ok');renderUrlaubList();updateAdminBadge();
   document.getElementById('urlaub-notiz').value='';
-  // Auch an Sheets schicken
-  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-    try{
-      await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveUrlaub',antrag})});
-    }catch{}
-  }
 }
 
 function renderUrlaubList(){
