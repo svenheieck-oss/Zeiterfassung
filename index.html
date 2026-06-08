@@ -304,6 +304,8 @@ const PROJEKTE = [
   "Bepflanzung Neubau Lindenstr.","Pflege Firmengelände Koch AG","Wegebau Gohlis-Mitte"
 ];
 
+// Fallback-Mitarbeiter — wird nur genutzt wenn Sheets nicht erreichbar.
+// Namen + PINs bitte in Google Sheets Tabelle "Mitarbeiter" pflegen!
 const FALLBACK_WORKERS = [
   {name:"Max Bauer",pin:"1234"},{name:"Lisa Kern",pin:"2345"},
   {name:"Tom Vogel",pin:"3456"},{name:"Anna Schreiber",pin:"4567"},
@@ -332,14 +334,43 @@ async function init(){
   const storedU=localStorage.getItem('gx_urlaub');
   if(storedU)try{urlaubAntraege=JSON.parse(storedU)}catch{}
   if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){
-    workers=FALLBACK_WORKERS;renderWorkerGrid();setStatus('Demo-Modus','err');return;
+    workers=FALLBACK_WORKERS;renderWorkerGrid();setStatus('Demo-Modus — Sheets-URL eintragen!','err');return;
   }
   try{
     const r=await fetch(SCRIPT_URL+'?action=getWorkers');
     const d=await r.json();
-    workers=d.ok&&d.workers.length>0?d.workers:FALLBACK_WORKERS;
-    setStatus('Verbunden ✓','ok');
-  }catch{workers=FALLBACK_WORKERS;setStatus('Offline','err');}
+    if(d.ok&&d.workers&&d.workers.length>0){
+      // Prüfen ob PINs mitgeliefert wurden
+      workers=d.workers;
+      if(!workers[0].pin){
+        // Alte Script-Version ohne PINs — Fallback-PINs aus localStorage
+        const storedPins=localStorage.getItem('gx_pins');
+        const pins=storedPins?JSON.parse(storedPins):{};
+        workers=workers.map(w=>({...w,pin:pins[w.name]||''}));
+        setStatus('Verbunden ✓ — Bitte Apps Script aktualisieren','loading');
+      } else {
+        // PINs aus Sheets speichern (für Offline-Betrieb)
+        const pins={};workers.forEach(w=>pins[w.name]=w.pin);
+        localStorage.setItem('gx_pins',JSON.stringify(pins));
+        setStatus('Verbunden ✓','ok');
+      }
+    } else {
+      workers=FALLBACK_WORKERS;setStatus('Sheets leer — Fallback aktiv','err');
+    }
+  }catch{
+    // Offline: gespeicherte PINs aus localStorage nutzen
+    const storedPins=localStorage.getItem('gx_pins');
+    const storedWorkers=localStorage.getItem('gx_workers');
+    if(storedWorkers){
+      const pins=storedPins?JSON.parse(storedPins):{};
+      workers=JSON.parse(storedWorkers).map(w=>({...w,pin:pins[w.name]||w.pin||''}));
+      setStatus('Offline — gespeicherte Daten','err');
+    } else {
+      workers=FALLBACK_WORKERS;setStatus('Offline — Demo-Modus','err');
+    }
+  }
+  // Worker-Namen für Offline cachen
+  localStorage.setItem('gx_workers',JSON.stringify(workers.map(w=>({name:w.name}))));
   renderWorkerGrid();updateAdminBadge();
 }
 
@@ -397,10 +428,42 @@ function pinKey(k){if(pinInput.length>=4)return;pinInput+=k;updateDots();documen
 function pinDel(){pinInput=pinInput.slice(0,-1);updateDots()}
 
 function checkPin(){
+  if(!currentWorker.pin){
+    // PIN nicht lokal vorhanden — gegen Sheets prüfen
+    checkPinViaSheets();return;
+  }
   if(pinInput===currentWorker.pin){
     if(isAdmin){enterAdmin();}else{enterWorker();}
   } else {
     document.getElementById('pin-error').style.display='block';pinInput='';updateDots();
+  }
+}
+
+async function checkPinViaSheets(){
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){
+    document.getElementById('pin-error').style.display='block';
+    document.getElementById('pin-error').textContent='Kein PIN hinterlegt. Bitte Sheets-URL eintragen.';
+    pinInput='';updateDots();return;
+  }
+  try{
+    const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'checkPin',worker:currentWorker.name,pin:pinInput})});
+    const d=await r.json();
+    if(d.ok){
+      // PIN für Offline speichern
+      const pins=JSON.parse(localStorage.getItem('gx_pins')||'{}');
+      pins[currentWorker.name]=pinInput;
+      localStorage.setItem('gx_pins',JSON.stringify(pins));
+      currentWorker.pin=pinInput;
+      if(isAdmin){enterAdmin();}else{enterWorker();}
+    } else {
+      document.getElementById('pin-error').style.display='block';
+      document.getElementById('pin-error').textContent='Falscher PIN. Nochmal versuchen.';
+      pinInput='';updateDots();
+    }
+  }catch{
+    document.getElementById('pin-error').style.display='block';
+    document.getElementById('pin-error').textContent='Verbindungsfehler. Nochmal versuchen.';
+    pinInput='';updateDots();
   }
 }
 
