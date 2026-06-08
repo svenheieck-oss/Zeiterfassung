@@ -146,8 +146,6 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 .empty-hint{font-size:13px;color:#aaa;text-align:center;padding:20px 0}
 .user-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .user-avatar{width:40px;height:40px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gx-dark);flex-shrink:0}
-.kal-badge.feiertag{background:#f5ecd4;color:#633806}
-.kal-row.feiertag{background:#fdf8f0;border-color:#e8d8a0}
 </style>
 </head>
 <body>
@@ -188,8 +186,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 
 <!-- MITARBEITER: Dashboard -->
 <div class="view" id="v-dashboard">
-  <div id="reminder-box" class="reminder-box"><div class="reminder-title">⚠️ Eintrag fehlt!</div><div class="reminder-text">Für folgende Arbeitstage fehlt noch ein Eintrag. Bitte schnell nachholen!</div><div class="reminder-days" id="reminder-days"></div><button class="reminder-btn" onclick="switchMain('manuell')">Jetzt eintragen</button></div>
-<div class="user-row">
+  <div class="user-row">
     <div class="user-avatar" id="dash-avatar"></div>
     <div style="flex:1"><div style="font-size:15px;font-weight:700" id="dash-name"></div><div style="font-size:12px;color:var(--gx-muted)" id="dash-date"></div></div>
   </div>
@@ -259,41 +256,6 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="card" style="padding:8px 12px"><div id="urlaub-list"><div class="empty-hint">Keine Anträge</div></div></div>
 </div>
 
-
-<!-- MITARBEITER: Krank -->
-<div class="view" id="v-krank">
-  <div class="card" style="background:#fff3e0;border-color:#ffb74d;margin-bottom:14px">
-    <div class="card-title" style="color:#e65100">🤒 Krankmeldung einreichen</div>
-    <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.5">Bitte fülle das Formular aus und lade deinen Krankmeldungsschein als Foto oder PDF hoch.</p>
-    <button class="btn-primary" style="background:#e65100;margin-bottom:8px" onclick="openKrankForm()">📋 Krankmeldung ausfüllen &amp; hochladen</button>
-    <p style="font-size:11px;color:#aaa;text-align:center">Öffnet das Formular — kein Google-Konto nötig</p>
-  </div>
-  <div class="section-label">Meine Krankmeldungen</div>
-  <div class="card" style="padding:8px 12px"><div id="krank-list"><div class="empty-hint">Keine Krankmeldungen vorhanden</div></div></div>
-</div>
-
-<!-- MITARBEITER: Kalender -->
-<div class="view" id="v-kalender">
-  <div class="month-nav">
-    <button class="month-btn" onclick="kalPrevMonth()">‹</button>
-    <div class="month-title" id="kal-month-title">Juni 2026</div>
-    <button class="month-btn" onclick="kalNextMonth()">›</button>
-  </div>
-  <div class="kal-summary">
-    <div class="kal-sum"><div class="kal-sum-val green" id="kal-arbeit">0 h</div><div class="kal-sum-label">Arbeit</div></div>
-    <div class="kal-sum"><div class="kal-sum-val" style="color:var(--blue)" id="kal-urlaub">0 T</div><div class="kal-sum-label">Urlaub</div></div>
-    <div class="kal-sum"><div class="kal-sum-val" style="color:var(--red)" id="kal-krank">0 T</div><div class="kal-sum-label">Krank</div></div>
-  </div>
-  <div class="kal-legend">
-    <div class="kal-leg"><div class="kal-dot" style="background:#4caf50"></div>Arbeit</div>
-    <div class="kal-leg"><div class="kal-dot" style="background:#f59f00"></div>Ausstehend</div>
-    <div class="kal-leg"><div class="kal-dot" style="background:#1565c0"></div>Urlaub</div>
-    <div class="kal-leg"><div class="kal-dot" style="background:#d32f2f"></div>Krank</div>
-    <div class="kal-leg"><div class="kal-dot" style="background:#c8a84b"></div>Feiertag</div>
-  </div>
-  <div class="kal-list" id="kal-list"></div>
-</div>
-
 <!-- ADMIN: Dashboard -->
 <div class="view" id="v-admin">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -309,11 +271,13 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="tab-bar">
     <div class="tab active" id="atab-freigaben" onclick="switchAdminTab('freigaben')">Freigaben</div>
     <div class="tab" id="atab-urlaub" onclick="switchAdminTab('urlaub')">Urlaub</div>
-    <div class="tab" id="atab-alle" onclick="switchAdminTab('alle')">Alle Einträge</div>
+    <div class="tab" id="atab-alle" onclick="switchAdminTab('alle')">Einträge</div>
+    <div class="tab" id="atab-stamm" onclick="switchAdminTab('stamm')">Team</div>
   </div>
   <div id="atc-freigaben"><div class="empty-hint" id="freigaben-empty" style="display:none">Keine offenen Freigaben ✓</div><div id="freigaben-list"></div></div>
   <div id="atc-urlaub" style="display:none"><div class="empty-hint" id="urlaub-empty" style="display:none">Keine Anträge ✓</div><div id="admin-urlaub-list"></div></div>
   <div id="atc-alle" style="display:none"><div id="alle-list"></div></div>
+  <div id="atc-stamm" style="display:none"><div id="stamm-list"></div></div>
 </div>
 
 <!-- Bottom Nav (nur wenn eingeloggt) -->
@@ -322,8 +286,6 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <button class="nav-btn" id="nav-stempel" onclick="switchMain('stempel')"><i class="ti ti-clock" aria-hidden="true"></i><span>Stempeln</span></button>
   <button class="nav-btn" id="nav-manuell" onclick="switchMain('manuell')"><i class="ti ti-edit" aria-hidden="true"></i><span>Manuell</span></button>
   <button class="nav-btn" id="nav-urlaub" onclick="switchMain('urlaub')"><i class="ti ti-beach" aria-hidden="true"></i><span>Urlaub</span></button>
-  <button class="nav-btn" id="nav-krank" onclick="switchMain('krank')"><i class="ti ti-stethoscope" aria-hidden="true"></i><span>Krank</span></button>
-  <button class="nav-btn" id="nav-kalender" onclick="switchMain('kalender')"><i class="ti ti-calendar" aria-hidden="true"></i><span>Kalender</span></button>
 </div>
 
 <div class="status-bar" id="status-bar">Verbinde…</div>
@@ -355,7 +317,7 @@ const FALLBACK_WORKERS = [
 ];
 
 let currentWorker=null,pinInput='',stampStart=null,elapsedTimer=null,workers=[];
-let allEntries=[],urlaubAntraege=[];
+let allEntries=[],urlaubAntraege=[],stammdaten={};
 let isAdmin=false;
 
 function pad(n){return String(n).padStart(2,'0')}
@@ -404,12 +366,14 @@ function goTo(id){
 }
 
 function switchMain(name){
-  ['dashboard','stempel','manuell','urlaub'].forEach(n=>{
-    document.getElementById('nav-'+n).classList.toggle('active',n===name);
+  ['dashboard','stempel','manuell','urlaub','krank','kalender'].forEach(n=>{
+    const el=document.getElementById('nav-'+n);
+    if(el)el.classList.toggle('active',n===name);
   });
   goTo('v-'+name);
-  if(name==='dashboard')renderDashboard();
+  if(name==='dashboard'){renderDashboard();updateDashboardMetrics();}
   if(name==='urlaub')renderUrlaubList();
+  if(name==='kalender')renderKalender();
 }
 
 // Worker select & PIN
@@ -444,7 +408,7 @@ function checkPin(){
   }
 }
 
-async function enterWorker(){
+function enterWorker(){
   document.getElementById('bottom-nav').style.display='flex';
   const now=new Date();
   document.getElementById('dash-avatar').textContent=initials(currentWorker.name);
@@ -468,9 +432,57 @@ async function enterWorker(){
         localStorage.setItem('gx_entries',JSON.stringify(allEntries));
       }
     }catch{}
+    try{
+      const rs=await fetch(SCRIPT_URL+'?action=getStammdaten&worker='+encodeURIComponent(currentWorker.name));
+      const ds=await rs.json();
+      if(ds.ok&&ds.stammdaten)stammdaten=ds.stammdaten;
+    }catch{}
   }
   checkLateWarning();
   renderDashboard();
+  updateDashboardMetrics();
+}
+
+function updateDashboardMetrics(){
+  const soll=stammdaten.wochenstunden||40;
+  const now=new Date();
+  const dayOfWeek=now.getDay();
+  const monday=new Date(now);
+  monday.setDate(now.getDate()-(dayOfWeek===0?6:dayOfWeek-1));
+  const mondayStr=monday.toISOString().slice(0,10);
+  const sundayStr=new Date(monday.getTime()+6*86400000).toISOString().slice(0,10);
+  const wocheH=allEntries
+    .filter(e=>e.worker===currentWorker.name&&e.datum>=mondayStr&&e.datum<=sundayStr)
+    .reduce((s,e)=>s+(parseFloat(e.netto)||0),0);
+  const pct=Math.min(100,Math.round(wocheH/soll*100));
+  document.getElementById('week-label').textContent=wocheH.toFixed(1)+' / '+soll+' h';
+  document.getElementById('week-bar').style.width=pct+'%';
+  let urlaubGesamt=stammdaten.urlaubstage||30;
+  if(stammdaten.eintrittsdatum){
+    const eintr=new Date(stammdaten.eintrittsdatum);
+    if(eintr.getFullYear()===now.getFullYear()){
+      const monate=12-eintr.getMonth();
+      urlaubGesamt=Math.round(urlaubGesamt*monate/12);
+    }
+  }
+  const genommen=urlaubAntraege
+    .filter(u=>u.worker===currentWorker.name&&u.status==='approved'&&u.von&&u.von.startsWith(now.getFullYear()+''))
+    .reduce((s,u)=>s+(parseInt(u.tage)||0),0);
+  const rest=Math.max(0,urlaubGesamt-genommen);
+  document.getElementById('m-urlaub').textContent=rest+' Tage';
+  const diffH=wocheH-soll;
+  const ueberEl=document.getElementById('m-ueber');
+  ueberEl.textContent=(diffH>=0?'+':'')+diffH.toFixed(1)+' h';
+  ueberEl.className='m-val '+(diffH>=0?'green':'red');
+  if(stammdaten.probezeit){
+    const probzEnd=new Date(stammdaten.probezeit);
+    const diffDays=Math.ceil((probzEnd-now)/86400000);
+    if(diffDays>0&&diffDays<=30){
+      const el=document.getElementById('late-warn');
+      el.textContent='⏰ Deine Probezeit endet in '+diffDays+' Tagen ('+stammdaten.probezeit+')';
+      el.style.display='block';
+    }
+  }
 }
 
 function enterAdmin(){
@@ -511,39 +523,6 @@ function checkLateWarning(){
     return (savedDate-entryDate)>12*3600*1000;
   }).length;
   document.getElementById('late-warn').style.display=lateCount>=3?'block':'none';
-  checkMissingDays();
-}
-
-function checkMissingDays(){
-  const now=new Date();
-  const missing=[];
-  const feiertage=getBayernFeiertage(now.getFullYear());
-  for(let i=1;i<=7;i++){
-    const d=new Date(now);
-    d.setDate(d.getDate()-i);
-    const dow=d.getDay();
-    if(dow===0||dow===6)continue;
-    const ds=d.toISOString().slice(0,10);
-    if(feiertage[ds])continue; // Feiertag überspringen
-    const hasEntry=allEntries.some(e=>e.worker===currentWorker.name&&e.datum===ds);
-    const isUrlaub=urlaubAntraege.some(u=>u.worker===currentWorker.name&&u.status==='approved'&&ds>=u.von&&ds<=u.bis);
-    if(!hasEntry&&!isUrlaub){
-      const deadline=new Date(ds+'T18:00:00');
-      deadline.setDate(deadline.getDate()+1);
-      if(now>deadline)missing.push(ds);
-    }
-  }
-  const box=document.getElementById('reminder-box');
-  const daysEl=document.getElementById('reminder-days');
-  if(missing.length>0){
-    box.style.display='block';
-    daysEl.innerHTML=missing.slice(0,5).map(ds=>{
-      const d=new Date(ds+'T12:00:00');
-      return '<div class="reminder-day">'+d.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'})+'</div>';
-    }).join('');
-  } else {
-    box.style.display='none';
-  }
 }
 
 function updateAdminBadge(){
@@ -597,7 +576,7 @@ async function saveManual(){
   const entryDate=new Date(datum);
   const now=new Date();
   const diffH=(now-entryDate)/3600000;
-  const status=diffH>36?'locked':diffH>12?'pending':'pending';
+  const status=diffH>12?'locked':'pending';
   const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),proj:document.getElementById('proj-man').value,art:'Manuell',status,savedAt:now.toISOString(),notiz:document.getElementById('man-notiz').value};
   await saveEntry(entry,'man-ok');
   document.getElementById('man-notiz').value='';
@@ -642,7 +621,7 @@ function renderUrlaubList(){
 }
 
 // Admin
-function renderAdmin(){
+async function renderAdmin(){
   const pending=allEntries.filter(e=>e.status==='pending');
   const pendingU=urlaubAntraege.filter(u=>u.status==='pending');
   document.getElementById('admin-offen').textContent=pending.length;
@@ -656,10 +635,58 @@ function renderAdmin(){
 }
 
 function switchAdminTab(name){
-  ['freigaben','urlaub','alle'].forEach(t=>{
+  ['freigaben','urlaub','alle','stamm'].forEach(t=>{
     document.getElementById('atab-'+t).classList.toggle('active',t===name);
     document.getElementById('atc-'+t).style.display=t===name?'block':'none';
   });
+  if(name==='stamm')renderAdminStamm();
+}
+
+async function renderAdminStamm(){
+  const list=document.getElementById('stamm-list');
+  list.innerHTML='<div class="empty-hint">Lädt…</div>';
+  let alle=[];
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+    try{
+      const r=await fetch(SCRIPT_URL+'?action=getAllStammdaten');
+      const d=await r.json();
+      if(d.ok)alle=d.alle;
+    }catch{}
+  }
+  if(!alle.length){list.innerHTML='<div class="empty-hint">Keine Stammdaten vorhanden.<br>Bitte setupStammdatenTabelle() im Apps Script ausführen.</div>';return;}
+  // Geburtstage heute / diese Woche prüfen
+  const now=new Date();
+  const today=now.toISOString().slice(5,10); // MM-DD
+  const birthdays=alle.filter(m=>m.geburtstag&&m.geburtstag.slice(5)===today);
+  if(birthdays.length){
+    list.innerHTML='<div style="background:#FFF8E1;border:1px solid #f59f00;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#633806">🎂 <strong>Geburtstag heute:</strong> '+birthdays.map(b=>b.name).join(', ')+'</div>';
+  } else {
+    list.innerHTML='';
+  }
+  // Probezeiten die bald enden
+  const probAlerts=alle.filter(m=>{
+    if(!m.probezeit)return false;
+    const diff=Math.ceil((new Date(m.probezeit)-now)/86400000);
+    return diff>0&&diff<=30;
+  });
+  if(probAlerts.length){
+    list.innerHTML+='<div style="background:#fff3e0;border:1px solid #ffb74d;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#e65100">⏰ <strong>Probezeit endet bald:</strong> '+probAlerts.map(m=>m.name+' ('+m.probezeit+')').join(', ')+'</div>';
+  }
+  list.innerHTML+=alle.map(m=>`
+    <div class="card" style="padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div style="font-size:14px;font-weight:700;color:var(--gx-text)">${m.name}</div>
+        <span style="font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;background:${m.rolle==='Admin'?'#e3f2fd':m.rolle==='Vorarbeiter'?'#f5ecd4':'var(--gx-bg)'};color:${m.rolle==='Admin'?'#0c447c':m.rolle==='Vorarbeiter'?'#633806':'var(--gx-muted)'}">${m.rolle}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:12px;color:var(--gx-muted)">
+        <div>📅 Seit: <strong style="color:var(--gx-text)">${m.eintrittsdatum||'–'}</strong></div>
+        <div>⏱ ${m.wochenstunden}h/Woche</div>
+        <div>🏖 ${m.urlaubstage} Tage Urlaub</div>
+        <div>🎂 ${m.geburtstag||'–'}</div>
+        ${m.probezeit?'<div style="grid-column:span 2">⏰ Probezeit bis: <strong style="color:#e65100">'+m.probezeit+'</strong></div>':''}
+        ${m.austrittsdatum?'<div style="grid-column:span 2">🚪 Austritt: <strong style="color:var(--red)">'+m.austrittsdatum+'</strong></div>':''}
+      </div>
+    </div>`).join('');
 }
 
 function renderFreigaben(){
@@ -700,109 +727,6 @@ function adminAction(type,idx,action){
   else{urlaubAntraege[idx].status=action;localStorage.setItem('gx_urlaub',JSON.stringify(urlaubAntraege));}
   updateAdminBadge();renderAdmin();
 }
-
-
-// Kalender
-let kalYear=new Date().getFullYear();
-let kalMonth=new Date().getMonth();
-
-function kalPrevMonth(){if(kalMonth===0){kalMonth=11;kalYear--;}else kalMonth--;renderKalender();}
-function kalNextMonth(){if(kalMonth===11){kalMonth=0;kalYear++;}else kalMonth++;renderKalender();}
-
-function getBayernFeiertage(year){
-  // Osterberechnung (Gauss)
-  const a=year%19,b=Math.floor(year/100),c=year%100;
-  const d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25);
-  const g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30;
-  const i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7;
-  const m=Math.floor((a+11*h+22*l)/451);
-  const month=Math.floor((h+l-7*m+114)/31);
-  const day=((h+l-7*m+114)%31)+1;
-  const ostern=new Date(year,month-1,day);
-  const fmt=d=>d.toISOString().slice(0,10);
-  const add=n=>{const x=new Date(ostern);x.setDate(x.getDate()+n);return fmt(x);};
-  const feste={};
-  // Feste Feiertage Bayern
-  feste[year+'-01-01']='Neujahr';
-  feste[year+'-01-06']='Heilige Drei Könige';
-  feste[year+'-05-01']='Tag der Arbeit';
-  feste[year+'-08-15']='Mariä Himmelfahrt';
-  feste[year+'-10-03']='Tag der Deutschen Einheit';
-  feste[year+'-11-01']='Allerheiligen';
-  feste[year+'-12-25']='1. Weihnachtstag';
-  feste[year+'-12-26']='2. Weihnachtstag';
-  // Bewegliche Feiertage
-  feste[add(-2)]='Karfreitag';
-  feste[fmt(ostern)]='Ostersonntag';
-  feste[add(1)]='Ostermontag';
-  feste[add(39)]='Christi Himmelfahrt';
-  feste[add(49)]='Pfingstsonntag';
-  feste[add(50)]='Pfingstmontag';
-  feste[add(60)]='Fronleichnam';
-  return feste;
-}
-
-function renderKalender(){
-  const monatStr=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'][kalMonth];
-  document.getElementById('kal-month-title').textContent=monatStr+' '+kalYear;
-  const monatKey=kalYear+'-'+String(kalMonth+1).padStart(2,'0');
-  const mine=allEntries.filter(e=>e.worker===currentWorker.name&&String(e.datum).startsWith(monatKey));
-  const myUrlaub=urlaubAntraege.filter(u=>u.worker===currentWorker.name&&u.status==='approved');
-  const feiertage=getBayernFeiertage(kalYear);
-  const tage=new Date(kalYear,kalMonth+1,0).getDate();
-  const heute=new Date().toISOString().slice(0,10);
-  let totalH=0,urlaubTage=0,krankTage=0;
-  const rows=[];
-  for(let d=1;d<=tage;d++){
-    const ds=kalYear+'-'+String(kalMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    const dow=new Date(ds+'T12:00:00').getDay();
-    const isWE=dow===0||dow===6;
-    const isHeute=ds===heute;
-    const isFeiertag=!!feiertage[ds];
-    const feiertagName=feiertage[ds]||'';
-    const eintrag=mine.find(e=>e.datum===ds);
-    const isUrlaub=!eintrag&&myUrlaub.some(u=>ds>=u.von&&ds<=u.bis);
-    let dotColor='#e0e0e0',info='–',sub='',badge='',badgeClass='',rowExtra='';
-    if((isWE||isFeiertag)&&!eintrag&&!isUrlaub){
-      info=isFeiertag?feiertagName:'Wochenende';
-      badge=isFeiertag?'Feiertag':'';
-      badgeClass=isFeiertag?'feiertag':'';
-      rowExtra=isFeiertag?' feiertag':' weekend';
-      rows.push({ds,d,isWE,isFeiertag,isHeute,dotColor:'#c8a84b',info,sub:'Bayern',badge,badgeClass,rowExtra});
-      continue;
-    }
-    if(isUrlaub){
-      dotColor='#1565c0';info='Urlaub';sub='genehmigt';badge='Urlaub';badgeClass='urlaub';urlaubTage++;
-    } else if(eintrag){
-      const s=eintrag.status;
-      if(s==='approved'||s==='auto'){dotColor='#4caf50';badge='✓';badgeClass='approved';}
-      else if(s==='pending'){dotColor='#f59f00';badge='Ausstehend';badgeClass='pending';}
-      else{dotColor='#e0e0e0';badge='';badgeClass='';}
-      info=eintrag.proj.split(',')[0];
-      sub=eintrag.von+'–'+eintrag.bis+' · '+(+eintrag.netto).toFixed(1)+' h';
-      totalH+=parseFloat(eintrag.netto)||0;
-    }
-    rows.push({ds,d,isWE,isFeiertag:false,isHeute,dotColor,info,sub,badge,badgeClass,rowExtra:isWE?' weekend':''});
-  }
-  document.getElementById('kal-arbeit').textContent=(Math.round(totalH*10)/10)+' h';
-  document.getElementById('kal-urlaub').textContent=urlaubTage+' T';
-  document.getElementById('kal-krank').textContent=krankTage+' T';
-  document.getElementById('kal-list').innerHTML=rows.map(r=>`
-    <div class="kal-row${r.rowExtra}${r.isHeute?' today':''}">
-      <div class="kal-num">${r.d}</div>
-      <div class="kal-name">${['So','Mo','Di','Mi','Do','Fr','Sa'][new Date(r.ds+'T12:00:00').getDay()]}</div>
-      <div class="kal-dot-big" style="background:${r.dotColor}"></div>
-      <div class="kal-info">
-        <div class="kal-proj">${r.info}</div>
-        ${r.sub?'<div class="kal-sub">'+r.sub+'</div>':''}
-      </div>
-      ${r.badge?'<span class="kal-badge '+r.badgeClass+'">'+r.badge+'</span>':''}
-    </div>`).join('');
-}
-
-// Krank
-const KRANK_FORM_URL = "https://forms.gle/M44kwaPUZKKUFB3V6";
-function openKrankForm(){ window.open(KRANK_FORM_URL,'_blank'); }
 
 init();
 </script>
