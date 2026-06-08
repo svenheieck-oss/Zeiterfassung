@@ -145,6 +145,42 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 .divider{height:0.5px;background:var(--gx-border);margin:10px 0}
 .empty-hint{font-size:13px;color:#aaa;text-align:center;padding:20px 0}
 .user-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+/* Kalender */
+.month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.month-btn{width:32px;height:32px;border-radius:8px;background:var(--gx-bg);border:1px solid var(--gx-border);cursor:pointer;font-size:16px;color:var(--gx-muted);display:flex;align-items:center;justify-content:center}
+.month-btn:active{background:var(--gx-green-light)}
+.month-title{font-size:15px;font-weight:700;color:var(--gx-text)}
+.kal-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.kal-sum{background:var(--gx-bg);border-radius:10px;padding:8px 10px;text-align:center}
+.kal-sum-val{font-size:17px;font-weight:700}
+.kal-sum-label{font-size:10px;color:var(--gx-muted);margin-top:1px}
+.kal-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.kal-leg{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gx-muted)}
+.kal-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.kal-list{display:flex;flex-direction:column;gap:3px}
+.kal-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px;background:#fff;border:0.5px solid var(--gx-border)}
+.kal-row.weekend{background:var(--gx-bg);border-color:transparent}
+.kal-row.today{background:var(--gx-green-light);border-color:#a5d6a7}
+.kal-num{width:26px;font-size:13px;font-weight:700;color:var(--gx-text);flex-shrink:0;text-align:center}
+.kal-name{width:22px;font-size:10px;color:#aaa;flex-shrink:0}
+.kal-dot-big{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.kal-info{flex:1;min-width:0}
+.kal-proj{font-size:12px;font-weight:600;color:var(--gx-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kal-sub{font-size:10px;color:var(--gx-muted)}
+.kal-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.kal-badge.approved{background:var(--gx-green-light);color:var(--gx-green-dark)}
+.kal-badge.pending{background:var(--amber-light);color:#e65100}
+.kal-badge.urlaub{background:var(--blue-light);color:var(--blue)}
+.kal-badge.krank{background:var(--red-light);color:var(--red)}
+.kal-badge.auto{background:var(--gx-green-light);color:var(--gx-green-dark)}
+/* Erinnerung */
+.reminder-box{background:#b71c1c;border-radius:12px;padding:14px 16px;margin-bottom:14px;display:none}
+.reminder-title{color:#fff;font-size:14px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.reminder-text{color:#ffcdd2;font-size:12px;line-height:1.5;margin-bottom:10px}
+.reminder-days{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.reminder-day{background:rgba(255,255,255,.15);border-radius:6px;padding:5px 10px;font-size:12px;color:#fff;font-weight:500}
+.reminder-btn{background:#fff;color:#b71c1c;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;width:100%}
+
 .user-avatar{width:40px;height:40px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gx-dark);flex-shrink:0}
 </style>
 </head>
@@ -186,7 +222,8 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 
 <!-- MITARBEITER: Dashboard -->
 <div class="view" id="v-dashboard">
-  <div class="user-row">
+  <div id="reminder-box" class="reminder-box"><div class="reminder-title">⚠️ Eintrag fehlt!</div><div class="reminder-text">Für folgende Arbeitstage fehlt noch ein Eintrag. Bitte schnell nachholen!</div><div class="reminder-days" id="reminder-days"></div><button class="reminder-btn" onclick="switchMain('manuell')">Jetzt eintragen</button></div>
+<div class="user-row">
     <div class="user-avatar" id="dash-avatar"></div>
     <div style="flex:1"><div style="font-size:15px;font-weight:700" id="dash-name"></div><div style="font-size:12px;color:var(--gx-muted)" id="dash-date"></div></div>
   </div>
@@ -257,20 +294,25 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 </div>
 
 
-<!-- MITARBEITER: Krank -->
-<div class="view" id="v-krank">
-  <div class="card" style="background:#fff3e0;border-color:#ffb74d;margin-bottom:14px">
-    <div class="card-title" style="color:#e65100">🤒 Krankmeldung einreichen</div>
-    <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.5">Bitte fülle das Formular aus und lade deinen Krankmeldungsschein als Foto oder PDF hoch.</p>
-    <button class="btn-primary" style="background:#e65100;margin-bottom:8px" onclick="openKrankForm()">
-      📋 Krankmeldung ausfüllen &amp; hochladen
-    </button>
-    <p style="font-size:11px;color:#aaa;text-align:center">Öffnet das Formular — kein Google-Konto nötig</p>
+<!-- MITARBEITER: Kalender -->
+<div class="view" id="v-kalender">
+  <div class="month-nav">
+    <button class="month-btn" onclick="kalPrevMonth()">‹</button>
+    <div class="month-title" id="kal-month-title">Juni 2026</div>
+    <button class="month-btn" onclick="kalNextMonth()">›</button>
   </div>
-  <div class="section-label">Meine Krankmeldungen</div>
-  <div class="card" style="padding:8px 12px">
-    <div id="krank-list"><div class="empty-hint">Keine Krankmeldungen vorhanden</div></div>
+  <div class="kal-summary">
+    <div class="kal-sum"><div class="kal-sum-val green" id="kal-arbeit">0 h</div><div class="kal-sum-label">Arbeit</div></div>
+    <div class="kal-sum"><div class="kal-sum-val" style="color:var(--blue)" id="kal-urlaub">0 T</div><div class="kal-sum-label">Urlaub</div></div>
+    <div class="kal-sum"><div class="kal-sum-val" style="color:var(--red)" id="kal-krank">0 T</div><div class="kal-sum-label">Krank</div></div>
   </div>
+  <div class="kal-legend">
+    <div class="kal-leg"><div class="kal-dot" style="background:#4caf50"></div>Arbeit</div>
+    <div class="kal-leg"><div class="kal-dot" style="background:#f59f00"></div>Ausstehend</div>
+    <div class="kal-leg"><div class="kal-dot" style="background:#1565c0"></div>Urlaub</div>
+    <div class="kal-leg"><div class="kal-dot" style="background:#d32f2f"></div>Krank</div>
+  </div>
+  <div class="kal-list" id="kal-list"></div>
 </div>
 
 <!-- ADMIN: Dashboard -->
@@ -302,6 +344,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <button class="nav-btn" id="nav-manuell" onclick="switchMain('manuell')"><i class="ti ti-edit" aria-hidden="true"></i><span>Manuell</span></button>
   <button class="nav-btn" id="nav-urlaub" onclick="switchMain('urlaub')"><i class="ti ti-beach" aria-hidden="true"></i><span>Urlaub</span></button>
   <button class="nav-btn" id="nav-krank" onclick="switchMain('krank')"><i class="ti ti-stethoscope" aria-hidden="true"></i><span>Krank</span></button>
+  <button class="nav-btn" id="nav-kalender" onclick="switchMain('kalender')"><i class="ti ti-calendar" aria-hidden="true"></i><span>Kalender</span></button>
 </div>
 
 <div class="status-bar" id="status-bar">Verbinde…</div>
@@ -382,13 +425,14 @@ function goTo(id){
 }
 
 function switchMain(name){
-  ['dashboard','stempel','manuell','urlaub','krank'].forEach(n=>{
+  ['dashboard','stempel','manuell','urlaub','krank','kalender'].forEach(n=>{
     const el=document.getElementById('nav-'+n);
     if(el)el.classList.toggle('active',n===name);
   });
   goTo('v-'+name);
   if(name==='dashboard')renderDashboard();
   if(name==='urlaub')renderUrlaubList();
+  if(name==='kalender')renderKalender();
 }
 
 // Worker select & PIN
@@ -423,31 +467,16 @@ function checkPin(){
   }
 }
 
-async function enterWorker(){
+function enterWorker(){
   document.getElementById('bottom-nav').style.display='flex';
   const now=new Date();
   document.getElementById('dash-avatar').textContent=initials(currentWorker.name);
   document.getElementById('dash-name').textContent=currentWorker.name;
   document.getElementById('dash-date').textContent=now.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('man-datum').value=now.toISOString().slice(0,10);
-  document.getElementById('dash-entries').innerHTML='<div class="empty-hint">Lädt…</div>';
-  goTo('v-dashboard');
-  ['dashboard','stempel','manuell','urlaub','krank'].forEach(n=>{const el=document.getElementById('nav-'+n);if(el)el.classList.toggle('active',n==='dashboard');});
-  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-    const today=new Date();
-    const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
-    try{
-      const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
-      const d=await r.json();
-      if(d.ok&&d.entries){
-        allEntries=allEntries.filter(e=>!(e.worker===currentWorker.name&&String(e.datum).startsWith(monat)));
-        d.entries.forEach(e=>allEntries.push(e));
-        localStorage.setItem('gx_entries',JSON.stringify(allEntries));
-      }
-    }catch{}
-  }
   checkLateWarning();
   renderDashboard();
+  switchMain('dashboard');
 }
 
 function enterAdmin(){
@@ -488,6 +517,41 @@ function checkLateWarning(){
     return (savedDate-entryDate)>12*3600*1000;
   }).length;
   document.getElementById('late-warn').style.display=lateCount>=3?'block':'none';
+  checkMissingDays();
+}
+
+function checkMissingDays(){
+  const now=new Date();
+  const missing=[];
+  // Prüfe die letzten 7 Werktage (ohne heute)
+  for(let i=1;i<=7;i++){
+    const d=new Date(now);
+    d.setDate(d.getDate()-i);
+    const dow=d.getDay();
+    if(dow===0||dow===6)continue; // Wochenende überspringen
+    const ds=d.toISOString().slice(0,10);
+    // Hat der Mitarbeiter für diesen Tag einen Eintrag?
+    const hasEntry=allEntries.some(e=>e.worker===currentWorker.name&&e.datum===ds);
+    // Ist der Tag in einem genehmigten Urlaub?
+    const isUrlaub=urlaubAntraege.some(u=>u.worker===currentWorker.name&&u.status==='approved'&&ds>=u.von&&ds<=u.bis);
+    if(!hasEntry&&!isUrlaub){
+      // Ist es mehr als 24h nach 18 Uhr des fehlenden Tages?
+      const deadline=new Date(ds+'T18:00:00');
+      deadline.setDate(deadline.getDate()+1);
+      if(now>deadline) missing.push(ds);
+    }
+  }
+  const box=document.getElementById('reminder-box');
+  const daysEl=document.getElementById('reminder-days');
+  if(missing.length>0){
+    box.style.display='block';
+    daysEl.innerHTML=missing.slice(0,5).map(ds=>{
+      const d=new Date(ds+'T12:00:00');
+      return '<div class="reminder-day">'+d.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'})+'</div>';
+    }).join('');
+  } else {
+    box.style.display='none';
+  }
 }
 
 function updateAdminBadge(){
@@ -541,7 +605,7 @@ async function saveManual(){
   const entryDate=new Date(datum);
   const now=new Date();
   const diffH=(now-entryDate)/3600000;
-  const status=diffH>36?'locked':diffH>12?'pending':'pending';
+  const status=diffH>12?'locked':'pending';
   const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),proj:document.getElementById('proj-man').value,art:'Manuell',status,savedAt:now.toISOString(),notiz:document.getElementById('man-notiz').value};
   await saveEntry(entry,'man-ok');
   document.getElementById('man-notiz').value='';
@@ -646,13 +710,66 @@ function adminAction(type,idx,action){
 }
 
 
-// Krank
-const KRANK_FORM_URL = "https://forms.gle/M44kwaPUZKKUFB3V6";
+// Kalender
+let kalYear=new Date().getFullYear();
+let kalMonth=new Date().getMonth();
 
-function openKrankForm(){
-  // Name des Mitarbeiters als URL-Parameter mitgeben damit das Formular vorausgefüllt ist
-  const url = KRANK_FORM_URL + '?usp=pp_url&entry.1234567890=' + encodeURIComponent(currentWorker.name);
-  window.open(KRANK_FORM_URL, '_blank');
+function kalPrevMonth(){if(kalMonth===0){kalMonth=11;kalYear--;}else kalMonth--;renderKalender();}
+function kalNextMonth(){if(kalMonth===11){kalMonth=0;kalYear++;}else kalMonth++;renderKalender();}
+
+function renderKalender(){
+  const monatStr=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'][kalMonth];
+  document.getElementById('kal-month-title').textContent=monatStr+' '+kalYear;
+  const monatKey=kalYear+'-'+String(kalMonth+1).padStart(2,'0');
+  const mine=allEntries.filter(e=>e.worker===currentWorker.name&&String(e.datum).startsWith(monatKey));
+  const myUrlaub=urlaubAntraege.filter(u=>u.worker===currentWorker.name&&u.status==='approved');
+  const tage=new Date(kalYear,kalMonth+1,0).getDate();
+  const heute=new Date().toISOString().slice(0,10);
+  const wochentage=['So','Mo','Di','Mi','Do','Fr','Sa'];
+  let totalH=0,urlaubTage=0,krankTage=0;
+  const rows=[];
+  for(let d=1;d<=tage;d++){
+    const ds=kalYear+'-'+String(kalMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const dow=new Date(ds+'T12:00:00').getDay();
+    const isWE=dow===0||dow===6;
+    const isHeute=ds===heute;
+    const eintrag=mine.find(e=>e.datum===ds);
+    const isUrlaub=!eintrag&&myUrlaub.some(u=>ds>=u.von&&ds<=u.bis);
+    let dotColor='#e0e0e0',info='–',sub='',badge='',badgeClass='';
+    if(isWE&&!eintrag&&!isUrlaub){
+      rows.push({ds,d,dow,isWE,isHeute,dotColor:'#e0e0e0',info:'Wochenende',sub:'',badge:'',badgeClass:''});
+      continue;
+    }
+    if(isUrlaub){
+      dotColor='#1565c0';info='Urlaub';sub='genehmigt';badge='Urlaub';badgeClass='urlaub';urlaubTage++;
+    } else if(eintrag){
+      const s=eintrag.status;
+      if(s==='approved'||s==='auto'){dotColor='#4caf50';badge='✓';badgeClass='approved';}
+      else if(s==='pending'){dotColor='#f59f00';badge='Ausstehend';badgeClass='pending';}
+      else if(s==='rejected'){dotColor='#d32f2f';badge='Abgelehnt';badgeClass='krank';}
+      else{dotColor='#4caf50';badge='✓';badgeClass='approved';}
+      info=eintrag.proj.split(',')[0];
+      sub=eintrag.von+'–'+eintrag.bis+' · '+(+eintrag.netto).toFixed(1)+' h';
+      totalH+=parseFloat(eintrag.netto)||0;
+    } else {
+      dotColor='#e0e0e0';info='–';sub='';badge='';badgeClass='';
+    }
+    rows.push({ds,d,dow,isWE,isHeute,dotColor,info,sub,badge,badgeClass});
+  }
+  document.getElementById('kal-arbeit').textContent=Math.round(totalH*10)/10+' h';
+  document.getElementById('kal-urlaub').textContent=urlaubTage+' T';
+  document.getElementById('kal-krank').textContent=krankTage+' T';
+  document.getElementById('kal-list').innerHTML=rows.map(r=>`
+    <div class="kal-row${r.isWE?' weekend':''}${r.isHeute?' today':''}">
+      <div class="kal-num">${r.d}</div>
+      <div class="kal-name">${['So','Mo','Di','Mi','Do','Fr','Sa'][new Date(r.ds+'T12:00:00').getDay()]}</div>
+      <div class="kal-dot-big" style="background:${r.dotColor}"></div>
+      <div class="kal-info">
+        <div class="kal-proj">${r.info}</div>
+        ${r.sub?'<div class="kal-sub">'+r.sub+'</div>':''}
+      </div>
+      ${r.badge?'<span class="kal-badge '+r.badgeClass+'">'+r.badge+'</span>':''}
+    </div>`).join('');
 }
 
 init();
