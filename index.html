@@ -256,6 +256,23 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="card" style="padding:8px 12px"><div id="urlaub-list"><div class="empty-hint">Keine Anträge</div></div></div>
 </div>
 
+
+<!-- MITARBEITER: Krank -->
+<div class="view" id="v-krank">
+  <div class="card" style="background:#fff3e0;border-color:#ffb74d;margin-bottom:14px">
+    <div class="card-title" style="color:#e65100">🤒 Krankmeldung einreichen</div>
+    <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.5">Bitte fülle das Formular aus und lade deinen Krankmeldungsschein als Foto oder PDF hoch.</p>
+    <button class="btn-primary" style="background:#e65100;margin-bottom:8px" onclick="openKrankForm()">
+      📋 Krankmeldung ausfüllen &amp; hochladen
+    </button>
+    <p style="font-size:11px;color:#aaa;text-align:center">Öffnet das Formular — kein Google-Konto nötig</p>
+  </div>
+  <div class="section-label">Meine Krankmeldungen</div>
+  <div class="card" style="padding:8px 12px">
+    <div id="krank-list"><div class="empty-hint">Keine Krankmeldungen vorhanden</div></div>
+  </div>
+</div>
+
 <!-- ADMIN: Dashboard -->
 <div class="view" id="v-admin">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -284,6 +301,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <button class="nav-btn" id="nav-stempel" onclick="switchMain('stempel')"><i class="ti ti-clock" aria-hidden="true"></i><span>Stempeln</span></button>
   <button class="nav-btn" id="nav-manuell" onclick="switchMain('manuell')"><i class="ti ti-edit" aria-hidden="true"></i><span>Manuell</span></button>
   <button class="nav-btn" id="nav-urlaub" onclick="switchMain('urlaub')"><i class="ti ti-beach" aria-hidden="true"></i><span>Urlaub</span></button>
+  <button class="nav-btn" id="nav-krank" onclick="switchMain('krank')"><i class="ti ti-stethoscope" aria-hidden="true"></i><span>Krank</span></button>
 </div>
 
 <div class="status-bar" id="status-bar">Verbinde…</div>
@@ -364,8 +382,9 @@ function goTo(id){
 }
 
 function switchMain(name){
-  ['dashboard','stempel','manuell','urlaub'].forEach(n=>{
-    document.getElementById('nav-'+n).classList.toggle('active',n===name);
+  ['dashboard','stempel','manuell','urlaub','krank'].forEach(n=>{
+    const el=document.getElementById('nav-'+n);
+    if(el)el.classList.toggle('active',n===name);
   });
   goTo('v-'+name);
   if(name==='dashboard')renderDashboard();
@@ -411,8 +430,9 @@ async function enterWorker(){
   document.getElementById('dash-name').textContent=currentWorker.name;
   document.getElementById('dash-date').textContent=now.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('man-datum').value=now.toISOString().slice(0,10);
-  goTo ('v-dashboard');
-  // Erst aus Sheets laden, DANN rendern
+  document.getElementById('dash-entries').innerHTML='<div class="empty-hint">Lädt…</div>';
+  goTo('v-dashboard');
+  ['dashboard','stempel','manuell','urlaub','krank'].forEach(n=>{const el=document.getElementById('nav-'+n);if(el)el.classList.toggle('active',n==='dashboard');});
   if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
     const today=new Date();
     const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
@@ -420,7 +440,6 @@ async function enterWorker(){
       const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
       const d=await r.json();
       if(d.ok&&d.entries){
-        // Alle lokalen Einträge dieses Mitarbeiters für diesen Monat ersetzen
         allEntries=allEntries.filter(e=>!(e.worker===currentWorker.name&&String(e.datum).startsWith(monat)));
         d.entries.forEach(e=>allEntries.push(e));
         localStorage.setItem('gx_entries',JSON.stringify(allEntries));
@@ -519,10 +538,10 @@ async function saveManual(){
   document.getElementById('man-error').style.display='none';document.getElementById('man-ok').style.display='none';
   const diff=timeToMin(bis)-timeToMin(von)-pause;
   if(!von||!bis||diff<=0||!datum){document.getElementById('man-error').textContent='Bitte alle Felder korrekt ausfüllen.';document.getElementById('man-error').style.display='block';return;}
-  const entryDate=new Date(datum+'T23:59:59');
+  const entryDate=new Date(datum);
   const now=new Date();
   const diffH=(now-entryDate)/3600000;
-  const status=diffH>12?'locked':'pending';
+  const status=diffH>36?'locked':diffH>12?'pending':'pending';
   const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),proj:document.getElementById('proj-man').value,art:'Manuell',status,savedAt:now.toISOString(),notiz:document.getElementById('man-notiz').value};
   await saveEntry(entry,'man-ok');
   document.getElementById('man-notiz').value='';
@@ -555,20 +574,9 @@ function stelleUrlaubsantrag(){
   document.getElementById('urlaub-notiz').value='';
 }
 
-async function renderUrlaubList(){
-  const list=document.getElementById('urlaub-list');
-  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-    try{
-      const r=await fetch(SCRIPT_URL+'?action=getUrlaub&worker='+encodeURIComponent(currentWorker.name));
-      const d=await r.json();
-      if(d.ok&&d.urlaub){
-        urlaubAntraege=urlaubAntraege.filter(u=>u.worker!==currentWorker.name);
-        d.urlaub.forEach(u=>urlaubAntraege.push(u));
-        localStorage.setItem('gx_urlaub',JSON.stringify(urlaubAntraege));
-      }
-    }catch{}
-  }
+function renderUrlaubList(){
   const mine=urlaubAntraege.filter(u=>u.worker===currentWorker?.name).slice().reverse();
+  const list=document.getElementById('urlaub-list');
   if(!mine.length){list.innerHTML='<div class="empty-hint">Keine Anträge</div>';return;}
   list.innerHTML=mine.map(u=>`
     <div class="entry-row">
@@ -635,6 +643,16 @@ function adminAction(type,idx,action){
   if(type==='entry'){allEntries[idx].status=action;localStorage.setItem('gx_entries',JSON.stringify(allEntries));}
   else{urlaubAntraege[idx].status=action;localStorage.setItem('gx_urlaub',JSON.stringify(urlaubAntraege));}
   updateAdminBadge();renderAdmin();
+}
+
+
+// Krank
+const KRANK_FORM_URL = "https://forms.gle/M44kwaPUZKKUFB3V6";
+
+function openKrankForm(){
+  // Name des Mitarbeiters als URL-Parameter mitgeben damit das Formular vorausgefüllt ist
+  const url = KRANK_FORM_URL + '?usp=pp_url&entry.1234567890=' + encodeURIComponent(currentWorker.name);
+  window.open(KRANK_FORM_URL, '_blank');
 }
 
 init();
