@@ -411,11 +411,24 @@ async function enterWorker(){
   document.getElementById('dash-name').textContent=currentWorker.name;
   document.getElementById('dash-date').textContent=now.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('man-datum').value=now.toISOString().slice(0,10);
-  // Einträge immer frisch aus Sheets laden beim Login
-  await loadEntriesFromSheets();
+  switchMain('dashboard');
+  // Erst aus Sheets laden, DANN rendern
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+    const today=new Date();
+    const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
+    try{
+      const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
+      const d=await r.json();
+      if(d.ok&&d.entries){
+        // Alle lokalen Einträge dieses Mitarbeiters für diesen Monat ersetzen
+        allEntries=allEntries.filter(e=>!(e.worker===currentWorker.name&&String(e.datum).startsWith(monat)));
+        d.entries.forEach(e=>allEntries.push(e));
+        localStorage.setItem('gx_entries',JSON.stringify(allEntries));
+      }
+    }catch{}
+  }
   checkLateWarning();
   renderDashboard();
-  switchMain('dashboard');
 }
 
 function enterAdmin(){
@@ -427,30 +440,6 @@ function enterAdmin(){
 function goBack(){document.getElementById('bottom-nav').style.display='none';goTo('v-worker');currentWorker=null;if(elapsedTimer){clearInterval(elapsedTimer);elapsedTimer=null;stampStart=null;}}
 
 // Dashboard
-async function loadEntriesFromSheets(){
-  // Beim Login: Einträge des aktuellen Monats frisch aus Sheets laden
-  // Lokale Einträge des Mitarbeiters werden damit überschrieben
-  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
-  try{
-    const today=new Date();
-    const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
-    const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
-    const d=await r.json();
-    if(d.ok&&d.entries&&d.entries.length>=0){
-      // Lokale Einträge dieses Mitarbeiters für diesen Monat ersetzen
-      allEntries=allEntries.filter(e=>
-        e.worker!==currentWorker.name ||
-        !String(e.datum).startsWith(monat)
-      );
-      d.entries.forEach(e=>allEntries.push(e));
-      localStorage.setItem('gx_entries',JSON.stringify(allEntries));
-    }
-  }catch(err){
-    // Offline — lokale Daten behalten
-    console.log('Offline, lokale Daten werden verwendet');
-  }
-}
-
 function renderDashboard(){
   const mine=allEntries.filter(e=>e.worker===currentWorker.name);
   const recent=mine.slice().reverse().slice(0,5);
@@ -538,7 +527,6 @@ async function saveManual(){
   await saveEntry(entry,'man-ok');
   document.getElementById('man-notiz').value='';
   checkLateWarning();updateAdminBadge();
-  renderDashboard();
 }
 
 async function saveEntry(entry,okId){
