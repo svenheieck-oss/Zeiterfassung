@@ -408,7 +408,7 @@ function checkPin(){
   }
 }
 
-function enterWorker(){
+async function enterWorker(){
   document.getElementById('bottom-nav').style.display='flex';
   const now=new Date();
   document.getElementById('dash-avatar').textContent=initials(currentWorker.name);
