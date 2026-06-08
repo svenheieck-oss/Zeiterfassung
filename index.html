@@ -345,11 +345,13 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="tab-bar">
     <div class="tab active" id="atab-freigaben" onclick="switchAdminTab('freigaben')">Freigaben</div>
     <div class="tab" id="atab-urlaub" onclick="switchAdminTab('urlaub')">Urlaub</div>
-    <div class="tab" id="atab-alle" onclick="switchAdminTab('alle')">Alle Einträge</div>
+    <div class="tab" id="atab-alle" onclick="switchAdminTab('alle')">Einträge</div>
+    <div class="tab" id="atab-stamm" onclick="switchAdminTab('stamm')">Team</div>
   </div>
   <div id="atc-freigaben"><div class="empty-hint" id="freigaben-empty" style="display:none">Keine offenen Freigaben ✓</div><div id="freigaben-list"></div></div>
   <div id="atc-urlaub" style="display:none"><div class="empty-hint" id="urlaub-empty" style="display:none">Keine Anträge ✓</div><div id="admin-urlaub-list"></div></div>
   <div id="atc-alle" style="display:none"><div id="alle-list"></div></div>
+  <div id="atc-stamm" style="display:none"><div id="stamm-list"></div></div>
 </div>
 
 <!-- Bottom Nav (nur wenn eingeloggt) -->
@@ -391,7 +393,7 @@ const FALLBACK_WORKERS = [
 ];
 
 let currentWorker=null,pinInput='',stampStart=null,elapsedTimer=null,workers=[];
-let allEntries=[],urlaubAntraege=[];
+let allEntries=[],urlaubAntraege=[],stammdaten={};
 let isAdmin=false;
 
 function pad(n){return String(n).padStart(2,'0')}
@@ -676,10 +678,47 @@ function renderAdmin(){
 }
 
 function switchAdminTab(name){
-  ['freigaben','urlaub','alle'].forEach(t=>{
+  ['freigaben','urlaub','alle','stamm'].forEach(t=>{
     document.getElementById('atab-'+t).classList.toggle('active',t===name);
     document.getElementById('atc-'+t).style.display=t===name?'block':'none';
   });
+  if(name==='stamm')renderAdminStamm();
+}
+
+async function renderAdminStamm(){
+  const list=document.getElementById('stamm-list');
+  list.innerHTML='<div class="empty-hint">Lädt…</div>';
+  let alle=[];
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+    try{
+      const r=await fetch(SCRIPT_URL+'?action=getAllStammdaten');
+      const d=await r.json();
+      if(d.ok)alle=d.alle;
+    }catch{}
+  }
+  if(!alle.length){list.innerHTML='<div class="empty-hint">Keine Stammdaten vorhanden.<br>Bitte setupStammdatenTabelle() im Apps Script ausführen.</div>';return;}
+  const now=new Date();
+  const today=now.toISOString().slice(5,10);
+  const birthdays=alle.filter(m=>m.geburtstag&&m.geburtstag.slice(5)===today);
+  list.innerHTML='';
+  if(birthdays.length) list.innerHTML+='<div style="background:#FFF8E1;border:1px solid #f59f00;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#633806">🎂 <strong>Geburtstag heute:</strong> '+birthdays.map(b=>b.name).join(', ')+'</div>';
+  const probAlerts=alle.filter(m=>{if(!m.probezeit)return false;const diff=Math.ceil((new Date(m.probezeit)-now)/86400000);return diff>0&&diff<=30;});
+  if(probAlerts.length) list.innerHTML+='<div style="background:#fff3e0;border:1px solid #ffb74d;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#e65100">⏰ <strong>Probezeit endet bald:</strong> '+probAlerts.map(m=>m.name+' ('+m.probezeit+')').join(', ')+'</div>';
+  list.innerHTML+=alle.map(m=>`
+    <div class="card" style="padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div style="font-size:14px;font-weight:700">${m.name}</div>
+        <span style="font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;background:${m.rolle==='Admin'?'#e3f2fd':m.rolle==='Vorarbeiter'?'#f5ecd4':'var(--gx-bg)'};color:${m.rolle==='Admin'?'#0c447c':m.rolle==='Vorarbeiter'?'#633806':'var(--gx-muted)'}">${m.rolle||'Mitarbeiter'}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:12px;color:var(--gx-muted)">
+        <div>📅 Seit: <strong style="color:var(--gx-text)">${m.eintrittsdatum||'–'}</strong></div>
+        <div>⏱ ${m.wochenstunden||40}h/Woche</div>
+        <div>🏖 ${m.urlaubstage||30} Tage Urlaub</div>
+        <div>🎂 ${m.geburtstag||'–'}</div>
+        ${m.probezeit?'<div style="grid-column:span 2">⏰ Probezeit bis: <strong style="color:#e65100">'+m.probezeit+'</strong></div>':''}
+        ${m.austrittsdatum?'<div style="grid-column:span 2">🚪 Austritt: <strong style="color:var(--red)">'+m.austrittsdatum+'</strong></div>':''}
+      </div>
+    </div>`).join('');
 }
 
 function renderFreigaben(){
@@ -721,6 +760,49 @@ function adminAction(type,idx,action){
   updateAdminBadge();renderAdmin();
 }
 
+
+
+function updateDashboardMetrics(){
+  const soll=stammdaten.wochenstunden||40;
+  const now=new Date();
+  const dayOfWeek=now.getDay();
+  const monday=new Date(now);
+  monday.setDate(now.getDate()-(dayOfWeek===0?6:dayOfWeek-1));
+  const mondayStr=monday.toISOString().slice(0,10);
+  const sundayStr=new Date(monday.getTime()+6*86400000).toISOString().slice(0,10);
+  const wocheH=allEntries
+    .filter(e=>e.worker===currentWorker.name&&e.datum>=mondayStr&&e.datum<=sundayStr)
+    .reduce((s,e)=>s+(parseFloat(e.netto)||0),0);
+  const pct=Math.min(100,Math.round(wocheH/soll*100));
+  document.getElementById('week-label').textContent=wocheH.toFixed(1)+' / '+soll+' h';
+  document.getElementById('week-bar').style.width=pct+'%';
+  let urlaubGesamt=stammdaten.urlaubstage||30;
+  if(stammdaten.eintrittsdatum){
+    const eintr=new Date(stammdaten.eintrittsdatum);
+    if(eintr.getFullYear()===now.getFullYear()){
+      const monate=12-eintr.getMonth();
+      urlaubGesamt=Math.round(urlaubGesamt*monate/12);
+    }
+  }
+  const genommen=urlaubAntraege
+    .filter(u=>u.worker===currentWorker.name&&u.status==='approved'&&u.von&&u.von.startsWith(now.getFullYear()+''))
+    .reduce((s,u)=>s+(parseInt(u.tage)||0),0);
+  const rest=Math.max(0,urlaubGesamt-genommen);
+  document.getElementById('m-urlaub').textContent=rest+' Tage';
+  const diffH=wocheH-soll;
+  const ueberEl=document.getElementById('m-ueber');
+  ueberEl.textContent=(diffH>=0?'+':'')+diffH.toFixed(1)+' h';
+  ueberEl.className='m-val '+(diffH>=0?'green':'red');
+  if(stammdaten.probezeit){
+    const probzEnd=new Date(stammdaten.probezeit);
+    const diffDays=Math.ceil((probzEnd-now)/86400000);
+    if(diffDays>0&&diffDays<=30){
+      const el=document.getElementById('late-warn');
+      el.textContent='⏰ Deine Probezeit endet in '+diffDays+' Tagen ('+stammdaten.probezeit+')';
+      el.style.display='block';
+    }
+  }
+}
 
 // Kalender
 let kalYear=new Date().getFullYear();
