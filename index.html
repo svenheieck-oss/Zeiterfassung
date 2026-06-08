@@ -5,115 +5,147 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Gartenxclusiv Zeiterfassung</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="GX Zeiterfassung">
+<meta name="apple-mobile-web-app-title" content="GX Zeit">
 <style>
-  /* Gartenxclusiv Farben: Dunkelgrün + Gold */
-  :root{
-    --gx-dark: #1a2e1a;
-    --gx-green: #2d4a1e;
-    --gx-mid: #4a7c35;
-    --gx-light: #e8f0e0;
-    --gx-gold: #c8a84b;
-    --gx-gold-light: #f5ecd4;
-    --gx-text: #1a1a1a;
-    --gx-muted: #666;
-    --gx-border: #d8d8cc;
-    --gx-bg: #f7f5f0;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-height:100vh;display:flex;justify-content:center;align-items:flex-start}
-  .app{width:100%;max-width:420px;min-height:100vh;background:#fff;display:flex;flex-direction:column}
+:root{
+  --gx-dark:#1a2e1a;
+  --gx-green:#4caf50;
+  --gx-green-dark:#388e3c;
+  --gx-green-light:#e8f5e9;
+  --gx-gold:#c8a84b;
+  --gx-gold-light:#f5ecd4;
+  --gx-bg:#f7f5f0;
+  --gx-border:#d8d8cc;
+  --gx-text:#1a1a1a;
+  --gx-muted:#666;
+  --amber:#f59f00;
+  --amber-light:#fff8e1;
+  --red:#d32f2f;
+  --red-light:#ffebee;
+  --blue:#1565c0;
+  --blue-light:#e3f2fd;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-height:100vh;display:flex;justify-content:center}
+.app{width:100%;max-width:420px;min-height:100vh;background:#fff;display:flex;flex-direction:column}
 
-  /* Topbar */
-  .topbar{background:var(--gx-dark);padding:14px 16px 12px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:2px solid var(--gx-gold)}
-  .topbar-logo{width:36px;height:36px;border-radius:8px;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--gx-dark);letter-spacing:-.5px;flex-shrink:0}
-  .topbar-titles{flex:1}
-  .topbar-title{color:#fff;font-size:15px;font-weight:700;line-height:1.2}
-  .topbar-sub{color:var(--gx-gold);font-size:11px;letter-spacing:.04em}
+/* Topbar */
+.topbar{background:var(--gx-dark);padding:14px 16px 12px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:2px solid var(--gx-gold)}
+.topbar-logo{width:36px;height:36px;border-radius:8px;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--gx-dark);flex-shrink:0}
+.topbar-title{color:#fff;font-size:15px;font-weight:700}
+.topbar-sub{color:var(--gx-gold);font-size:10px;letter-spacing:.06em}
+.badge-count{background:var(--red);color:#fff;border-radius:10px;font-size:10px;font-weight:700;padding:2px 6px;margin-left:auto}
 
-  /* Views */
-  .view{padding:16px;display:none;flex:1}
-  .view.active{display:block}
-  .section-label{font-size:11px;font-weight:700;color:var(--gx-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+/* Views */
+.view{padding:16px;display:none;flex:1;overflow-y:auto}
+.view.active{display:block}
 
-  /* Mitarbeiter-Grid */
-  .worker-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-  .worker-btn{background:var(--gx-bg);border:1px solid var(--gx-border);border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color .15s}
-  .worker-btn:active{background:var(--gx-light);border-color:var(--gx-mid)}
-  .avatar{width:40px;height:40px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gx-dark);margin:0 auto 8px}
-  .wname{font-size:13px;font-weight:500;color:var(--gx-text)}
+/* Nav bottom */
+.bottom-nav{display:flex;background:#fff;border-top:0.5px solid var(--gx-border);flex-shrink:0}
+.nav-btn{flex:1;padding:10px 4px 8px;text-align:center;cursor:pointer;border:none;background:none;font-size:10px;color:var(--gx-muted);display:flex;flex-direction:column;align-items:center;gap:3px;-webkit-tap-highlight-color:transparent}
+.nav-btn i{font-size:20px}
+.nav-btn.active{color:var(--gx-green)}
+.nav-btn .nav-badge{background:var(--red);color:#fff;border-radius:8px;font-size:9px;font-weight:700;padding:1px 5px;line-height:1.4}
 
-  /* PIN */
-  .pin-center{text-align:center;padding-top:8px}
-  .pin-avatar-big{width:56px;height:56px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--gx-dark);margin:0 auto 8px}
-  .pin-name{font-size:17px;font-weight:700;color:var(--gx-text);margin-bottom:2px}
-  .pin-display{display:flex;gap:14px;justify-content:center;margin:20px 0 18px}
-  .pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--gx-border);background:none;transition:all .15s}
-  .pin-dot.filled{background:var(--gx-green);border-color:var(--gx-green)}
-  .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:280px;margin:0 auto}
-  .num-btn{background:var(--gx-bg);border:1px solid var(--gx-border);border-radius:12px;padding:18px;font-size:20px;font-weight:500;color:var(--gx-text);cursor:pointer;text-align:center;-webkit-tap-highlight-color:transparent;user-select:none}
-  .num-btn:active{background:var(--gx-light);border-color:var(--gx-mid)}
-  .num-btn.del{font-size:16px;color:var(--gx-muted)}
-  .num-btn.empty{background:none;border-color:transparent;cursor:default}
+/* Worker grid */
+.section-label{font-size:11px;font-weight:700;color:var(--gx-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.worker-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.worker-btn{background:var(--gx-bg);border:1px solid var(--gx-border);border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.worker-btn:active{background:var(--gx-green-light);border-color:var(--gx-green)}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gx-dark);margin:0 auto 8px}
+.wname{font-size:13px;font-weight:500;color:var(--gx-text)}
 
-  /* Nachrichten */
-  .error-msg{background:#FCEBEB;border-radius:10px;padding:10px 14px;font-size:13px;color:#791F1F;text-align:center;margin-bottom:12px;display:none}
-  .success-msg{background:var(--gx-light);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--gx-green);text-align:center;margin-bottom:12px;display:none;font-weight:500}
+/* PIN */
+.pin-avatar-big{width:56px;height:56px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--gx-dark);margin:0 auto 8px}
+.pin-display{display:flex;gap:14px;justify-content:center;margin:18px 0 16px}
+.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--gx-border);transition:all .15s}
+.pin-dot.filled{background:var(--gx-green);border-color:var(--gx-green)}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:280px;margin:0 auto}
+.num-btn{background:var(--gx-bg);border:1px solid var(--gx-border);border-radius:12px;padding:17px;font-size:20px;font-weight:500;color:var(--gx-text);cursor:pointer;text-align:center;-webkit-tap-highlight-color:transparent;user-select:none}
+.num-btn:active{background:var(--gx-green-light)}
+.num-btn.empty{background:none;border-color:transparent;cursor:default}
 
-  /* Navigation */
-  .back-btn{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--gx-muted);cursor:pointer;margin-bottom:16px;background:none;border:none;padding:0}
-  .user-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-  .user-avatar{width:42px;height:42px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gx-dark);flex-shrink:0}
-  .user-name{font-size:16px;font-weight:700;color:var(--gx-text)}
-  .user-date{font-size:13px;color:var(--gx-muted)}
+/* Cards & fields */
+.card{background:#fff;border:1px solid var(--gx-border);border-radius:12px;padding:14px;margin-bottom:12px}
+.card-title{font-size:13px;font-weight:700;color:var(--gx-text);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.field{margin-bottom:12px}
+.field label{font-size:12px;color:var(--gx-muted);font-weight:500;display:block;margin-bottom:4px}
+.field input,.field select,.field textarea{width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;color:var(--gx-text);-webkit-appearance:none}
+.field input:focus,.field select:focus{outline:none;border-color:var(--gx-green)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
-  /* Tabs */
-  .tab-bar{display:flex;border-bottom:2px solid var(--gx-border);margin-bottom:16px}
-  .tab{flex:1;padding:11px 4px;font-size:13px;font-weight:500;color:var(--gx-muted);text-align:center;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;-webkit-tap-highlight-color:transparent}
-  .tab.active{color:var(--gx-green);border-bottom-color:var(--gx-gold);font-weight:700}
+/* Buttons */
+.btn-primary{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;background:var(--gx-green);color:#fff;-webkit-tap-highlight-color:transparent}
+.btn-primary:active{opacity:.85}
+.btn-danger{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;background:#b71c1c;color:#fff}
+.btn-outline{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--gx-border);background:#fff;color:var(--gx-text)}
+.back-btn{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--gx-muted);cursor:pointer;margin-bottom:14px;background:none;border:none;padding:0}
 
-  /* Stempel-Buttons */
-  .stamp-btn{width:100%;padding:17px;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;-webkit-tap-highlight-color:transparent;letter-spacing:.02em}
-  .stamp-btn.ein{background:var(--gx-green);color:#fff;border:2px solid var(--gx-mid)}
-  .stamp-btn.aus{background:#6b1a1a;color:#fff;border:2px solid #8b2222}
-  .stamp-btn:active{opacity:.85}
+/* Metrics */
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.metric{background:var(--gx-bg);border-radius:10px;padding:10px 12px}
+.m-label{font-size:11px;color:var(--gx-muted);margin-bottom:3px}
+.m-val{font-size:20px;font-weight:700}
+.m-val.green{color:var(--gx-green-dark)}
+.m-val.amber{color:#e65100}
+.m-val.red{color:var(--red)}
+.m-val.blue{color:var(--blue)}
+.progress-bar{background:var(--gx-border);border-radius:4px;height:6px;margin-top:5px;overflow:hidden}
+.progress-fill{height:100%;border-radius:4px;background:var(--gx-green);transition:width .4s}
 
-  /* Laufende Zeit */
-  .running-row{display:flex;align-items:center;gap:10px;background:var(--gx-light);border-radius:12px;padding:12px 14px;margin-bottom:12px;border:1px solid #c5d9b0}
-  .dot-live{width:9px;height:9px;border-radius:50%;background:var(--gx-mid);animation:blink 1.4s infinite;flex-shrink:0}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-  .elapsed{font-size:32px;font-weight:700;color:var(--gx-dark);font-variant-numeric:tabular-nums;text-align:center;margin:8px 0 14px;letter-spacing:.02em}
+/* Status badges */
+.sbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.sbadge.green{background:var(--gx-green-light);color:var(--gx-green-dark)}
+.sbadge.amber{background:var(--amber-light);color:#e65100}
+.sbadge.red{background:var(--red-light);color:var(--red)}
+.sbadge.gray{background:var(--gx-bg);color:var(--gx-muted)}
+.sbadge.blue{background:var(--blue-light);color:var(--blue)}
 
-  /* Formular */
-  .field{margin-bottom:14px}
-  .field label{font-size:13px;color:var(--gx-muted);display:block;margin-bottom:5px;font-weight:500}
-  .field input,.field select{width:100%;font-size:15px;padding:11px 12px;border:1px solid var(--gx-border);border-radius:10px;background:#fff;color:var(--gx-text);-webkit-appearance:none}
-  .field input:focus,.field select:focus{outline:none;border-color:var(--gx-mid);box-shadow:0 0 0 3px rgba(74,124,53,.1)}
-  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .calc-box{background:var(--gx-gold-light);border:1px solid var(--gx-gold);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-  .calc-label{font-size:13px;color:var(--gx-muted);font-weight:500}
-  .calc-val{font-size:22px;font-weight:700;color:var(--gx-green)}
+/* Entry rows */
+.entry-row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:0.5px solid var(--gx-border)}
+.entry-row:last-child{border:none}
+.entry-main{font-size:13px;font-weight:600;color:var(--gx-text)}
+.entry-sub{font-size:11px;color:var(--gx-muted);margin-top:2px}
+.entry-right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.entry-h{font-size:14px;font-weight:700;color:var(--gx-green-dark)}
 
-  /* Speichern */
-  .save-btn{width:100%;padding:15px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;background:var(--gx-green);color:#fff;-webkit-tap-highlight-color:transparent;letter-spacing:.02em}
-  .save-btn:active{opacity:.85}
+/* Stamp */
+.stamp-btn{width:100%;padding:16px;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px}
+.stamp-btn.ein{background:var(--gx-green);color:#fff}
+.stamp-btn.aus{background:#b71c1c;color:#fff}
+.stamp-btn:active{opacity:.85}
+.running-row{display:flex;align-items:center;gap:10px;background:var(--gx-green-light);border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid #a5d6a7}
+.dot-live{width:9px;height:9px;border-radius:50%;background:var(--gx-green);animation:blink 1.4s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.elapsed{font-size:30px;font-weight:700;color:var(--gx-text);font-variant-numeric:tabular-nums;text-align:center;margin:6px 0 12px}
+.calc-box{background:var(--gx-gold-light);border:1px solid var(--gx-gold);border-radius:10px;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.calc-val{font-size:20px;font-weight:700;color:var(--gx-green-dark)}
 
-  /* Einträge */
-  .entries-list{display:flex;flex-direction:column;gap:8px}
-  .entry-row{background:var(--gx-bg);border:1px solid var(--gx-border);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:flex-start}
-  .entry-main{font-size:14px;font-weight:600;color:var(--gx-text);margin-bottom:2px}
-  .entry-sub{font-size:12px;color:var(--gx-muted)}
-  .entry-h{font-size:16px;font-weight:700;color:var(--gx-green);white-space:nowrap}
-  .badge{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:700;display:inline-block;margin-top:3px}
-  .badge-s{background:var(--gx-light);color:var(--gx-green)}
-  .badge-m{background:var(--gx-gold-light);color:#7d4e00}
-  .empty-hint{font-size:13px;color:#aaa;text-align:center;padding:24px 0}
+/* Msgs */
+.error-msg{background:var(--red-light);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--red);margin-bottom:10px;display:none}
+.success-msg{background:var(--gx-green-light);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--gx-green-dark);margin-bottom:10px;display:none;font-weight:500}
+.warn-msg{background:var(--amber-light);border-radius:9px;padding:9px 12px;font-size:13px;color:#e65100;margin-bottom:10px;display:none}
+.info-msg{background:var(--blue-light);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--blue);margin-bottom:10px}
 
-  /* Statusbar */
-  .status-bar{background:var(--gx-dark);padding:7px 16px;font-size:11px;color:#666;text-align:center;flex-shrink:0;border-top:1px solid #2a3a2a}
-  .status-bar.ok{color:var(--gx-gold)}
-  .status-bar.err{color:#e08080}
-  .status-bar.loading{color:#aaa}
+/* Admin action btns */
+.action-btns{display:flex;gap:6px}
+.btn-approve{width:30px;height:30px;border-radius:7px;background:var(--gx-green-light);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gx-green-dark);font-size:15px}
+.btn-reject{width:30px;height:30px;border-radius:7px;background:var(--red-light);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:15px}
+.btn-approve:active,.btn-reject:active{opacity:.7}
+
+/* Tabs */
+.tab-bar{display:flex;border-bottom:2px solid var(--gx-border);margin-bottom:14px}
+.tab{flex:1;padding:10px 4px;font-size:12px;font-weight:500;color:var(--gx-muted);text-align:center;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.tab.active{color:var(--gx-green);border-bottom-color:var(--gx-green);font-weight:700}
+
+.status-bar{background:var(--gx-dark);padding:6px 16px;font-size:10px;color:#666;text-align:center;flex-shrink:0}
+.status-bar.ok{color:var(--gx-gold)}
+.status-bar.err{color:#e08080}
+.status-bar.loading{color:#aaa}
+.divider{height:0.5px;background:var(--gx-border);margin:10px 0}
+.empty-hint{font-size:13px;color:#aaa;text-align:center;padding:20px 0}
+.user-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.user-avatar{width:40px;height:40px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gx-dark);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -121,114 +153,155 @@
 
 <div class="topbar">
   <div class="topbar-logo">GX</div>
-  <div class="topbar-titles">
-    <div class="topbar-title">Gartenxclusiv</div>
-    <div class="topbar-sub">ZEITERFASSUNG</div>
+  <div style="flex:1"><div class="topbar-title">Gartenxclusiv</div><div class="topbar-sub">ZEITERFASSUNG</div></div>
+  <span id="admin-badge" class="badge-count" style="display:none">0</span>
+</div>
+
+<!-- LOGIN: Mitarbeiter wählen -->
+<div class="view active" id="v-worker" style="padding-top:12px">
+  <div class="section-label">Wer bist du?</div>
+  <div class="worker-grid" id="worker-grid"><div style="grid-column:span 2;text-align:center;color:#aaa;padding:20px;font-size:13px">Wird geladen…</div></div>
+  <div style="margin-top:16px;text-align:center">
+    <button class="btn-outline" onclick="openAdmin()">🔐 Admin-Bereich</button>
   </div>
 </div>
 
-<!-- Mitarbeiter wählen -->
-<div class="view active" id="v-worker">
-  <div style="padding-top:4px">
-    <div class="section-label">Wer bist du?</div>
-    <div class="worker-grid" id="worker-grid">
-      <div style="font-size:13px;color:#aaa;text-align:center;padding:20px;grid-column:span 2">Wird geladen…</div>
-    </div>
-  </div>
-</div>
-
-<!-- PIN -->
+<!-- LOGIN: PIN -->
 <div class="view" id="v-pin">
-  <button class="back-btn" onclick="goBack('v-worker')">← Zurück</button>
-  <div class="pin-center">
+  <button class="back-btn" onclick="goTo('v-worker')">← Zurück</button>
+  <div style="text-align:center;padding-top:8px">
     <div class="pin-avatar-big" id="pin-avatar"></div>
-    <div class="pin-name" id="pin-name"></div>
-    <div style="font-size:13px;color:var(--gx-muted);margin-top:2px">PIN eingeben</div>
+    <div style="font-size:17px;font-weight:700;color:var(--gx-text)" id="pin-name"></div>
+    <div style="font-size:13px;color:var(--gx-muted);margin-top:3px">PIN eingeben</div>
   </div>
-  <div class="pin-display">
-    <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div>
-    <div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div>
-  </div>
+  <div class="pin-display"><div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div><div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div></div>
   <div class="error-msg" id="pin-error">Falscher PIN. Nochmal versuchen.</div>
   <div class="numpad">
     <div class="num-btn" onclick="pinKey('1')">1</div><div class="num-btn" onclick="pinKey('2')">2</div><div class="num-btn" onclick="pinKey('3')">3</div>
     <div class="num-btn" onclick="pinKey('4')">4</div><div class="num-btn" onclick="pinKey('5')">5</div><div class="num-btn" onclick="pinKey('6')">6</div>
     <div class="num-btn" onclick="pinKey('7')">7</div><div class="num-btn" onclick="pinKey('8')">8</div><div class="num-btn" onclick="pinKey('9')">9</div>
-    <div class="num-btn empty"></div><div class="num-btn" onclick="pinKey('0')">0</div>
-    <div class="num-btn del" onclick="pinDel()">⌫</div>
+    <div class="num-btn empty"></div><div class="num-btn" onclick="pinKey('0')">0</div><div class="num-btn" onclick="pinDel()" style="font-size:16px;color:var(--gx-muted)">⌫</div>
   </div>
 </div>
 
-<!-- Hauptbereich -->
-<div class="view" id="v-main">
+<!-- MITARBEITER: Dashboard -->
+<div class="view" id="v-dashboard">
   <div class="user-row">
-    <div class="user-avatar" id="main-avatar"></div>
-    <div style="flex:1">
-      <div class="user-name" id="main-name"></div>
-      <div class="user-date" id="main-date"></div>
+    <div class="user-avatar" id="dash-avatar"></div>
+    <div style="flex:1"><div style="font-size:15px;font-weight:700" id="dash-name"></div><div style="font-size:12px;color:var(--gx-muted)" id="dash-date"></div></div>
+  </div>
+  <div class="metrics" id="dash-metrics">
+    <div class="metric"><div class="m-label">Überstunden</div><div class="m-val green" id="m-ueber">+4,5 h</div></div>
+    <div class="metric"><div class="m-label">Urlaub (Rest)</div><div class="m-val amber" id="m-urlaub">18 Tage</div></div>
+    <div class="metric" style="grid-column:span 2">
+      <div class="m-label">Diese Woche <span id="week-label" style="float:right;font-weight:700;color:var(--gx-green-dark)">36,5 / 40 h</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="week-bar" style="width:91%"></div></div>
     </div>
-    <button class="back-btn" style="margin:0" onclick="goBack('v-worker')">Abmelden</button>
+  </div>
+  <div class="section-label">Meine letzten Einträge</div>
+  <div class="card" style="padding:8px 12px">
+    <div id="dash-entries"><div class="empty-hint">Keine Einträge</div></div>
+  </div>
+  <div id="late-warn" class="warn-msg">⚠️ Du hast in den letzten Tagen mehrfach nachträglich eingetragen. Bitte versuche rechtzeitig zu stempeln!</div>
+</div>
+
+<!-- MITARBEITER: Stempeln -->
+<div class="view" id="v-stempel">
+  <div id="running-block" style="display:none">
+    <div class="running-row"><div class="dot-live"></div><div style="font-size:13px;color:var(--gx-green-dark);font-weight:600" id="running-label"></div></div>
+    <div class="elapsed" id="elapsed">00:00:00</div>
+  </div>
+  <div class="field"><label>Baustelle / Projekt</label><select id="proj-stamp"></select></div>
+  <div class="success-msg" id="stamp-ok">✓ Zeit gespeichert!</div>
+  <div class="error-msg" id="stamp-err"></div>
+  <button class="stamp-btn ein" id="btn-ein" onclick="einStempeln()">▶ Einloggen</button>
+  <button class="stamp-btn aus" id="btn-aus" onclick="ausStempeln()" style="display:none">⏹ Ausloggen &amp; speichern</button>
+</div>
+
+<!-- MITARBEITER: Manuell -->
+<div class="view" id="v-manuell">
+  <div id="manual-locked" class="info-msg" style="display:none">🔒 Frist abgelaufen — Admin muss diesen Eintrag freischalten.</div>
+  <div class="row2">
+    <div class="field"><label>Von</label><input type="time" id="man-von" value="07:00"></div>
+    <div class="field"><label>Bis</label><input type="time" id="man-bis" value="16:00"></div>
+  </div>
+  <div class="field"><label>Pause (Minuten)</label><input type="number" id="man-pause" value="30" min="0" max="180" step="5" inputmode="numeric"></div>
+  <div class="calc-box"><span style="font-size:13px;color:var(--gx-muted);font-weight:500">Nettostunden</span><span class="calc-val" id="calc-net">8,5 h</span></div>
+  <div class="field"><label>Datum</label><input type="date" id="man-datum"></div>
+  <div class="field"><label>Baustelle / Projekt</label><select id="proj-man"></select></div>
+  <div class="field"><label>Notiz</label><input type="text" id="man-notiz" placeholder="z.B. Krankheit, Sonderaufgabe…"></div>
+  <div class="error-msg" id="man-error"></div>
+  <div class="success-msg" id="man-ok">✓ Eintrag gespeichert — wartet auf Freigabe</div>
+  <button class="btn-primary" onclick="saveManual()">Eintrag speichern</button>
+</div>
+
+<!-- MITARBEITER: Urlaub -->
+<div class="view" id="v-urlaub">
+  <div class="metrics">
+    <div class="metric"><div class="m-label">Urlaubstage gesamt</div><div class="m-val">30</div></div>
+    <div class="metric"><div class="m-label">Noch verfügbar</div><div class="m-val green" id="urlaub-rest">18</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">✈️ Neuen Urlaubsantrag stellen</div>
+    <div class="row2">
+      <div class="field"><label>Von</label><input type="date" id="urlaub-von"></div>
+      <div class="field"><label>Bis</label><input type="date" id="urlaub-bis"></div>
+    </div>
+    <div class="field"><label>Notiz (optional)</label><input type="text" id="urlaub-notiz" placeholder="z.B. Familienurlaub"></div>
+    <div class="success-msg" id="urlaub-ok">✓ Antrag gestellt — wartet auf Genehmigung</div>
+    <div class="error-msg" id="urlaub-err">Bitte Datum prüfen.</div>
+    <button class="btn-primary" onclick="stelleUrlaubsantrag()">Antrag stellen</button>
+  </div>
+  <div class="section-label" style="margin-top:4px">Meine Anträge</div>
+  <div class="card" style="padding:8px 12px"><div id="urlaub-list"><div class="empty-hint">Keine Anträge</div></div></div>
+</div>
+
+<!-- ADMIN: Dashboard -->
+<div class="view" id="v-admin">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <div style="font-size:15px;font-weight:700">Admin-Bereich</div>
+    <button class="btn-outline" onclick="goTo('v-worker');currentWorker=null" style="font-size:12px">Abmelden</button>
+  </div>
+  <div class="metrics">
+    <div class="metric"><div class="m-label">Offene Freigaben</div><div class="m-val red" id="admin-offen">0</div></div>
+    <div class="metric"><div class="m-label">Urlaubsanträge</div><div class="m-val amber" id="admin-urlaub-count">0</div></div>
+    <div class="metric"><div class="m-label">Aktiv heute</div><div class="m-val green" id="admin-aktiv">0</div></div>
+    <div class="metric"><div class="m-label">Einträge gesamt</div><div class="m-val" id="admin-total">0</div></div>
   </div>
   <div class="tab-bar">
-    <div class="tab active" id="tab-stempel" onclick="switchTab('stempel')">⏱ Stempeln</div>
-    <div class="tab" id="tab-manuell" onclick="switchTab('manuell')">✏️ Manuell</div>
-    <div class="tab" id="tab-verlauf" onclick="switchTab('verlauf')">📋 Verlauf</div>
+    <div class="tab active" id="atab-freigaben" onclick="switchAdminTab('freigaben')">Freigaben</div>
+    <div class="tab" id="atab-urlaub" onclick="switchAdminTab('urlaub')">Urlaub</div>
+    <div class="tab" id="atab-alle" onclick="switchAdminTab('alle')">Alle Einträge</div>
   </div>
+  <div id="atc-freigaben"><div class="empty-hint" id="freigaben-empty" style="display:none">Keine offenen Freigaben ✓</div><div id="freigaben-list"></div></div>
+  <div id="atc-urlaub" style="display:none"><div class="empty-hint" id="urlaub-empty" style="display:none">Keine Anträge ✓</div><div id="admin-urlaub-list"></div></div>
+  <div id="atc-alle" style="display:none"><div id="alle-list"></div></div>
+</div>
 
-  <!-- Stempeln -->
-  <div id="tc-stempel">
-    <div id="running-block" style="display:none">
-      <div class="running-row"><div class="dot-live"></div><div style="font-size:14px;color:var(--gx-green);font-weight:600" id="running-label"></div></div>
-      <div class="elapsed" id="elapsed">00:00:00</div>
-    </div>
-    <div class="field"><label>Baustelle / Projekt</label><select id="proj-stamp"></select></div>
-    <div class="error-msg" id="stamp-err"></div>
-    <div class="success-msg" id="stamp-ok">✓ Zeit gespeichert!</div>
-    <button class="stamp-btn ein" id="btn-ein" onclick="einStempeln()">▶ Einloggen</button>
-    <button class="stamp-btn aus" id="btn-aus" onclick="ausStempeln()" style="display:none">⏹ Ausloggen &amp; speichern</button>
-  </div>
-
-  <!-- Manuell -->
-  <div id="tc-manuell" style="display:none">
-    <div class="row2">
-      <div class="field"><label>Von</label><input type="time" id="man-von" value="07:00"></div>
-      <div class="field"><label>Bis</label><input type="time" id="man-bis" value="16:00"></div>
-    </div>
-    <div class="field"><label>Pause (Minuten)</label><input type="number" id="man-pause" value="30" min="0" max="180" step="5" inputmode="numeric"></div>
-    <div class="calc-box">
-      <span class="calc-label">Nettostunden</span>
-      <span class="calc-val" id="calc-net">8,5 h</span>
-    </div>
-    <div class="field"><label>Datum</label><input type="date" id="man-datum"></div>
-    <div class="field"><label>Baustelle / Projekt</label><select id="proj-man"></select></div>
-    <div class="field"><label>Notiz (optional)</label><input type="text" id="man-notiz" placeholder="z.B. Krankenstand, Überstunden…"></div>
-    <div class="error-msg" id="man-error">Bitte Von/Bis korrekt eingeben.</div>
-    <div class="success-msg" id="man-ok">✓ Eintrag gespeichert!</div>
-    <button class="save-btn" onclick="saveManual()">Eintrag speichern</button>
-  </div>
-
-  <!-- Verlauf -->
-  <div id="tc-verlauf" style="display:none">
-    <div class="entries-list" id="entries-list"></div>
-  </div>
+<!-- Bottom Nav (nur wenn eingeloggt) -->
+<div class="bottom-nav" id="bottom-nav" style="display:none">
+  <button class="nav-btn active" id="nav-dashboard" onclick="switchMain('dashboard')"><i class="ti ti-home" aria-hidden="true"></i><span>Start</span></button>
+  <button class="nav-btn" id="nav-stempel" onclick="switchMain('stempel')"><i class="ti ti-clock" aria-hidden="true"></i><span>Stempeln</span></button>
+  <button class="nav-btn" id="nav-manuell" onclick="switchMain('manuell')"><i class="ti ti-edit" aria-hidden="true"></i><span>Manuell</span></button>
+  <button class="nav-btn" id="nav-urlaub" onclick="switchMain('urlaub')"><i class="ti ti-beach" aria-hidden="true"></i><span>Urlaub</span></button>
 </div>
 
 <div class="status-bar" id="status-bar">Verbinde…</div>
-</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 
 <script>
 // ============================================================
-//  *** HIER DIE GOOGLE APPS SCRIPT URL EINTRAGEN ***
+//  *** GOOGLE APPS SCRIPT URL HIER EINTRAGEN ***
 // ============================================================
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMel0O3XuZbUkZkAam7vRE-_vhCUNzTRt1amUXcyHDiw9tsr6N0y2J4xFlpRr5MLwS/exec";
 // ============================================================
 
+const ADMIN_PIN = "0000"; // Admin-PIN — bitte ändern!
+
 const PROJEKTE = [
-  "Garten Müller, Leipzig",
-  "Park Renovierung Südvorstadt",
-  "Bepflanzung Neubau Lindenstr.",
-  "Pflege Firmengelände Koch AG",
-  "Wegebau Gohlis-Mitte"
+  "Garten Müller, Leipzig","Park Renovierung Südvorstadt",
+  "Bepflanzung Neubau Lindenstr.","Pflege Firmengelände Koch AG","Wegebau Gohlis-Mitte"
 ];
 
 const FALLBACK_WORKERS = [
@@ -241,32 +314,39 @@ const FALLBACK_WORKERS = [
   {name:"Nico Richter",pin:"1122"}
 ];
 
-let currentWorker=null,pinInput='',stampStart=null,elapsedTimer=null,localEntries=[],workers=[];
+let currentWorker=null,pinInput='',stampStart=null,elapsedTimer=null,workers=[];
+let allEntries=[],urlaubAntraege=[];
+let isAdmin=false;
 
 function pad(n){return String(n).padStart(2,'0')}
 function initials(n){return n.split(' ').map(x=>x[0]).join('')}
 function timeToMin(t){const[h,m]=t.split(':').map(Number);return h*60+m}
-function setStatus(msg,type=''){const b=document.getElementById('status-bar');b.textContent=msg;b.className='status-bar'+(type?' '+type:'');}
+function setStatus(m,t=''){const b=document.getElementById('status-bar');b.textContent=m;b.className='status-bar'+(t?' '+t:'')}
+function showMsg(id,dur=2500){const el=document.getElementById(id);el.style.display='block';setTimeout(()=>el.style.display='none',dur)}
 
-function fillProjekte(){
-  ['proj-stamp','proj-man'].forEach(id=>{
-    document.getElementById(id).innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');
-  });
-}
-
-async function loadWorkers(){
+// Load
+async function init(){
   fillProjekte();
+  const stored=localStorage.getItem('gx_entries');
+  if(stored)try{allEntries=JSON.parse(stored)}catch{}
+  const storedU=localStorage.getItem('gx_urlaub');
+  if(storedU)try{urlaubAntraege=JSON.parse(storedU)}catch{}
   if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){
-    workers=FALLBACK_WORKERS;renderWorkerGrid();
-    setStatus('Demo-Modus','err');return;
+    workers=FALLBACK_WORKERS;renderWorkerGrid();setStatus('Demo-Modus','err');return;
   }
   try{
     const r=await fetch(SCRIPT_URL+'?action=getWorkers');
     const d=await r.json();
     workers=d.ok&&d.workers.length>0?d.workers:FALLBACK_WORKERS;
-    setStatus(d.ok?'Verbunden ✓':'Lokaler Modus',d.ok?'ok':'err');
-  }catch{workers=FALLBACK_WORKERS;setStatus('Offline – lokaler Modus','err');}
-  renderWorkerGrid();
+    setStatus('Verbunden ✓','ok');
+  }catch{workers=FALLBACK_WORKERS;setStatus('Offline','err');}
+  renderWorkerGrid();updateAdminBadge();
+}
+
+function fillProjekte(){
+  ['proj-stamp','proj-man'].forEach(id=>{
+    document.getElementById(id).innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');
+  });
 }
 
 function renderWorkerGrid(){
@@ -277,49 +357,113 @@ function renderWorkerGrid(){
     </div>`).join('');
 }
 
-function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function goBack(to){pinInput='';updateDots();document.getElementById('pin-error').style.display='none';if(elapsedTimer){clearInterval(elapsedTimer);elapsedTimer=null;stampStart=null;}showView(to);}
+// Navigation
+function goTo(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
+function switchMain(name){
+  ['dashboard','stempel','manuell','urlaub'].forEach(n=>{
+    document.getElementById('nav-'+n).classList.toggle('active',n===name);
+  });
+  goTo('v-'+name);
+  if(name==='dashboard')renderDashboard();
+  if(name==='urlaub')renderUrlaubList();
+}
+
+// Worker select & PIN
 function selectWorker(i){
-  currentWorker=workers[i];pinInput='';updateDots();
+  isAdmin=false;
+  currentWorker=workers[i];
+  pinInput='';updateDots();
   document.getElementById('pin-error').style.display='none';
   document.getElementById('pin-avatar').textContent=initials(currentWorker.name);
   document.getElementById('pin-name').textContent=currentWorker.name;
-  showView('v-pin');
+  goTo('v-pin');
 }
-function updateDots(){for(let i=0;i<4;i++)document.getElementById('d'+i).classList.toggle('filled',i<pinInput.length);}
-function pinKey(k){if(pinInput.length>=4)return;pinInput+=k;updateDots();document.getElementById('pin-error').style.display='none';if(pinInput.length===4)setTimeout(checkPin,150);}
-function pinDel(){pinInput=pinInput.slice(0,-1);updateDots();}
 
-async function checkPin(){
-  if(currentWorker.pin){
-    pinInput===currentWorker.pin?openMain():(document.getElementById('pin-error').style.display='block',pinInput='',updateDots());
-    return;
+function openAdmin(){
+  isAdmin=true;currentWorker={name:'Admin',pin:ADMIN_PIN};
+  pinInput='';updateDots();
+  document.getElementById('pin-error').style.display='none';
+  document.getElementById('pin-avatar').textContent='AD';
+  document.getElementById('pin-name').textContent='Admin-Bereich';
+  goTo('v-pin');
+}
+
+function updateDots(){for(let i=0;i<4;i++)document.getElementById('d'+i).classList.toggle('filled',i<pinInput.length)}
+function pinKey(k){if(pinInput.length>=4)return;pinInput+=k;updateDots();document.getElementById('pin-error').style.display='none';if(pinInput.length===4)setTimeout(checkPin,150)}
+function pinDel(){pinInput=pinInput.slice(0,-1);updateDots()}
+
+function checkPin(){
+  if(pinInput===currentWorker.pin){
+    if(isAdmin){enterAdmin();}else{enterWorker();}
+  } else {
+    document.getElementById('pin-error').style.display='block';pinInput='';updateDots();
   }
-  try{
-    const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'checkPin',worker:currentWorker.name,pin:pinInput})});
-    const d=await r.json();
-    d.ok?openMain():(document.getElementById('pin-error').style.display='block',pinInput='',updateDots());
-  }catch{document.getElementById('pin-error').style.display='block';document.getElementById('pin-error').textContent='Verbindungsfehler.';pinInput='';updateDots();}
 }
 
-function openMain(){
-  document.getElementById('main-avatar').textContent=initials(currentWorker.name);
-  document.getElementById('main-name').textContent=currentWorker.name;
+function enterWorker(){
+  document.getElementById('bottom-nav').style.display='flex';
   const now=new Date();
-  document.getElementById('main-date').textContent=now.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('dash-avatar').textContent=initials(currentWorker.name);
+  document.getElementById('dash-name').textContent=currentWorker.name;
+  document.getElementById('dash-date').textContent=now.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('man-datum').value=now.toISOString().slice(0,10);
-  recalcManual();switchTab('stempel');showView('v-main');
+  checkLateWarning();
+  renderDashboard();
+  switchMain('dashboard');
 }
 
-function switchTab(name){
-  ['stempel','manuell','verlauf'].forEach(t=>{
-    document.getElementById('tab-'+t).classList.toggle('active',t===name);
-    document.getElementById('tc-'+t).style.display=t===name?'block':'none';
-  });
-  if(name==='verlauf')renderEntries();
+function enterAdmin(){
+  document.getElementById('bottom-nav').style.display='none';
+  renderAdmin();
+  goTo('v-admin');
 }
 
+function goBack(){document.getElementById('bottom-nav').style.display='none';goTo('v-worker');currentWorker=null;if(elapsedTimer){clearInterval(elapsedTimer);elapsedTimer=null;stampStart=null;}}
+
+// Dashboard
+function renderDashboard(){
+  const mine=allEntries.filter(e=>e.worker===currentWorker.name);
+  const recent=mine.slice().reverse().slice(0,5);
+  const list=document.getElementById('dash-entries');
+  if(!recent.length){list.innerHTML='<div class="empty-hint">Noch keine Einträge</div>';return;}
+  list.innerHTML=recent.map(e=>`
+    <div class="entry-row">
+      <div><div class="entry-main">${e.proj.split(',')[0]}</div><div class="entry-sub">${e.datum} · ${e.von}–${e.bis}</div></div>
+      <div class="entry-right"><div class="entry-h">${(+e.netto).toFixed(1)} h</div>${statusBadge(e.status)}</div>
+    </div>`).join('');
+}
+
+function statusBadge(s){
+  if(s==='approved')return '<span class="sbadge green">✓ Freigegeben</span>';
+  if(s==='pending')return '<span class="sbadge amber">⏳ Ausstehend</span>';
+  if(s==='rejected')return '<span class="sbadge red">✗ Abgelehnt</span>';
+  if(s==='locked')return '<span class="sbadge gray">🔒 Gesperrt</span>';
+  return '<span class="sbadge green">✓ Auto</span>';
+}
+
+function checkLateWarning(){
+  const mine=allEntries.filter(e=>e.worker===currentWorker.name&&e.art==='Manuell');
+  const recent=mine.slice(-5);
+  const lateCount=recent.filter(e=>{
+    const entryDate=new Date(e.datum);
+    const savedDate=new Date(e.savedAt||e.datum);
+    return (savedDate-entryDate)>12*3600*1000;
+  }).length;
+  document.getElementById('late-warn').style.display=lateCount>=3?'block':'none';
+}
+
+function updateAdminBadge(){
+  const pending=allEntries.filter(e=>e.status==='pending').length+urlaubAntraege.filter(u=>u.status==='pending').length;
+  const badge=document.getElementById('admin-badge');
+  badge.style.display=pending>0?'inline':'none';
+  badge.textContent=pending;
+}
+
+// Stempeln
 function einStempeln(){
   stampStart=Date.now();
   const now=new Date();
@@ -335,15 +479,16 @@ async function ausStempeln(){
   clearInterval(elapsedTimer);elapsedTimer=null;
   const end=new Date(),start=new Date(stampStart);
   const diffMin=Math.round((end-start)/60000);
-  const entry={worker:currentWorker.name,datum:start.toISOString().slice(0,10),von:`${pad(start.getHours())}:${pad(start.getMinutes())}`,bis:`${pad(end.getHours())}:${pad(end.getMinutes())}`,pause:0,netto:parseFloat((diffMin/60).toFixed(2)),proj:document.getElementById('proj-stamp').value,art:'Stempel',notiz:''};
+  const entry={worker:currentWorker.name,datum:start.toISOString().slice(0,10),von:`${pad(start.getHours())}:${pad(start.getMinutes())}`,bis:`${pad(end.getHours())}:${pad(end.getMinutes())}`,pause:0,netto:parseFloat((diffMin/60).toFixed(2)),proj:document.getElementById('proj-stamp').value,art:'Stempel',status:'auto',savedAt:new Date().toISOString()};
   stampStart=null;
   document.getElementById('running-block').style.display='none';
   document.getElementById('btn-ein').style.display='flex';
   document.getElementById('btn-aus').style.display='none';
   document.getElementById('elapsed').textContent='00:00:00';
-  await saveToSheets(entry);
+  await saveEntry(entry,'stamp-ok');
 }
 
+// Manuelle Eingabe
 function recalcManual(){
   const von=document.getElementById('man-von').value,bis=document.getElementById('man-bis').value,pause=parseInt(document.getElementById('man-pause').value)||0;
   if(von&&bis){const diff=timeToMin(bis)-timeToMin(von)-pause;document.getElementById('calc-net').textContent=diff>0?(diff/60).toFixed(1).replace('.',',')+' h':'– h';}
@@ -353,46 +498,120 @@ document.getElementById('man-bis').addEventListener('input',recalcManual);
 document.getElementById('man-pause').addEventListener('input',recalcManual);
 
 async function saveManual(){
-  const von=document.getElementById('man-von').value,bis=document.getElementById('man-bis').value,pause=parseInt(document.getElementById('man-pause').value)||0,datum=document.getElementById('man-datum').value;
+  const von=document.getElementById('man-von').value,bis=document.getElementById('man-bis').value;
+  const pause=parseInt(document.getElementById('man-pause').value)||0;
+  const datum=document.getElementById('man-datum').value;
   document.getElementById('man-error').style.display='none';document.getElementById('man-ok').style.display='none';
   const diff=timeToMin(bis)-timeToMin(von)-pause;
-  if(!von||!bis||diff<=0){document.getElementById('man-error').style.display='block';return;}
-  const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),proj:document.getElementById('proj-man').value,art:'Manuell',notiz:document.getElementById('man-notiz').value};
-  const ok=await saveToSheets(entry);
-  if(ok)document.getElementById('man-notiz').value='';
+  if(!von||!bis||diff<=0||!datum){document.getElementById('man-error').textContent='Bitte alle Felder korrekt ausfüllen.';document.getElementById('man-error').style.display='block';return;}
+  const entryDate=new Date(datum);
+  const now=new Date();
+  const diffH=(now-entryDate)/3600000;
+  const status=diffH>36?'locked':diffH>12?'pending':'pending';
+  const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),proj:document.getElementById('proj-man').value,art:'Manuell',status,savedAt:now.toISOString(),notiz:document.getElementById('man-notiz').value};
+  await saveEntry(entry,'man-ok');
+  document.getElementById('man-notiz').value='';
+  checkLateWarning();updateAdminBadge();
 }
 
-async function saveToSheets(entry){
-  localEntries.push(entry);
-  const okId=entry.art==='Stempel'?'stamp-ok':'man-ok';
-  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){
-    const el=document.getElementById(okId);el.style.display='block';setTimeout(()=>el.style.display='none',2500);
-    setStatus('Demo – lokal gespeichert','loading');return true;
-  }
+async function saveEntry(entry,okId){
+  allEntries.push(entry);
+  localStorage.setItem('gx_entries',JSON.stringify(allEntries));
+  showMsg(okId);
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){setStatus('Demo – lokal gespeichert','loading');return;}
   setStatus('Speichert…','loading');
   try{
     const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveEntry',entry})});
     const d=await r.json();
-    if(d.ok){setStatus('In Google Sheets gespeichert ✓','ok');const el=document.getElementById(okId);el.style.display='block';setTimeout(()=>el.style.display='none',2500);return true;}
-    else{setStatus('Fehler: '+d.error,'err');return false;}
-  }catch{
-    setStatus('Offline – lokal gespeichert','err');
-    const el=document.getElementById(okId);el.style.display='block';setTimeout(()=>el.style.display='none',2500);return true;
-  }
+    setStatus(d.ok?'In Sheets gespeichert ✓':'Fehler: '+d.error,d.ok?'ok':'err');
+  }catch{setStatus('Offline – lokal gespeichert','err');}
 }
 
-function renderEntries(){
-  const list=document.getElementById('entries-list');
-  const mine=localEntries.filter(e=>e.worker===currentWorker?.name).slice().reverse();
-  if(!mine.length){list.innerHTML='<div class="empty-hint">Noch keine Einträge in dieser Sitzung</div>';return;}
-  list.innerHTML=mine.map(e=>`
+// Urlaub
+function stelleUrlaubsantrag(){
+  const von=document.getElementById('urlaub-von').value,bis=document.getElementById('urlaub-bis').value;
+  document.getElementById('urlaub-err').style.display='none';document.getElementById('urlaub-ok').style.display='none';
+  if(!von||!bis||von>bis){document.getElementById('urlaub-err').style.display='block';return;}
+  const tage=Math.round((new Date(bis)-new Date(von))/86400000)+1;
+  const antrag={id:Date.now(),worker:currentWorker.name,von,bis,tage,notiz:document.getElementById('urlaub-notiz').value,status:'pending',datum:new Date().toISOString()};
+  urlaubAntraege.push(antrag);
+  localStorage.setItem('gx_urlaub',JSON.stringify(urlaubAntraege));
+  showMsg('urlaub-ok');renderUrlaubList();updateAdminBadge();
+  document.getElementById('urlaub-notiz').value='';
+}
+
+function renderUrlaubList(){
+  const mine=urlaubAntraege.filter(u=>u.worker===currentWorker?.name).slice().reverse();
+  const list=document.getElementById('urlaub-list');
+  if(!mine.length){list.innerHTML='<div class="empty-hint">Keine Anträge</div>';return;}
+  list.innerHTML=mine.map(u=>`
     <div class="entry-row">
-      <div><div class="entry-main">${e.proj.split(',')[0]}</div><div class="entry-sub">${e.datum} · ${e.von}–${e.bis}${e.pause>0?' · Pause '+e.pause+' min':''}</div>${e.notiz?`<div class="entry-sub">${e.notiz}</div>`:''}<span class="badge ${e.art==='Stempel'?'badge-s':'badge-m'}">${e.art}</span></div>
-      <div class="entry-h">${e.netto.toFixed(1).replace('.',',')} h</div>
+      <div><div class="entry-main">${u.von} – ${u.bis}</div><div class="entry-sub">${u.tage} Tage${u.notiz?' · '+u.notiz:''}</div></div>
+      <div class="entry-right">${statusBadge(u.status)}</div>
     </div>`).join('');
 }
 
-loadWorkers();
+// Admin
+function renderAdmin(){
+  const pending=allEntries.filter(e=>e.status==='pending');
+  const pendingU=urlaubAntraege.filter(u=>u.status==='pending');
+  document.getElementById('admin-offen').textContent=pending.length;
+  document.getElementById('admin-urlaub-count').textContent=pendingU.length;
+  document.getElementById('admin-total').textContent=allEntries.length;
+  document.getElementById('admin-aktiv').textContent=allEntries.filter(e=>{
+    const today=new Date().toISOString().slice(0,10);
+    return e.datum===today&&e.art==='Stempel';
+  }).length;
+  renderFreigaben();renderAdminUrlaub();renderAlle();
+}
+
+function switchAdminTab(name){
+  ['freigaben','urlaub','alle'].forEach(t=>{
+    document.getElementById('atab-'+t).classList.toggle('active',t===name);
+    document.getElementById('atc-'+t).style.display=t===name?'block':'none';
+  });
+}
+
+function renderFreigaben(){
+  const pending=allEntries.filter(e=>e.status==='pending');
+  document.getElementById('freigaben-empty').style.display=pending.length===0?'block':'none';
+  document.getElementById('freigaben-list').innerHTML=pending.map((e,i)=>`
+    <div class="card" style="padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div class="entry-main">${e.worker}</div><div class="entry-sub">${e.datum} · ${e.von}–${e.bis} · ${(+e.netto).toFixed(1)} h</div><div class="entry-sub">${e.proj.split(',')[0]}${e.notiz?' · '+e.notiz:''}</div></div>
+        <div class="action-btns"><button class="btn-approve" onclick="adminAction('entry',${allEntries.indexOf(e)},'approved')">✓</button><button class="btn-reject" onclick="adminAction('entry',${allEntries.indexOf(e)},'rejected')">✗</button></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderAdminUrlaub(){
+  const pending=urlaubAntraege.filter(u=>u.status==='pending');
+  document.getElementById('urlaub-empty').style.display=pending.length===0?'block':'none';
+  document.getElementById('admin-urlaub-list').innerHTML=pending.map(u=>`
+    <div class="card" style="padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div class="entry-main">${u.worker}</div><div class="entry-sub">${u.von} – ${u.bis} · ${u.tage} Tage${u.notiz?' · '+u.notiz:''}</div></div>
+        <div class="action-btns"><button class="btn-approve" onclick="adminAction('urlaub',${urlaubAntraege.indexOf(u)},'approved')">✓</button><button class="btn-reject" onclick="adminAction('urlaub',${urlaubAntraege.indexOf(u)},'rejected')">✗</button></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderAlle(){
+  const sorted=allEntries.slice().reverse().slice(0,20);
+  document.getElementById('alle-list').innerHTML=sorted.map(e=>`
+    <div class="entry-row">
+      <div><div class="entry-main">${e.worker} · ${e.proj.split(',')[0]}</div><div class="entry-sub">${e.datum} · ${e.von}–${e.bis}</div></div>
+      <div class="entry-right"><div class="entry-h">${(+e.netto).toFixed(1)} h</div>${statusBadge(e.status)}</div>
+    </div>`).join('');
+}
+
+function adminAction(type,idx,action){
+  if(type==='entry'){allEntries[idx].status=action;localStorage.setItem('gx_entries',JSON.stringify(allEntries));}
+  else{urlaubAntraege[idx].status=action;localStorage.setItem('gx_urlaub',JSON.stringify(urlaubAntraege));}
+  updateAdminBadge();renderAdmin();
+}
+
+init();
 </script>
 </body>
 </html>
