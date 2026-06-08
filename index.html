@@ -425,7 +425,23 @@ function enterAdmin(){
 function goBack(){document.getElementById('bottom-nav').style.display='none';goTo('v-worker');currentWorker=null;if(elapsedTimer){clearInterval(elapsedTimer);elapsedTimer=null;stampStart=null;}}
 
 // Dashboard
-function renderDashboard(){
+async function renderDashboard(){
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+    try{
+      const today=new Date();
+      const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
+      const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
+      const d=await r.json();
+      if(d.ok&&d.entries){
+        d.entries.forEach(se=>{
+          const local=allEntries.find(e=>e.id==se.id);
+          if(local){local.status=se.status;}
+          else if(se.worker===currentWorker.name){allEntries.push(se);}
+        });
+        localStorage.setItem('gx_entries',JSON.stringify(allEntries));
+      }
+    }catch{}
+  }
   const mine=allEntries.filter(e=>e.worker===currentWorker.name);
   const recent=mine.slice().reverse().slice(0,5);
   const list=document.getElementById('dash-entries');
@@ -479,7 +495,7 @@ async function ausStempeln(){
   clearInterval(elapsedTimer);elapsedTimer=null;
   const end=new Date(),start=new Date(stampStart);
   const diffMin=Math.round((end-start)/60000);
-  const entry={id:Date.now()+Math.random().toString(36).slice(2),worker:currentWorker.name,datum:start.toISOString().slice(0,10),von:`${pad(start.getHours())}:${pad(start.getMinutes())}`,bis:`${pad(end.getHours())}:${pad(end.getMinutes())}`,pause:0,netto:parseFloat((diffMin/60).toFixed(2)),proj:document.getElementById('proj-stamp').value,art:'Stempel',status:'auto',savedAt:new Date().toISOString()};
+  const entry={worker:currentWorker.name,datum:start.toISOString().slice(0,10),von:`${pad(start.getHours())}:${pad(start.getMinutes())}`,bis:`${pad(end.getHours())}:${pad(end.getMinutes())}`,pause:0,netto:parseFloat((diffMin/60).toFixed(2)),proj:document.getElementById('proj-stamp').value,art:'Stempel',status:'auto',savedAt:new Date().toISOString()};
   stampStart=null;
   document.getElementById('running-block').style.display='none';
   document.getElementById('btn-ein').style.display='flex';
@@ -507,7 +523,6 @@ async function saveManual(){
   const entryDate=new Date(datum+'T23:59:59');
   const now=new Date();
   const diffH=(now-entryDate)/3600000;
-  // pending: gleicher Tag oder bis 12h nach Tagesende; locked: älter als das
   const status=diffH>12?'locked':'pending';
   const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),proj:document.getElementById('proj-man').value,art:'Manuell',status,savedAt:now.toISOString(),notiz:document.getElementById('man-notiz').value};
   await saveEntry(entry,'man-ok');
@@ -541,9 +556,24 @@ function stelleUrlaubsantrag(){
   document.getElementById('urlaub-notiz').value='';
 }
 
-function renderUrlaubList(){
-  const mine=urlaubAntraege.filter(u=>u.worker===currentWorker?.name).slice().reverse();
+async function renderUrlaubList(){
   const list=document.getElementById('urlaub-list');
+  // Frisch aus Sheets laden wenn möglich
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+    try{
+      const r=await fetch(SCRIPT_URL+'?action=getUrlaub&worker='+encodeURIComponent(currentWorker.name));
+      const d=await r.json();
+      if(d.ok&&d.urlaub){
+        // Lokale Liste mit Sheets-Status synchronisieren
+        d.urlaub.forEach(su=>{
+          const local=urlaubAntraege.find(u=>u.id==su.id);
+          if(local)local.status=su.status;
+        });
+        localStorage.setItem('gx_urlaub',JSON.stringify(urlaubAntraege));
+      }
+    }catch{}
+  }
+  const mine=urlaubAntraege.filter(u=>u.worker===currentWorker?.name).slice().reverse();
   if(!mine.length){list.innerHTML='<div class="empty-hint">Keine Anträge</div>';return;}
   list.innerHTML=mine.map(u=>`
     <div class="entry-row">
