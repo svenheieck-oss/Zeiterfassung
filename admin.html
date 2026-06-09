@@ -19,8 +19,6 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 .subtitle{color:var(--gx-gold);font-size:11px;letter-spacing:.06em}
 .logout-btn{background:none;border:1px solid #444;color:#aaa;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer}
 .logout-btn:hover{border-color:var(--gx-gold);color:var(--gx-gold)}
-
-/* Login */
 .login-wrap{max-width:360px;margin:80px auto;padding:0 16px}
 .login-card{background:#fff;border-radius:16px;border:1px solid var(--gx-border);padding:32px;text-align:center}
 .login-logo{width:64px;height:64px;border-radius:14px;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:var(--gx-dark);margin:0 auto 16px}
@@ -32,70 +30,66 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 .num-btn:active{background:var(--gx-green-light)}
 .num-btn.empty{background:none;border-color:transparent;cursor:default}
 .error-msg{background:var(--red-light);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--red);margin-bottom:10px;display:none}
-
-/* Dashboard */
-.dashboard{max-width:1100px;margin:0 auto;padding:24px 20px;display:none}
+.dashboard{max-width:1200px;margin:0 auto;padding:24px 20px;display:none}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
 .metric{background:#fff;border:1px solid var(--gx-border);border-radius:12px;padding:16px}
 .m-label{font-size:12px;color:var(--gx-muted);margin-bottom:6px;font-weight:500}
 .m-val{font-size:28px;font-weight:700}
-.m-val.green{color:var(--gx-green-dark)}
-.m-val.amber{color:#e65100}
-.m-val.red{color:var(--red)}
-.m-val.blue{color:var(--blue)}
-
+.m-val.green{color:var(--gx-green-dark)}.m-val.amber{color:#e65100}.m-val.red{color:var(--red)}.m-val.blue{color:var(--blue)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .card{background:#fff;border:1px solid var(--gx-border);border-radius:12px;padding:18px}
 .card-title{font-size:14px;font-weight:700;color:var(--gx-text);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
 .card-title span{font-size:12px;font-weight:400;color:var(--gx-muted)}
-
-.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--gx-border);margin-bottom:16px}
-.tab{padding:10px 20px;font-size:13px;font-weight:500;color:var(--gx-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--gx-border);margin-bottom:16px;overflow-x:auto;flex-wrap:nowrap}
+.tab{padding:10px 16px;font-size:13px;font-weight:500;color:var(--gx-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap}
 .tab.active{color:var(--gx-green);border-bottom-color:var(--gx-green);font-weight:700}
-
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;font-size:11px;font-weight:700;color:var(--gx-muted);text-transform:uppercase;letter-spacing:.05em;padding:8px 10px;border-bottom:1px solid var(--gx-border)}
-td{padding:10px 10px;border-bottom:0.5px solid var(--gx-border);color:var(--gx-text)}
+td{padding:10px;border-bottom:0.5px solid var(--gx-border);color:var(--gx-text)}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--gx-bg)}
-
 .sbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
 .sbadge.green{background:var(--gx-green-light);color:var(--gx-green-dark)}
 .sbadge.amber{background:var(--amber-light);color:#e65100}
 .sbadge.red{background:var(--red-light);color:var(--red)}
 .sbadge.gray{background:var(--gx-bg);color:var(--gx-muted)}
 .sbadge.auto{background:#e8eaf6;color:#283593}
-
 .action-btns{display:flex;gap:5px}
 .btn-ok{padding:4px 12px;border-radius:6px;background:var(--gx-green-light);color:var(--gx-green-dark);border:1px solid #a5d6a7;font-size:12px;font-weight:600;cursor:pointer}
 .btn-no{padding:4px 12px;border-radius:6px;background:var(--red-light);color:var(--red);border:1px solid #ffcdd2;font-size:12px;font-weight:600;cursor:pointer}
-.btn-ok:hover{background:#c8e6c9}
-.btn-no:hover{background:#ffcdd2}
-
+.btn-ok:hover{background:#c8e6c9}.btn-no:hover{background:#ffcdd2}
 .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .bar-label{width:180px;font-size:13px;color:var(--gx-text);flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bar-track{flex:1;height:14px;background:var(--gx-bg);border-radius:4px;overflow:hidden}
 .bar-fill{height:100%;background:var(--gx-green);border-radius:4px}
-.bar-val{width:50px;text-align:right;font-size:13px;font-weight:600;color:var(--gx-green-dark);flex-shrink:0}
-
+.bar-val{width:60px;text-align:right;font-size:13px;font-weight:600;color:var(--gx-green-dark);flex-shrink:0}
 .filter-row{display:flex;gap:10px;margin-bottom:16px;align-items:center;flex-wrap:wrap}
 .filter-row select,.filter-row input{padding:8px 12px;border:1px solid var(--gx-border);border-radius:8px;font-size:13px;background:#fff;color:var(--gx-text)}
 .btn-export{padding:8px 16px;border-radius:8px;background:var(--gx-green);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer}
 .btn-export:hover{background:var(--gx-green-dark)}
 .btn-refresh{padding:8px 12px;border-radius:8px;background:#fff;color:var(--gx-text);border:1px solid var(--gx-border);font-size:13px;cursor:pointer}
-
 .status-bar{text-align:center;font-size:12px;color:var(--gx-muted);padding:8px}
 .empty-hint{text-align:center;color:#aaa;padding:24px;font-size:13px}
 .badge-num{background:var(--red);color:#fff;border-radius:10px;font-size:10px;font-weight:700;padding:1px 6px;margin-left:6px}
-
-@media(max-width:700px){
-  .metrics{grid-template-columns:1fr 1fr}
-  .grid2{grid-template-columns:1fr}
-}
+.alert-box{border-radius:10px;padding:12px 16px;margin-bottom:12px;font-size:13px}
+/* Medien Galerie */
+.foto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:12px}
+.foto-card{background:#fff;border:1px solid var(--gx-border);border-radius:10px;overflow:hidden}
+.foto-img{width:100%;height:120px;object-fit:cover;cursor:pointer}
+.foto-info{padding:8px 10px;font-size:12px}
+.foto-worker{font-weight:700;color:var(--gx-text)}
+.foto-meta{color:var(--gx-muted);font-size:11px;margin-top:2px}
+.foto-kommentar{margin-top:6px;display:flex;gap:6px}
+.foto-kommentar input{flex:1;font-size:11px;padding:4px 8px;border:1px solid var(--gx-border);border-radius:6px}
+.foto-kommentar button{padding:4px 8px;background:var(--gx-green);color:#fff;border:none;border-radius:6px;font-size:11px;cursor:pointer}
+.foto-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;margin-top:4px}
+.foto-badge.baudoku{background:var(--gx-green-light);color:var(--gx-green-dark)}
+.foto-badge.krank{background:var(--red-light);color:var(--red)}
+.foto-badge.problem{background:var(--amber-light);color:#e65100}
+@media(max-width:700px){.metrics{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
 <div class="topbar">
   <div class="logo">GX</div>
   <div style="flex:1"><div class="title">Gartenxclusiv</div><div class="subtitle">ADMIN-DASHBOARD</div></div>
@@ -118,43 +112,36 @@ tr:hover td{background:var(--gx-bg)}
       <div class="num-btn empty"></div><div class="num-btn" onclick="pinKey('0')">0</div>
       <div class="num-btn" onclick="pinDel()" style="color:var(--gx-muted)">⌫</div>
     </div>
-    <div style="font-size:12px;color:#bbb;margin-top:16px">Standard-PIN: 0000 — bitte im Apps Script ändern</div>
+    <div style="font-size:12px;color:#bbb;margin-top:16px">Standard-PIN: 0000</div>
   </div>
 </div>
 
 <!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
-
-  <!-- Metriken -->
   <div class="metrics">
     <div class="metric"><div class="m-label">Offene Freigaben</div><div class="m-val red" id="m-pending">–</div></div>
     <div class="metric"><div class="m-label">Urlaubsanträge</div><div class="m-val amber" id="m-urlaub">–</div></div>
     <div class="metric"><div class="m-label">Stunden (Monat)</div><div class="m-val green" id="m-stunden">–</div></div>
     <div class="metric"><div class="m-label">Einträge (Monat)</div><div class="m-val blue" id="m-eintraege">–</div></div>
   </div>
-
-  <!-- Tabs -->
   <div class="tab-bar">
     <div class="tab active" id="tab-freigaben" onclick="switchTab('freigaben')">Freigaben <span id="badge-freigaben" class="badge-num" style="display:none">0</span></div>
     <div class="tab" id="tab-urlaub" onclick="switchTab('urlaub')">Urlaub <span id="badge-urlaub" class="badge-num" style="display:none">0</span></div>
     <div class="tab" id="tab-auswertung" onclick="switchTab('auswertung')">Auswertung</div>
     <div class="tab" id="tab-alle" onclick="switchTab('alle')">Alle Einträge</div>
+    <div class="tab" id="tab-team" onclick="switchTab('team')">Team</div>
+    <div class="tab" id="tab-medien" onclick="switchTab('medien')">Medien <span id="badge-medien" class="badge-num" style="display:none">0</span></div>
+    <div class="tab" id="tab-tagesberichte" onclick="switchTab('tagesberichte')">Tagesberichte</div>
   </div>
 
   <!-- Freigaben -->
   <div id="tc-freigaben">
-    <div class="card">
-      <div class="card-title">Offene Zeiteinträge <span>manuelle Einträge die geprüft werden müssen</span></div>
-      <div id="freigaben-list"><div class="empty-hint">Keine offenen Freigaben ✓</div></div>
-    </div>
+    <div class="card"><div class="card-title">Offene Zeiteinträge <span>manuelle Einträge die geprüft werden müssen</span></div><div id="freigaben-list"><div class="empty-hint">Keine offenen Freigaben ✓</div></div></div>
   </div>
 
   <!-- Urlaub -->
   <div id="tc-urlaub" style="display:none">
-    <div class="card">
-      <div class="card-title">Urlaubsanträge <span>warten auf Genehmigung</span></div>
-      <div id="urlaub-list"><div class="empty-hint">Keine offenen Anträge ✓</div></div>
-    </div>
+    <div class="card"><div class="card-title">Urlaubsanträge <span>warten auf Genehmigung</span></div><div id="urlaub-list"><div class="empty-hint">Keine offenen Anträge ✓</div></div></div>
   </div>
 
   <!-- Auswertung -->
@@ -165,14 +152,8 @@ tr:hover td{background:var(--gx-bg)}
       <button class="btn-export" onclick="exportCSV()">⬇ CSV Export</button>
     </div>
     <div class="grid2">
-      <div class="card">
-        <div class="card-title">Stunden nach Mitarbeiter</div>
-        <div id="chart-worker"><div class="empty-hint">Lädt…</div></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Stunden nach Projekt</div>
-        <div id="chart-proj"><div class="empty-hint">Lädt…</div></div>
-      </div>
+      <div class="card"><div class="card-title">Stunden nach Mitarbeiter</div><div id="chart-worker"><div class="empty-hint">Lädt…</div></div></div>
+      <div class="card"><div class="card-title">Stunden nach Projekt</div><div id="chart-proj"><div class="empty-hint">Lädt…</div></div></div>
     </div>
   </div>
 
@@ -184,239 +165,275 @@ tr:hover td{background:var(--gx-bg)}
         <select id="filter-monat2" onchange="loadAlleEntries()"></select>
         <button class="btn-export" onclick="exportCSV()">⬇ CSV Export</button>
       </div>
-      <table>
-        <thead><tr><th>Datum</th><th>Mitarbeiter</th><th>Von</th><th>Bis</th><th>Netto</th><th>Projekt</th><th>Art</th><th>Status</th></tr></thead>
-        <tbody id="alle-tbody"><tr><td colspan="8" class="empty-hint">Lädt…</td></tr></tbody>
-      </table>
+      <table><thead><tr><th>Datum</th><th>Mitarbeiter</th><th>Von</th><th>Bis</th><th>Netto</th><th>Projekt</th><th>Art</th><th>Status</th></tr></thead>
+      <tbody id="alle-tbody"><tr><td colspan="8" class="empty-hint">Lädt…</td></tr></tbody></table>
     </div>
   </div>
 
+  <!-- Team -->
+  <div id="tc-team" style="display:none">
+    <div id="team-alerts"></div>
+    <div class="card"><div class="card-title">Team-Übersicht <span>Stammdaten aller Mitarbeiter</span></div><div id="team-list"><div class="empty-hint">Lädt…</div></div></div>
+  </div>
+
+  <!-- Medien Galerie -->
+  <div id="tc-medien" style="display:none">
+    <div class="filter-row">
+      <select id="med-filter-kat" onchange="loadMedien()"><option value="alle">Alle Kategorien</option><option value="baudoku">Baudokumentation</option><option value="krank">Krankmeldungen</option><option value="problem">Probleme</option></select>
+      <select id="med-filter-worker" onchange="loadMedien()"><option value="alle">Alle Mitarbeiter</option></select>
+      <button class="btn-refresh" onclick="loadMedien()">↻ Aktualisieren</button>
+    </div>
+    <div id="medien-list"><div class="empty-hint">Lädt…</div></div>
+  </div>
+
+  <!-- Tagesberichte -->
+  <div id="tc-tagesberichte" style="display:none">
+    <div class="filter-row">
+      <select id="tb-filter-worker" onchange="loadTagesberichte()"><option value="alle">Alle Mitarbeiter</option></select>
+      <select id="tb-filter-monat" onchange="loadTagesberichte()"></select>
+      <button class="btn-refresh" onclick="loadTagesberichte()">↻ Aktualisieren</button>
+      <button class="btn-export" onclick="exportTagesberichte()">⬇ Export</button>
+    </div>
+    <div id="tagesberichte-list"><div class="empty-hint">Lädt…</div></div>
+  </div>
 </div>
 
 <script>
-// ============================================================
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMel0O3XuZbUkZkAam7vRE-_vhCUNzTRt1amUXcyHDiw9tsr6N0y2J4xFlpRr5MLwS/exec";
-const ADMIN_PIN  = "0000";
-// ============================================================
-
-let pinInput = '';
-let cachedEntries = [];
-let cachedSummary = {};
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbyMel0O3XuZbUkZkAam7vRE-_vhCUNzTRt1amUXcyHDiw9tsr6N0y2J4xFlpRr5MLwS/exec";
+const ADMIN_PIN="0000";
+let pinInput='',cachedEntries=[],cachedSummary={};
 
 function pad(n){return String(n).padStart(2,'0')}
 function setStatus(m,c=''){const b=document.getElementById('status-bar-top');b.textContent=m;b.style.color=c||'var(--gx-gold)'}
-
-// PIN
 function updateDots(){for(let i=0;i<4;i++)document.getElementById('d'+i).classList.toggle('filled',i<pinInput.length)}
 function pinKey(k){if(pinInput.length>=4)return;pinInput+=k;updateDots();document.getElementById('pin-error').style.display='none';if(pinInput.length===4)setTimeout(checkPin,150)}
 function pinDel(){pinInput=pinInput.slice(0,-1);updateDots()}
 
 async function checkPin(){
-  let ok = pinInput === ADMIN_PIN;
-  if(!ok && SCRIPT_URL && !SCRIPT_URL.includes('EURE_URL')){
-    try{
-      const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'checkAdminPin',pin:pinInput})});
-      const d=await r.json();ok=d.ok;
-    }catch{}
+  let ok=pinInput===ADMIN_PIN;
+  if(!ok&&SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+    try{const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'checkAdminPin',pin:pinInput})});const d=await r.json();ok=d.ok;}catch{}
   }
-  if(ok){
-    document.getElementById('login-area').style.display='none';
-    document.getElementById('dashboard').style.display='block';
-    initDashboard();
-  } else {
-    document.getElementById('pin-error').style.display='block';
-    pinInput='';updateDots();
-  }
+  if(ok){document.getElementById('login-area').style.display='none';document.getElementById('dashboard').style.display='block';initDashboard();}
+  else{document.getElementById('pin-error').style.display='block';pinInput='';updateDots();}
 }
 
 function logout(){document.getElementById('login-area').style.display='block';document.getElementById('dashboard').style.display='none';pinInput='';updateDots();}
 
-// Init
 async function initDashboard(){
   fillMonatFilter();
-  await Promise.all([loadPending(), loadSummary(), loadWorkerFilter()]);
+  await Promise.all([loadPending(),loadSummary(),loadWorkerFilter()]);
 }
 
 function fillMonatFilter(){
-  const now=new Date();
-  const opts=[];
+  const now=new Date();const opts=[];
   for(let i=0;i<6;i++){
     const d=new Date(now.getFullYear(),now.getMonth()-i,1);
     const val=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;
     const label=d.toLocaleDateString('de-DE',{month:'long',year:'numeric'});
     opts.push(`<option value="${val}">${label}</option>`);
   }
-  ['filter-monat','filter-monat2'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el)el.innerHTML=opts.join('');
-  });
+  ['filter-monat','filter-monat2','tb-filter-monat'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=opts.join('');});
 }
 
 async function loadWorkerFilter(){
   if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
   try{
-    const r=await fetch(SCRIPT_URL+'?action=getWorkers');
-    const d=await r.json();
+    const r=await fetch(SCRIPT_URL+'?action=getWorkers');const d=await r.json();
     if(d.ok){
-      const sel=document.getElementById('filter-worker');
-      d.workers.forEach(w=>{
-        const o=document.createElement('option');o.value=w.name;o.textContent=w.name;sel.appendChild(o);
+      ['filter-worker','med-filter-worker','tb-filter-worker'].forEach(id=>{
+        const sel=document.getElementById(id);if(!sel)return;
+        d.workers.forEach(w=>{const o=document.createElement('option');o.value=w.name;o.textContent=w.name;sel.appendChild(o);});
       });
     }
   }catch{}
 }
 
-// Pending
 async function loadPending(){
-  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){
-    setStatus('Demo-Modus — Sheets-URL eintragen','#e08080');
-    renderPending({entries:[],urlaub:[]});return;
-  }
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){setStatus('Demo-Modus','#e08080');renderPending({entries:[],urlaub:[]});return;}
   setStatus('Lädt…','#aaa');
-  try{
-    const r=await fetch(SCRIPT_URL+'?action=getPending');
-    const d=await r.json();
-    if(d.ok){renderPending(d);setStatus('Verbunden ✓');}
-    else setStatus('Fehler: '+d.error,'#e08080');
-  }catch{setStatus('Verbindungsfehler','#e08080');}
+  try{const r=await fetch(SCRIPT_URL+'?action=getPending');const d=await r.json();if(d.ok){renderPending(d);setStatus('Verbunden ✓');}else setStatus('Fehler: '+d.error,'#e08080');}
+  catch{setStatus('Verbindungsfehler','#e08080');}
 }
 
 function renderPending(d){
   document.getElementById('m-pending').textContent=d.entries.length;
   document.getElementById('m-urlaub').textContent=d.urlaub.length;
-
-  const bf=document.getElementById('badge-freigaben');
-  bf.textContent=d.entries.length;bf.style.display=d.entries.length>0?'inline':'none';
-  const bu=document.getElementById('badge-urlaub');
-  bu.textContent=d.urlaub.length;bu.style.display=d.urlaub.length>0?'inline':'none';
-
-  // Freigaben
+  const bf=document.getElementById('badge-freigaben');bf.textContent=d.entries.length;bf.style.display=d.entries.length>0?'inline':'none';
+  const bu=document.getElementById('badge-urlaub');bu.textContent=d.urlaub.length;bu.style.display=d.urlaub.length>0?'inline':'none';
   const fl=document.getElementById('freigaben-list');
   if(!d.entries.length){fl.innerHTML='<div class="empty-hint">Keine offenen Freigaben ✓</div>';}
-  else{
-    fl.innerHTML=`<table><thead><tr><th>Mitarbeiter</th><th>Datum</th><th>Zeit</th><th>Stunden</th><th>Projekt</th><th>Notiz</th><th>Aktion</th></tr></thead><tbody>`+
-    d.entries.map(e=>`<tr>
-      <td><strong>${e.worker}</strong></td>
-      <td>${e.datum}</td>
-      <td>${e.von}–${e.bis}</td>
-      <td><strong>${parseFloat(e.netto).toFixed(1)} h</strong></td>
-      <td>${String(e.proj).split(',')[0]}</td>
-      <td style="color:var(--gx-muted)">${e.notiz||'–'}</td>
-      <td><div class="action-btns">
-        <button class="btn-ok" onclick="doAction('${e.id}','approved','entry')">✓ Freigeben</button>
-        <button class="btn-no" onclick="doAction('${e.id}','rejected','entry')">✗ Ablehnen</button>
-      </div></td></tr>`).join('')+
-    `</tbody></table>`;
-  }
-
-  // Urlaub
+  else{fl.innerHTML=`<table><thead><tr><th>Mitarbeiter</th><th>Datum</th><th>Zeit</th><th>Stunden</th><th>Projekt</th><th>Notiz</th><th>Aktion</th></tr></thead><tbody>`+
+    d.entries.map(e=>`<tr><td><strong>${e.worker}</strong></td><td>${e.datum}</td><td>${e.von}–${e.bis}</td><td><strong>${parseFloat(e.netto).toFixed(1)} h</strong></td><td>${String(e.proj).split(',')[0]}</td><td style="color:var(--gx-muted)">${e.notiz||'–'}</td><td><div class="action-btns"><button class="btn-ok" onclick="doAction('${e.id}','approved','entry')">✓ Freigeben</button><button class="btn-no" onclick="doAction('${e.id}','rejected','entry')">✗ Ablehnen</button></div></td></tr>`).join('')+`</tbody></table>`;}
   const ul=document.getElementById('urlaub-list');
   if(!d.urlaub.length){ul.innerHTML='<div class="empty-hint">Keine offenen Anträge ✓</div>';}
-  else{
-    ul.innerHTML=`<table><thead><tr><th>Mitarbeiter</th><th>Von</th><th>Bis</th><th>Tage</th><th>Notiz</th><th>Aktion</th></tr></thead><tbody>`+
-    d.urlaub.map(u=>`<tr>
-      <td><strong>${u.worker}</strong></td>
-      <td>${u.von}</td><td>${u.bis}</td>
-      <td><strong>${u.tage}</strong></td>
-      <td style="color:var(--gx-muted)">${u.notiz||'–'}</td>
-      <td><div class="action-btns">
-        <button class="btn-ok" onclick="doAction('${u.id}','approved','urlaub')">✓ Genehmigen</button>
-        <button class="btn-no" onclick="doAction('${u.id}','rejected','urlaub')">✗ Ablehnen</button>
-      </div></td></tr>`).join('')+
-    `</tbody></table>`;
-  }
+  else{ul.innerHTML=`<table><thead><tr><th>Mitarbeiter</th><th>Von</th><th>Bis</th><th>Tage</th><th>Notiz</th><th>Aktion</th></tr></thead><tbody>`+
+    d.urlaub.map(u=>`<tr><td><strong>${u.worker}</strong></td><td>${u.von}</td><td>${u.bis}</td><td><strong>${u.tage}</strong></td><td style="color:var(--gx-muted)">${u.notiz||'–'}</td><td><div class="action-btns"><button class="btn-ok" onclick="doAction('${u.id}','approved','urlaub')">✓ Genehmigen</button><button class="btn-no" onclick="doAction('${u.id}','rejected','urlaub')">✗ Ablehnen</button></div></td></tr>`).join('')+`</tbody></table>`;}
 }
 
-async function doAction(id, status, type){
+async function doAction(id,status,type){
   if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){alert('Sheets-URL nicht eingetragen!');return;}
-  try{
-    const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'updateStatus',id,status,type})});
-    const d=await r.json();
-    if(d.ok)loadPending();
-    else alert('Fehler: '+d.error);
-  }catch{alert('Verbindungsfehler');}
+  try{const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'updateStatus',id,status,type})});const d=await r.json();if(d.ok)loadPending();else alert('Fehler: '+d.error);}
+  catch{alert('Verbindungsfehler');}
 }
 
-// Auswertung
 async function loadSummary(){
   const monat=document.getElementById('filter-monat').value;
   if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){renderSummary({summary:{},projekte:{}});return;}
-  try{
-    const r=await fetch(`${SCRIPT_URL}?action=getSummary&monat=${monat}`);
-    const d=await r.json();
-    if(d.ok){cachedSummary=d;renderSummary(d);}
-  }catch{setStatus('Fehler beim Laden','#e08080');}
+  try{const r=await fetch(`${SCRIPT_URL}?action=getSummary&monat=${monat}`);const d=await r.json();if(d.ok){cachedSummary=d;renderSummary(d);}}
+  catch{setStatus('Fehler beim Laden','#e08080');}
 }
 
 function renderSummary(d){
   const workers=Object.entries(d.summary||{}).sort((a,b)=>b[1].total-a[1].total);
   const projs=Object.entries(d.projekte||{}).sort((a,b)=>b[1]-a[1]);
-  const maxW=workers.length?workers[0][1].total:1;
-  const maxP=projs.length?projs[0][1]:1;
+  const maxW=workers.length?workers[0][1].total:1;const maxP=projs.length?projs[0][1]:1;
   let totalH=0;workers.forEach(([,v])=>totalH+=v.total);
   document.getElementById('m-stunden').textContent=(Math.round(totalH*10)/10)+' h';
   document.getElementById('m-eintraege').textContent=workers.reduce((s,[,v])=>s+v.tage,0);
-
-  document.getElementById('chart-worker').innerHTML=workers.length?
-    workers.map(([name,v])=>`<div class="bar-row"><div class="bar-label">${name}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(v.total/maxW*100)}%"></div></div><div class="bar-val">${v.total} h</div></div>`).join('')
-    :'<div class="empty-hint">Keine Daten</div>';
-
-  document.getElementById('chart-proj').innerHTML=projs.length?
-    projs.map(([proj,h])=>`<div class="bar-row"><div class="bar-label">${proj.split(',')[0]}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(h/maxP*100)}%;background:var(--gx-gold)"></div></div><div class="bar-val">${h} h</div></div>`).join('')
-    :'<div class="empty-hint">Keine Daten</div>';
+  document.getElementById('chart-worker').innerHTML=workers.length?workers.map(([name,v])=>`<div class="bar-row"><div class="bar-label">${name}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(v.total/maxW*100)}%"></div></div><div class="bar-val">${v.total} h</div></div>`).join(''):'<div class="empty-hint">Keine Daten</div>';
+  document.getElementById('chart-proj').innerHTML=projs.length?projs.map(([proj,h])=>`<div class="bar-row"><div class="bar-label">${proj.split(',')[0]}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(h/maxP*100)}%;background:var(--gx-gold)"></div></div><div class="bar-val">${h} h</div></div>`).join(''):'<div class="empty-hint">Keine Daten</div>';
 }
 
-// Alle Einträge
 async function loadAlleEntries(){
   const worker=document.getElementById('filter-worker').value;
   const monat=document.getElementById('filter-monat2').value;
   if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){document.getElementById('alle-tbody').innerHTML='<tr><td colspan="8" class="empty-hint">Sheets-URL eintragen</td></tr>';return;}
-  try{
-    const r=await fetch(`${SCRIPT_URL}?action=getEntries&worker=${encodeURIComponent(worker)}&monat=${monat}`);
-    const d=await r.json();
-    if(d.ok){cachedEntries=d.entries;renderAlleEntries(d.entries);}
-  }catch{document.getElementById('alle-tbody').innerHTML='<tr><td colspan="8" class="empty-hint">Fehler beim Laden</td></tr>';}
+  try{const r=await fetch(`${SCRIPT_URL}?action=getEntries&worker=${encodeURIComponent(worker)}&monat=${monat}`);const d=await r.json();if(d.ok){cachedEntries=d.entries;renderAlleEntries(d.entries);}}
+  catch{document.getElementById('alle-tbody').innerHTML='<tr><td colspan="8" class="empty-hint">Fehler</td></tr>';}
 }
 
 function statusBadge(s){
   const map={approved:'<span class="sbadge green">✓ Freigegeben</span>',pending:'<span class="sbadge amber">⏳ Ausstehend</span>',rejected:'<span class="sbadge red">✗ Abgelehnt</span>',auto:'<span class="sbadge auto">Auto</span>',locked:'<span class="sbadge gray">🔒 Gesperrt</span>'};
-  return map[s]||`<span class="sbadge gray">${s}</span>`;
+  return map[s]||`<span class="sbadge gray">${s||'–'}</span>`;
 }
 
 function renderAlleEntries(entries){
   const tbody=document.getElementById('alle-tbody');
-  if(!entries.length){tbody.innerHTML='<tr><td colspan="8" class="empty-hint">Keine Einträge gefunden</td></tr>';return;}
-  tbody.innerHTML=entries.map(e=>`<tr>
-    <td>${e.datum}</td><td>${e.worker}</td>
-    <td>${e.von}</td><td>${e.bis}</td>
-    <td><strong>${parseFloat(e.netto).toFixed(1)} h</strong></td>
-    <td>${String(e.proj).split(',')[0]}</td>
-    <td><span class="sbadge ${e.art==='Stempel'?'green':'amber'}">${e.art}</span></td>
-    <td>${statusBadge(e.status)}</td>
-  </tr>`).join('');
+  if(!entries.length){tbody.innerHTML='<tr><td colspan="8" class="empty-hint">Keine Einträge</td></tr>';return;}
+  tbody.innerHTML=entries.map(e=>`<tr><td>${e.datum}</td><td>${e.worker}</td><td>${e.von}</td><td>${e.bis}</td><td><strong>${parseFloat(e.netto).toFixed(1)} h</strong></td><td>${String(e.proj).split(',')[0]}</td><td><span class="sbadge ${e.art==='Stempel'?'green':'amber'}">${e.art}</span></td><td>${statusBadge(e.status)}</td></tr>`).join('');
 }
 
-// CSV Export
 function exportCSV(){
   const entries=cachedEntries.length?cachedEntries:[];
-  if(!entries.length){alert('Keine Daten zum Exportieren. Bitte zuerst "Alle Einträge" laden.');return;}
+  if(!entries.length){alert('Keine Daten. Bitte zuerst "Alle Einträge" laden.');return;}
   const monat=document.getElementById('filter-monat2')?.value||document.getElementById('filter-monat').value;
   const header='Datum,Mitarbeiter,Von,Bis,Pause (min),Netto (h),Projekt,Art,Status,Notiz';
   const rows=entries.map(e=>[e.datum,e.worker,e.von,e.bis,e.pause,e.netto,`"${e.proj}"`,e.art,e.status,`"${e.notiz||''}"`].join(','));
   const csv='\uFEFF'+header+'\n'+rows.join('\n');
-  const a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-  a.download=`gartenxclusiv_zeiten_${monat}.csv`;a.click();
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download=`gartenxclusiv_zeiten_${monat}.csv`;a.click();
 }
 
-// Tab switch
+// Team
+async function loadTeam(){
+  const list=document.getElementById('team-list');const alerts=document.getElementById('team-alerts');
+  list.innerHTML='<div class="empty-hint">Lädt…</div>';alerts.innerHTML='';
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){list.innerHTML='<div class="empty-hint">Sheets-URL eintragen</div>';return;}
+  try{
+    const r=await fetch(SCRIPT_URL+'?action=getAllStammdaten');const d=await r.json();
+    if(!d.ok||!d.alle||!d.alle.length){list.innerHTML='<div class="empty-hint">Keine Stammdaten.<br>Bitte <strong>setupStammdatenTabelle()</strong> im Apps Script ausführen.</div>';return;}
+    const now=new Date();const today=now.toISOString().slice(5,10);
+    const bdays=d.alle.filter(m=>m.geburtstag&&m.geburtstag.slice(5)===today);
+    if(bdays.length)alerts.innerHTML+='<div class="alert-box" style="background:#fff8e1;border:1px solid #f59f00;color:#633806">🎂 <strong>Geburtstag heute:</strong> '+bdays.map(b=>b.name).join(', ')+'</div>';
+    const weekBdays=d.alle.filter(m=>{if(!m.geburtstag||m.geburtstag.slice(5)===today)return false;const bd=new Date(now.getFullYear()+'-'+m.geburtstag.slice(5));const diff=Math.ceil((bd-now)/86400000);return diff>0&&diff<=7;});
+    if(weekBdays.length)alerts.innerHTML+='<div class="alert-box" style="background:#f5ecd4;border:1px solid var(--gx-gold);color:#633806">🎂 <strong>Geburtstage diese Woche:</strong> '+weekBdays.map(b=>b.name+' ('+b.geburtstag.slice(5)+')').join(', ')+'</div>';
+    const probe=d.alle.filter(m=>{if(!m.probezeit)return false;const diff=Math.ceil((new Date(m.probezeit)-now)/86400000);return diff>0&&diff<=30;});
+    if(probe.length)alerts.innerHTML+='<div class="alert-box" style="background:#fff3e0;border:1px solid #ffb74d;color:#e65100">⏰ <strong>Probezeit endet bald:</strong> '+probe.map(m=>m.name+' (bis '+m.probezeit+', noch '+Math.ceil((new Date(m.probezeit)-now)/86400000)+' Tage)').join(' · ')+'</div>';
+    const austritt=d.alle.filter(m=>{if(!m.austrittsdatum)return false;const diff=Math.ceil((new Date(m.austrittsdatum)-now)/86400000);return diff>=0&&diff<=60;});
+    if(austritt.length)alerts.innerHTML+='<div class="alert-box" style="background:var(--red-light);border:1px solid #ffcdd2;color:var(--red)">🚪 <strong>Bevorstehende Austritte:</strong> '+austritt.map(m=>m.name+' ('+m.austrittsdatum+')').join(', ')+'</div>';
+    list.innerHTML=`<table><thead><tr><th>Name</th><th>Rolle</th><th>Seit</th><th>Wochenstd.</th><th>Urlaub/Jahr</th><th>Geburtstag</th><th>Probezeit bis</th><th>Lohnart</th></tr></thead><tbody>`+
+      d.alle.map(m=>{
+        const rolleColor=m.rolle==='Admin'?'#0c447c':m.rolle==='Vorarbeiter'?'#633806':'var(--gx-muted)';
+        const rolleBg=m.rolle==='Admin'?'#e3f2fd':m.rolle==='Vorarbeiter'?'#f5ecd4':'var(--gx-bg)';
+        const probeOk=m.probezeit&&Math.ceil((new Date(m.probezeit)-now)/86400000)<=30&&Math.ceil((new Date(m.probezeit)-now)/86400000)>0;
+        return `<tr><td><strong>${m.name}</strong></td><td><span style="background:${rolleBg};color:${rolleColor};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">${m.rolle||'Mitarbeiter'}</span></td><td>${m.eintrittsdatum||'–'}</td><td>${m.wochenstunden||40} h</td><td>${m.urlaubstage||30} Tage</td><td>${m.geburtstag?'🎂 '+m.geburtstag:'–'}</td><td style="color:${probeOk?'#e65100':'inherit'}">${m.probezeit?'⏰ '+m.probezeit:'–'}</td><td>${m.lohnart||'–'}</td></tr>`;
+      }).join('')+'</tbody></table>';
+  }catch(err){list.innerHTML='<div class="empty-hint">Fehler: '+err.message+'</div>';}
+}
+
+// Medien Galerie
+async function loadMedien(){
+  const list=document.getElementById('medien-list');
+  list.innerHTML='<div class="empty-hint">Lädt…</div>';
+  const kat=document.getElementById('med-filter-kat').value;
+  const worker=document.getElementById('med-filter-worker').value;
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){list.innerHTML='<div class="empty-hint">Sheets-URL eintragen</div>';return;}
+  try{
+    const r=await fetch(`${SCRIPT_URL}?action=getMedia&kategorie=${kat}&worker=${encodeURIComponent(worker)}`);
+    const d=await r.json();
+    if(!d.ok||!d.medien||!d.medien.length){list.innerHTML='<div class="empty-hint">Keine Fotos vorhanden</div>';return;}
+    // Badge für Probleme
+    const probleme=d.medien.filter(m=>m.kategorie==='problem'&&!m.kommentar).length;
+    const badge=document.getElementById('badge-medien');
+    badge.textContent=probleme;badge.style.display=probleme>0?'inline':'none';
+    list.innerHTML='<div class="foto-grid">'+d.medien.map(m=>`
+      <div class="foto-card">
+        ${m.driveUrl?`<img class="foto-img" src="${m.driveUrl}" onclick="window.open('${m.driveUrl}')" onerror="this.style.display='none'">`:'<div style="height:120px;background:var(--gx-bg);display:flex;align-items:center;justify-content:center;font-size:24px">📷</div>'}
+        <div class="foto-info">
+          <div class="foto-worker">${m.worker}</div>
+          <div class="foto-meta">${m.datum||''} · ${m.projekt||'–'}</div>
+          <span class="foto-badge ${m.kategorie}">${m.kategorie==='baudoku'?'Baudoku':m.kategorie==='krank'?'Krankmeldung':'⚠️ Problem'}</span>
+          ${m.notiz?`<div style="font-size:11px;color:var(--gx-muted);margin-top:4px">${m.notiz}</div>`:''}
+          ${m.kommentar?`<div style="font-size:11px;background:var(--gx-green-light);padding:4px 6px;border-radius:4px;margin-top:4px;color:var(--gx-green-dark)">💬 ${m.kommentar}</div>`:''}
+          <div class="foto-kommentar">
+            <input type="text" placeholder="Kommentar…" id="kom-${m.id}" value="${m.kommentar||''}">
+            <button onclick="saveKommentar('${m.id}',document.getElementById('kom-${m.id}').value)">✓</button>
+          </div>
+          ${m.driveUrl?`<a href="${m.driveUrl}" target="_blank" style="font-size:11px;color:var(--blue);display:block;margin-top:4px">⬇ Download</a>`:''}
+        </div>
+      </div>`).join('')+'</div>';
+  }catch(err){list.innerHTML='<div class="empty-hint">Fehler: '+err.message+'</div>';}
+}
+
+async function saveKommentar(mediaId,kommentar){
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
+  try{
+    await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'updateMediaComment',mediaId,kommentar})});
+    setStatus('Kommentar gespeichert ✓','');
+  }catch{}
+}
+
+// Tagesberichte
+async function loadTagesberichte(){
+  const list=document.getElementById('tagesberichte-list');
+  list.innerHTML='<div class="empty-hint">Lädt…</div>';
+  const worker=document.getElementById('tb-filter-worker').value;
+  const monat=document.getElementById('tb-filter-monat').value;
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){list.innerHTML='<div class="empty-hint">Sheets-URL eintragen</div>';return;}
+  try{
+    const r=await fetch(`${SCRIPT_URL}?action=getTagesberichte&worker=${encodeURIComponent(worker)}&monat=${monat}`);
+    const d=await r.json();
+    if(!d.ok||!d.berichte||!d.berichte.length){list.innerHTML='<div class="empty-hint">Keine Tagesberichte</div>';return;}
+    list.innerHTML=d.berichte.map(b=>`
+      <div class="card" style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+          <div>
+            <div style="font-size:14px;font-weight:700">${b.proj||'–'}</div>
+            <div style="font-size:12px;color:var(--gx-muted)">${b.datum} · ${b.von}–${b.bis} · ${parseFloat(b.netto||0).toFixed(1)} h · ${b.auftraggeber||''}</div>
+            <div style="font-size:12px;margin-top:4px">👷 Ersteller: <strong>${b.ersteller}</strong></div>
+          </div>
+        </div>
+        ${b.mitarbeiter&&b.mitarbeiter.length?`<div style="font-size:12px;margin-bottom:6px">👥 Team: ${b.mitarbeiter.map(m=>m.name+' ('+m.h+' h)').join(', ')}</div>`:''}
+        ${b.material&&b.material.length?`<div style="font-size:12px;color:var(--gx-muted)">📦 Material: ${b.material.map(m=>m.name+' '+m.menge+' '+m.einheit).join(' · ')}</div>`:''}
+        ${b.notiz?`<div style="font-size:12px;margin-top:6px;font-style:italic;color:var(--gx-muted)">${b.notiz}</div>`:''}
+      </div>`).join('');
+  }catch(err){list.innerHTML='<div class="empty-hint">Fehler: '+err.message+'</div>';}
+}
+
+function exportTagesberichte(){
+  alert('Export-Funktion folgt in der nächsten Version.');
+}
+
 function switchTab(name){
-  ['freigaben','urlaub','auswertung','alle'].forEach(t=>{
+  ['freigaben','urlaub','auswertung','alle','team','medien','tagesberichte'].forEach(t=>{
     document.getElementById('tab-'+t).classList.toggle('active',t===name);
     document.getElementById('tc-'+t).style.display=t===name?'block':'none';
   });
   if(name==='auswertung')loadSummary();
   if(name==='alle')loadAlleEntries();
+  if(name==='team')loadTeam();
+  if(name==='medien')loadMedien();
+  if(name==='tagesberichte')loadTagesberichte();
 }
 </script>
 </body>
