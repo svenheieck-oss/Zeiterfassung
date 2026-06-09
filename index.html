@@ -195,6 +195,27 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 /* Admin-Tabs angepasst */
 .atab-bar{display:flex;border-bottom:2px solid var(--gx-border);margin-bottom:14px;overflow-x:auto}
 .atab-bar .tab{white-space:nowrap;min-width:auto;padding:10px 12px}
+
+/* Tagesbericht */
+.tb-step-bar{display:flex;gap:6px;margin-bottom:14px}
+.tb-step{flex:1;padding:8px 4px;border-radius:8px;background:var(--gx-bg);border:1px solid var(--gx-border);text-align:center;font-size:11px;color:var(--gx-muted);cursor:pointer;font-weight:500}
+.tb-step.active{background:var(--gx-green-light);border-color:var(--gx-green);color:var(--gx-green-dark);font-weight:700}
+.tb-section{margin-bottom:14px}
+.tb-sec-label{font-size:10px;font-weight:700;color:var(--gx-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.tb-ma-row{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:0.5px solid var(--gx-border)}
+.tb-ma-row:last-child{border-bottom:none}
+.tb-check{width:24px;height:24px;border-radius:6px;border:2px solid var(--gx-border);background:var(--gx-bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:transparent;user-select:none;-webkit-tap-highlight-color:transparent}
+.tb-check.checked{background:var(--gx-green);border-color:var(--gx-green);color:#fff}
+.tb-ma-name{flex:1;font-size:13px;font-weight:500;color:var(--gx-text)}
+.tb-ma-h{width:60px;font-size:13px;padding:6px 8px;border:1px solid var(--gx-border);border-radius:8px;background:#fff;color:var(--gx-text);text-align:center}
+.tb-mat-grid{display:grid;grid-template-columns:1fr 58px 46px 52px;gap:5px;margin-bottom:6px;align-items:center}
+.tb-mat-head{font-size:10px;color:var(--gx-muted);text-align:center;font-weight:600}
+.tb-mat-head:first-child{text-align:left}
+.tb-mat-inp{font-size:12px;padding:7px 8px;border:1px solid var(--gx-border);border-radius:8px;background:#fff;color:var(--gx-text);width:100%;text-align:center}
+.tb-mat-inp.name{text-align:left}
+.tb-mat-intern{font-size:12px;padding:7px 8px;border:1px solid #e8d8a0;border-radius:8px;background:#fdf8f0;color:#633806;width:100%;text-align:center}
+.tb-add-btn{width:100%;padding:9px;border:1.5px dashed var(--gx-border);border-radius:9px;background:none;color:var(--gx-muted);font-size:12px;cursor:pointer;margin-top:4px;font-weight:500}
+.tb-add-btn:active{background:var(--gx-bg)}
 </style>
 </head>
 <body>
@@ -1037,17 +1058,24 @@ function tbCalcNetto(){
 function tbRenderTeam(){
   const netto=parseFloat((document.getElementById('tb-netto').value||'').replace(',','.').replace(' h',''))||0;
   const liste=document.getElementById('tb-ma-liste');
-  liste.innerHTML=workers.map(w=>`
-    <div class="tb-ma-row">
-      <div class="tb-check${w.name===currentWorker.name?' checked':''}" onclick="tbToggleMA(this)">✓</div>
+  liste.innerHTML=`
+    <div style="display:grid;grid-template-columns:30px 1fr 70px 20px;gap:8px;padding:6px 0;font-size:11px;font-weight:700;color:var(--gx-muted);border-bottom:1px solid var(--gx-border)">
+      <div></div><div>Name</div><div style="text-align:center">Stunden</div><div></div>
+    </div>`+
+  workers.map(w=>{
+    const isMe=w.name===currentWorker.name;
+    return `<div class="tb-ma-row">
+      <div class="tb-check${isMe?' checked':''}" onclick="tbToggleMA(this)">${isMe?'✓':''}</div>
       <div class="tb-ma-name">${w.name}</div>
-      <input class="tb-ma-h" type="number" value="${w.name===currentWorker.name?netto:''}" placeholder="h" min="0" max="14" step="0.5" ${w.name!==currentWorker.name?'disabled':''}>
+      <input class="tb-ma-h" type="number" value="${isMe?netto:''}" placeholder="–" min="0" max="14" step="0.5" ${!isMe?'disabled':''}>
       <span style="font-size:11px;color:var(--gx-muted)">h</span>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function tbToggleMA(el){
   const checked=el.classList.toggle('checked');
+  el.textContent=checked?'✓':'';
   const row=el.closest('.tb-ma-row');
   const inp=row.querySelector('.tb-ma-h');
   if(checked){
