@@ -145,27 +145,56 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 .divider{height:0.5px;background:var(--gx-border);margin:10px 0}
 .empty-hint{font-size:13px;color:#aaa;text-align:center;padding:20px 0}
 .user-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-
-/* Tagesbericht */
-.tb-section{margin-bottom:14px}
-.tb-sec-label{font-size:10px;font-weight:700;color:var(--gx-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-.tb-ma-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--gx-border)}
-.tb-ma-row:last-child{border:none}
-.tb-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--gx-border);background:var(--gx-bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:transparent}
-.tb-check.checked{background:var(--gx-green);border-color:var(--gx-green);color:#fff}
-.tb-ma-name{flex:1;font-size:13px;color:var(--gx-text)}
-.tb-ma-h{width:56px;font-size:13px;padding:6px 8px;border:1px solid var(--gx-border);border-radius:8px;background:#fff;color:var(--gx-text);text-align:center}
-.tb-mat-grid{display:grid;grid-template-columns:1fr 60px 48px 52px;gap:5px;margin-bottom:6px;align-items:center}
-.tb-mat-head{font-size:10px;color:var(--gx-muted);text-align:center}
-.tb-mat-head:first-child{text-align:left}
-.tb-mat-inp{font-size:12px;padding:6px 7px;border:1px solid var(--gx-border);border-radius:8px;background:#fff;color:var(--gx-text);width:100%;text-align:center}
-.tb-mat-inp.name{text-align:left}
-.tb-mat-intern{font-size:12px;padding:6px 7px;border:1px solid #e8d8a0;border-radius:8px;background:#fdf8f0;color:#633806;width:100%;text-align:center}
-.tb-add-btn{width:100%;padding:8px;border:1px dashed var(--gx-border);border-radius:9px;background:none;color:var(--gx-muted);font-size:12px;cursor:pointer;margin-top:4px}
-.tb-step-bar{display:flex;gap:6px;margin-bottom:14px}
-.tb-step{flex:1;padding:7px 4px;border-radius:8px;background:var(--gx-bg);border:1px solid var(--gx-border);text-align:center;font-size:11px;color:var(--gx-muted);cursor:pointer}
-.tb-step.active{background:var(--gx-green-light);border-color:var(--gx-green);color:var(--gx-green-dark);font-weight:700}
 .user-avatar{width:40px;height:40px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gx-dark);flex-shrink:0}
+
+/* Kalender */
+.month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.month-btn{width:32px;height:32px;border-radius:8px;background:var(--gx-bg);border:1px solid var(--gx-border);cursor:pointer;font-size:16px;color:var(--gx-muted);display:flex;align-items:center;justify-content:center}
+.month-btn:active{background:var(--gx-green-light)}
+.month-title{font-size:15px;font-weight:700;color:var(--gx-text)}
+.kal-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.kal-sum{background:var(--gx-bg);border-radius:10px;padding:8px 10px;text-align:center}
+.kal-sum-val{font-size:17px;font-weight:700}
+.kal-sum-label{font-size:10px;color:var(--gx-muted);margin-top:1px}
+.kal-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.kal-leg{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gx-muted)}
+.kal-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.kal-list{display:flex;flex-direction:column;gap:3px}
+.kal-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px;background:#fff;border:0.5px solid var(--gx-border)}
+.kal-row.weekend{background:var(--gx-bg);border-color:transparent}
+.kal-row.today{background:var(--gx-green-light);border-color:#a5d6a7}
+.kal-row.feiertag{background:#fdf8f0;border-color:#e8d8a0}
+.kal-num{width:26px;font-size:13px;font-weight:700;color:var(--gx-text);flex-shrink:0;text-align:center}
+.kal-name{width:22px;font-size:10px;color:#aaa;flex-shrink:0}
+.kal-dot-big{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.kal-info{flex:1;min-width:0}
+.kal-proj{font-size:12px;font-weight:600;color:var(--gx-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kal-sub{font-size:10px;color:var(--gx-muted)}
+.kal-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.kal-badge.approved{background:var(--gx-green-light);color:var(--gx-green-dark)}
+.kal-badge.pending{background:var(--amber-light);color:#e65100}
+.kal-badge.urlaub{background:var(--blue-light);color:var(--blue)}
+.kal-badge.feiertag{background:#f5ecd4;color:#633806}
+/* Erinnerung */
+.reminder-box{background:#b71c1c;border-radius:12px;padding:14px 16px;margin-bottom:14px;display:none}
+.reminder-title{color:#fff;font-size:14px;font-weight:700;margin-bottom:4px}
+.reminder-text{color:#ffcdd2;font-size:12px;line-height:1.5;margin-bottom:10px}
+.reminder-days{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.reminder-day{background:rgba(255,255,255,.15);border-radius:6px;padding:5px 10px;font-size:12px;color:#fff;font-weight:500}
+.reminder-btn{background:#fff;color:#b71c1c;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;width:100%}
+/* Medien */
+.medien-tabs{display:flex;gap:6px;margin-bottom:14px}
+.medien-tab{flex:1;padding:9px 4px;border-radius:9px;background:var(--gx-bg);border:1px solid var(--gx-border);text-align:center;font-size:12px;color:var(--gx-muted);cursor:pointer;font-weight:500}
+.medien-tab.active{background:var(--gx-green-light);border-color:var(--gx-green);color:var(--gx-green-dark);font-weight:700}
+.upload-box{border:2px dashed var(--gx-border);border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;margin-bottom:12px;background:var(--gx-bg)}
+.upload-box:active{background:var(--gx-green-light);border-color:var(--gx-green)}
+.upload-box.has-file{border-color:var(--gx-green);background:var(--gx-green-light)}
+.upload-preview{width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-bottom:8px;display:none}
+.upload-progress{height:6px;background:var(--gx-border);border-radius:4px;overflow:hidden;margin:8px 0;display:none}
+.upload-progress-fill{height:100%;background:var(--gx-green);border-radius:4px;transition:width .3s}
+/* Admin-Tabs angepasst */
+.atab-bar{display:flex;border-bottom:2px solid var(--gx-border);margin-bottom:14px;overflow-x:auto}
+.atab-bar .tab{white-space:nowrap;min-width:auto;padding:10px 12px}
 </style>
 </head>
 <body>
@@ -206,7 +235,8 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 
 <!-- MITARBEITER: Dashboard -->
 <div class="view" id="v-dashboard">
-  <div class="user-row">
+  <div id="reminder-box" class="reminder-box"><div class="reminder-title">⚠️ Eintrag fehlt!</div><div class="reminder-text">Für folgende Arbeitstage fehlt noch ein Eintrag. Bitte schnell nachholen!</div><div class="reminder-days" id="reminder-days"></div><button class="reminder-btn" onclick="switchMain('manuell')">Jetzt eintragen</button></div>
+<div class="user-row">
     <div class="user-avatar" id="dash-avatar"></div>
     <div style="flex:1"><div style="font-size:15px;font-weight:700" id="dash-name"></div><div style="font-size:12px;color:var(--gx-muted)" id="dash-date"></div></div>
   </div>
@@ -277,17 +307,13 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 </div>
 
 
-
 <!-- MITARBEITER: Krank -->
 <div class="view" id="v-krank">
   <div class="card" style="background:#fff3e0;border-color:#ffb74d;margin-bottom:14px">
     <div class="card-title" style="color:#e65100">🤒 Krankmeldung einreichen</div>
-    <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.5">Bitte fülle das Formular aus und lade deinen Krankmeldungsschein als Foto oder PDF hoch.</p>
-    <button class="btn-primary" style="background:#e65100;margin-bottom:8px" onclick="openKrankForm()">📋 Krankmeldung ausfüllen &amp; hochladen</button>
-    <p style="font-size:11px;color:#aaa;text-align:center">Öffnet das Formular — kein Google-Konto nötig</p>
+    <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.5">Nutze den Medien-Tab um deinen Krankmeldungsschein direkt hochzuladen — kein Google-Konto nötig!</p>
+    <button class="btn-primary" style="background:#e65100;margin-bottom:8px" onclick="switchMain('medien');switchMedienTab('krank')">🤒 Zur Krankmeldung</button>
   </div>
-  <div class="section-label">Meine Krankmeldungen</div>
-  <div class="card" style="padding:8px 12px"><div id="krank-list"><div class="empty-hint">Keine Krankmeldungen vorhanden</div></div></div>
 </div>
 
 <!-- MITARBEITER: Kalender -->
@@ -310,6 +336,66 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
     <div class="kal-leg"><div class="kal-dot" style="background:#c8a84b"></div>Feiertag</div>
   </div>
   <div class="kal-list" id="kal-list"></div>
+</div>
+
+<!-- MITARBEITER: Medien -->
+<div class="view" id="v-medien">
+  <div class="medien-tabs">
+    <div class="medien-tab active" id="mtab-baudoku" onclick="switchMedienTab('baudoku')">📷 Baudoku</div>
+    <div class="medien-tab" id="mtab-krank" onclick="switchMedienTab('krank')">🤒 Krank</div>
+    <div class="medien-tab" id="mtab-problem" onclick="switchMedienTab('problem')">⚠️ Problem</div>
+  </div>
+  <div id="mtp-baudoku">
+    <div class="field"><label>Projekt</label><select id="med-proj-baudoku"></select></div>
+    <div class="upload-box" id="upload-box-baudoku" onclick="document.getElementById('file-baudoku').click()">
+      <img id="preview-baudoku" class="upload-preview">
+      <div id="upload-hint-baudoku"><div style="font-size:28px;margin-bottom:8px">📷</div><div style="font-size:14px;font-weight:600;color:var(--gx-text)">Foto auswählen</div><div style="font-size:12px;color:var(--gx-muted);margin-top:4px">Max. 5 MB · JPG, PNG</div></div>
+    </div>
+    <input type="file" id="file-baudoku" accept="image/*" style="display:none" onchange="onFileSelect(this,'baudoku')">
+    <div class="upload-progress" id="prog-baudoku"><div class="upload-progress-fill" id="prog-fill-baudoku" style="width:0%"></div></div>
+    <div class="field"><label>Notiz (optional)</label><input type="text" id="med-notiz-baudoku" placeholder="z.B. Terrassenfläche nach Verdichtung"></div>
+    <div class="success-msg" id="med-ok-baudoku">✓ Foto hochgeladen!</div>
+    <div class="error-msg" id="med-err-baudoku">Bitte Foto auswählen.</div>
+    <button class="btn-primary" onclick="uploadMedia('baudoku')">📤 Hochladen</button>
+    <div class="section-label" style="margin-top:14px">Meine Fotos</div>
+    <div id="med-list-baudoku"><div class="empty-hint">Noch keine Fotos</div></div>
+  </div>
+  <div id="mtp-krank" style="display:none">
+    <div class="card" style="background:#fff3e0;border-color:#ffb74d;margin-bottom:14px">
+      <div class="card-title" style="color:#e65100">🤒 Krankmeldung einreichen</div>
+      <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.5">Lade hier direkt deinen Krankmeldungsschein hoch. Kein Google-Konto nötig.</p>
+    </div>
+    <div class="row2" style="margin-bottom:10px">
+      <div class="field"><label>Krank von</label><input type="date" id="med-krank-von"></div>
+      <div class="field"><label>Krank bis</label><input type="date" id="med-krank-bis"></div>
+    </div>
+    <div class="upload-box" id="upload-box-krank" onclick="document.getElementById('file-krank').click()">
+      <img id="preview-krank" class="upload-preview">
+      <div id="upload-hint-krank"><div style="font-size:28px;margin-bottom:8px">📄</div><div style="font-size:14px;font-weight:600;color:var(--gx-text)">Krankmeldung fotografieren</div><div style="font-size:12px;color:var(--gx-muted);margin-top:4px">Max. 5 MB</div></div>
+    </div>
+    <input type="file" id="file-krank" accept="image/*" style="display:none" onchange="onFileSelect(this,'krank')">
+    <div class="upload-progress" id="prog-krank"><div class="upload-progress-fill" id="prog-fill-krank" style="width:0%"></div></div>
+    <div class="success-msg" id="med-ok-krank">✓ Krankmeldung eingereicht!</div>
+    <div class="error-msg" id="med-err-krank">Bitte Foto und Datum ausfüllen.</div>
+    <button class="btn-primary" style="background:#e65100" onclick="uploadMedia('krank')">📤 Krankmeldung einreichen</button>
+  </div>
+  <div id="mtp-problem" style="display:none">
+    <div class="card" style="background:#fff3e0;border-color:#ffb74d;margin-bottom:14px">
+      <div class="card-title" style="color:#e65100">⚠️ Problem melden</div>
+      <p style="font-size:13px;color:#666;line-height:1.5">Der Admin wird per E-Mail benachrichtigt.</p>
+    </div>
+    <div class="field"><label>Projekt</label><select id="med-proj-problem"></select></div>
+    <div class="field"><label>Beschreibung (Pflichtfeld)</label><textarea id="med-problem-text" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;color:var(--gx-text);resize:none;height:80px" placeholder="Was ist das Problem?"></textarea></div>
+    <div class="upload-box" id="upload-box-problem" onclick="document.getElementById('file-problem').click()">
+      <img id="preview-problem" class="upload-preview">
+      <div id="upload-hint-problem"><div style="font-size:28px;margin-bottom:8px">📷</div><div style="font-size:14px;font-weight:600;color:var(--gx-text)">Foto hinzufügen (optional)</div></div>
+    </div>
+    <input type="file" id="file-problem" accept="image/*" style="display:none" onchange="onFileSelect(this,'problem')">
+    <div class="upload-progress" id="prog-problem"><div class="upload-progress-fill" id="prog-fill-problem" style="width:0%"></div></div>
+    <div class="success-msg" id="med-ok-problem">✓ Problem gemeldet!</div>
+    <div class="error-msg" id="med-err-problem">Bitte Beschreibung eingeben.</div>
+    <button class="btn-primary" style="background:#e65100" onclick="uploadMedia('problem')">⚠️ Problem melden</button>
+  </div>
 </div>
 
 <!-- TAGESBERICHT -->
@@ -340,69 +426,38 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
     <button class="btn-primary" onclick="tbGoStep('team')">Weiter: Team →</button>
   </div>
   <div id="tbp-team" style="display:none">
-    <div class="tb-section">
-      <div class="tb-sec-label">Anwesende Mitarbeiter auswählen</div>
-      <div id="tb-ma-liste"></div>
-    </div>
-    <div class="row2">
-      <button class="btn-outline" onclick="tbGoStep('allgemein')">← Zurück</button>
-      <button class="btn-primary" onclick="tbGoStep('material')">Weiter →</button>
-    </div>
+    <div class="tb-section"><div class="tb-sec-label">Anwesende Mitarbeiter</div><div id="tb-ma-liste"></div></div>
+    <div class="row2"><button class="btn-outline" onclick="tbGoStep('allgemein')">← Zurück</button><button class="btn-primary" onclick="tbGoStep('material')">Weiter →</button></div>
   </div>
   <div id="tbp-material" style="display:none">
     <div class="tb-section">
       <div class="tb-sec-label">Materialverbrauch</div>
-      <div class="tb-mat-grid" style="margin-bottom:4px">
-        <div class="tb-mat-head">Material</div><div class="tb-mat-head">Menge</div>
-        <div class="tb-mat-head">Einheit</div>
-        <div class="tb-mat-head" style="background:#fdf8f0;border-radius:5px;padding:2px;color:#633806">Intern</div>
-      </div>
-      <div id="tb-mat-rows">
-        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Schotter 16/32"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="to"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div>
-        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Oberboden"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="m³"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div>
+      <div class="tb-mat-grid" style="margin-bottom:4px"><div class="tb-mat-head">Material</div><div class="tb-mat-head">Menge</div><div class="tb-mat-head">Einheit</div><div class="tb-mat-head" style="background:#fdf8f0;border-radius:5px;padding:2px;color:#633806">Intern</div></div>
+      <div id="tb-mat-rows" style="position:relative">
+        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="Material…" oninput="tbShowVorschlaege(this,'mat1')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="to"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div>
+        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="Material…" oninput="tbShowVorschlaege(this,'mat2')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="m³"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div>
       </div>
       <button class="tb-add-btn" onclick="tbAddMatRow('tb-mat-rows')">+ Material hinzufügen</button>
     </div>
     <div class="tb-section">
       <div class="tb-sec-label">Maschineneinsatz</div>
-      <div class="tb-mat-grid" style="margin-bottom:4px">
-        <div class="tb-mat-head">Maschine</div><div class="tb-mat-head">Std.</div>
-        <div class="tb-mat-head">Einheit</div><div class="tb-mat-head"></div>
-      </div>
-      <div id="tb-masch-rows">
-        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. LKW Arocs"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div></div>
-      </div>
+      <div id="tb-masch-rows"><div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. LKW Arocs"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div></div></div>
       <button class="tb-add-btn" onclick="tbAddMaschRow()">+ Maschine hinzufügen</button>
     </div>
     <div class="tb-section">
       <div class="tb-sec-label">Materialrückgabe</div>
-      <div class="tb-mat-grid" style="margin-bottom:4px">
-        <div class="tb-mat-head">Material</div><div class="tb-mat-head">Menge</div>
-        <div class="tb-mat-head">Einheit</div>
-        <div class="tb-mat-head" style="background:#fdf8f0;border-radius:5px;padding:2px;color:#633806">Intern</div>
-      </div>
-      <div id="tb-rueck-rows">
-        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Gartenabfall"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="cbm"><input class="tb-mat-intern" type="text" placeholder="GO/LA"></div>
-      </div>
+      <div class="tb-mat-grid" style="margin-bottom:4px"><div class="tb-mat-head">Material</div><div class="tb-mat-head">Menge</div><div class="tb-mat-head">Einheit</div><div class="tb-mat-head" style="background:#fdf8f0;border-radius:5px;padding:2px;color:#633806">Intern</div></div>
+      <div id="tb-rueck-rows"><div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Gartenabfall"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="cbm"><input class="tb-mat-intern" type="text" placeholder="GO/LA"></div></div>
       <button class="tb-add-btn" onclick="tbAddMatRow('tb-rueck-rows','cbm','GO/LA')">+ Rückgabe hinzufügen</button>
     </div>
-    <div class="row2">
-      <button class="btn-outline" onclick="tbGoStep('team')">← Zurück</button>
-      <button class="btn-primary" onclick="tbGoStep('abschluss')">Weiter →</button>
-    </div>
+    <div class="row2"><button class="btn-outline" onclick="tbGoStep('team')">← Zurück</button><button class="btn-primary" onclick="tbGoStep('abschluss')">Weiter →</button></div>
   </div>
   <div id="tbp-abschluss" style="display:none">
-    <div class="tb-section">
-      <div class="tb-sec-label">Notizen / Besonderheiten</div>
-      <textarea id="tb-notiz" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;color:var(--gx-text);resize:none;height:80px" placeholder="z.B. Schlechtwetter ab 14 Uhr…"></textarea>
-    </div>
+    <div class="tb-section"><div class="tb-sec-label">Notizen</div><textarea id="tb-notiz" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;color:var(--gx-text);resize:none;height:80px" placeholder="z.B. Schlechtwetter ab 14 Uhr…"></textarea></div>
     <div class="card" style="background:var(--gx-bg);padding:12px 14px;margin-bottom:14px" id="tb-zusammenfassung"></div>
     <div class="success-msg" id="tb-ok">✓ Tagesbericht gespeichert!</div>
     <div class="error-msg" id="tb-err">Bitte alle Pflichtfelder ausfüllen.</div>
-    <div class="row2" style="margin-bottom:10px">
-      <button class="btn-outline" onclick="tbGoStep('material')">← Zurück</button>
-      <button class="btn-primary" onclick="saveTagesbericht()">Speichern ✓</button>
-    </div>
+    <div class="row2" style="margin-bottom:10px"><button class="btn-outline" onclick="tbGoStep('material')">← Zurück</button><button class="btn-primary" onclick="saveTagesbericht()">Speichern ✓</button></div>
   </div>
 </div>
 
@@ -434,8 +489,8 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <button class="nav-btn" id="nav-stempel" onclick="switchMain('stempel')"><i class="ti ti-clock" aria-hidden="true"></i><span>Stempeln</span></button>
   <button class="nav-btn" id="nav-manuell" onclick="switchMain('manuell')"><i class="ti ti-edit" aria-hidden="true"></i><span>Manuell</span></button>
   <button class="nav-btn" id="nav-urlaub" onclick="switchMain('urlaub')"><i class="ti ti-beach" aria-hidden="true"></i><span>Urlaub</span></button>
-  <button class="nav-btn" id="nav-krank" onclick="switchMain('krank')"><i class="ti ti-stethoscope" aria-hidden="true"></i><span>Krank</span></button>
   <button class="nav-btn" id="nav-kalender" onclick="switchMain('kalender')"><i class="ti ti-calendar" aria-hidden="true"></i><span>Kalender</span></button>
+  <button class="nav-btn" id="nav-medien" onclick="switchMain('medien')"><i class="ti ti-photo" aria-hidden="true"></i><span>Medien</span></button>
   <button class="nav-btn" id="nav-tagesbericht" onclick="switchMain('tagesbericht')" style="display:none"><i class="ti ti-clipboard-list" aria-hidden="true"></i><span>Bericht</span></button>
 </div>
 
@@ -452,10 +507,7 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMel0O3XuZbUkZkAam7
 
 const ADMIN_PIN = "0000"; // Admin-PIN — bitte ändern!
 
-const PROJEKTE = [
-  "Garten Müller, Leipzig","Park Renovierung Südvorstadt",
-  "Bepflanzung Neubau Lindenstr.","Pflege Firmengelände Koch AG","Wegebau Gohlis-Mitte"
-];
+// Projekte werden dynamisch geladen
 
 const FALLBACK_WORKERS = [
   {name:"Max Bauer",pin:"1234"},{name:"Lisa Kern",pin:"2345"},
@@ -468,7 +520,9 @@ const FALLBACK_WORKERS = [
 ];
 
 let currentWorker=null,pinInput='',stampStart=null,elapsedTimer=null,workers=[];
-let allEntries=[],urlaubAntraege=[];
+let allEntries=[],urlaubAntraege=[],stammdaten={},lvPositionen=[];
+let PROJEKTE=['Wird geladen…'];
+const PROJ_SONSTIGES='⚒ Kleinauftrag / Sonstiges';
 let isAdmin=false;
 
 function pad(n){return String(n).padStart(2,'0')}
@@ -480,6 +534,7 @@ function showMsg(id,dur=2500){const el=document.getElementById(id);el.style.disp
 // Load
 async function init(){
   fillProjekte();
+  ladeProjekte();
   const stored=localStorage.getItem('gx_entries');
   if(stored)try{allEntries=JSON.parse(stored)}catch{}
   const storedU=localStorage.getItem('gx_urlaub');
@@ -496,10 +551,28 @@ async function init(){
   renderWorkerGrid();updateAdminBadge();
 }
 
-function fillProjekte(){
-  ['proj-stamp','proj-man'].forEach(id=>{
-    document.getElementById(id).innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');
-  });
+function fillProjekte(liste){
+  const opts=(liste||PROJEKTE).concat([PROJ_SONSTIGES]).map(p=>`<option>${p}</option>`).join('');
+  ['proj-stamp','proj-man'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=opts;});
+}
+
+async function ladeProjekte(){
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){
+    PROJEKTE=["Garten Müller, Leipzig","Park Renovierung Südvorstadt","Pflege Firmengelände Koch AG","Wegebau Gohlis-Mitte"];
+    fillProjekte();return;
+  }
+  try{
+    const r=await fetch(SCRIPT_URL+'?action=getProjekte');
+    const d=await r.json();
+    if(d.ok&&d.projekte&&d.projekte.length>0){
+      PROJEKTE=d.projekte.map(p=>p.name);
+      fillProjekte();
+      setStatus('Projekte geladen ✓','ok');
+    }
+  }catch{
+    PROJEKTE=["Garten Müller, Leipzig","Wegebau Gohlis-Mitte"];
+    fillProjekte();
+  }
 }
 
 function renderWorkerGrid(){
@@ -517,12 +590,14 @@ function goTo(id){
 }
 
 function switchMain(name){
-  ['dashboard','stempel','manuell','urlaub'].forEach(n=>{
-    document.getElementById('nav-'+n).classList.toggle('active',n===name);
+  ['dashboard','stempel','manuell','urlaub','krank','kalender','tagesbericht','medien'].forEach(n=>{
+    const el=document.getElementById('nav-'+n);if(el)el.classList.toggle('active',n===name);
   });
   goTo('v-'+name);
-  if(name==='dashboard')renderDashboard();
+  if(name==='dashboard'){renderDashboard();updateDashboardMetrics();}
   if(name==='urlaub')renderUrlaubList();
+  if(name==='kalender')renderKalender();
+  if(name==='tagesbericht')tbInit();
 }
 
 // Worker select & PIN
@@ -564,58 +639,9 @@ async function enterWorker(){
   document.getElementById('dash-name').textContent=currentWorker.name;
   document.getElementById('dash-date').textContent=now.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('man-datum').value=now.toISOString().slice(0,10);
-  document.getElementById('dash-entries').innerHTML='<div class="empty-hint">Lädt…</div>';
-  goTo('v-dashboard');
-  ['dashboard','stempel','manuell','urlaub','krank','kalender','tagesbericht'].forEach(n=>{
-    const el=document.getElementById('nav-'+n);if(el)el.classList.toggle('active',n==='dashboard');
-  });
-  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-    const today=new Date();
-    const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
-    try{
-      const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
-      const d=await r.json();
-      if(d.ok&&d.entries){
-        allEntries=allEntries.filter(e=>!(e.worker===currentWorker.name&&String(e.datum).startsWith(monat)));
-        d.entries.forEach(e=>allEntries.push(e));
-        localStorage.setItem('gx_entries',JSON.stringify(allEntries));
-      }
-    }catch{}
-    try{
-      const rs=await fetch(SCRIPT_URL+'?action=getStammdaten&worker='+encodeURIComponent(currentWorker.name));
-      const ds=await rs.json();
-      if(ds.ok&&ds.stammdaten)stammdaten=ds.stammdaten;
-    }catch{}
-  }
-  const rolle=stammdaten.rolle||'Mitarbeiter';
-  const tbBtn=document.getElementById('nav-tagesbericht');
-  if(tbBtn)tbBtn.style.display=(rolle==='Vorarbeiter'||rolle==='Facharbeiter'||rolle==='Admin')?'flex':'none';
   checkLateWarning();
   renderDashboard();
-  updateDashboardMetrics();
-}
-
-function updateDashboardMetrics(){
-  const soll=stammdaten.wochenstunden||40;
-  const now=new Date();
-  const dayOfWeek=now.getDay();
-  const monday=new Date(now);
-  monday.setDate(now.getDate()-(dayOfWeek===0?6:dayOfWeek-1));
-  const mondayStr=monday.toISOString().slice(0,10);
-  const sundayStr=new Date(monday.getTime()+6*86400000).toISOString().slice(0,10);
-  const wocheH=allEntries.filter(e=>e.worker===currentWorker.name&&e.datum>=mondayStr&&e.datum<=sundayStr).reduce((s,e)=>s+(parseFloat(e.netto)||0),0);
-  const pct=Math.min(100,Math.round(wocheH/soll*100));
-  document.getElementById('week-label').textContent=wocheH.toFixed(1)+' / '+soll+' h';
-  document.getElementById('week-bar').style.width=pct+'%';
-  let urlaubGesamt=stammdaten.urlaubstage||30;
-  if(stammdaten.eintrittsdatum){const eintr=new Date(stammdaten.eintrittsdatum);if(eintr.getFullYear()===now.getFullYear()){urlaubGesamt=Math.round(urlaubGesamt*(12-eintr.getMonth())/12);}}
-  const genommen=urlaubAntraege.filter(u=>u.worker===currentWorker.name&&u.status==='approved'&&u.von&&u.von.startsWith(now.getFullYear()+'')).reduce((s,u)=>s+(parseInt(u.tage)||0),0);
-  document.getElementById('m-urlaub').textContent=Math.max(0,urlaubGesamt-genommen)+' Tage';
-  const diffH=wocheH-soll;
-  const ueberEl=document.getElementById('m-ueber');
-  ueberEl.textContent=(diffH>=0?'+':'')+diffH.toFixed(1)+' h';
-  ueberEl.className='m-val '+(diffH>=0?'green':'red');
-  if(stammdaten.probezeit){const probzEnd=new Date(stammdaten.probezeit);const diffDays=Math.ceil((probzEnd-now)/86400000);if(diffDays>0&&diffDays<=30){const el=document.getElementById('late-warn');el.textContent='⏰ Probezeit endet in '+diffDays+' Tagen ('+stammdaten.probezeit+')';el.style.display='block';}}
+  switchMain('dashboard');
 }
 
 function enterAdmin(){
@@ -656,6 +682,7 @@ function checkLateWarning(){
     return (savedDate-entryDate)>12*3600*1000;
   }).length;
   document.getElementById('late-warn').style.display=lateCount>=3?'block':'none';
+  checkMissingDays();
 }
 
 function updateAdminBadge(){
@@ -815,6 +842,136 @@ function adminAction(type,idx,action){
 
 
 // ============================================================
+//  Dashboard Metrics + Missing Days
+// ============================================================
+function updateDashboardMetrics(){
+  const soll=stammdaten.wochenstunden||40;
+  const now=new Date();
+  const dayOfWeek=now.getDay();
+  const monday=new Date(now);
+  monday.setDate(now.getDate()-(dayOfWeek===0?6:dayOfWeek-1));
+  const mondayStr=monday.toISOString().slice(0,10);
+  const sundayStr=new Date(monday.getTime()+6*86400000).toISOString().slice(0,10);
+  const wocheH=allEntries.filter(e=>e.worker===currentWorker.name&&e.datum>=mondayStr&&e.datum<=sundayStr).reduce((s,e)=>s+(parseFloat(e.netto)||0),0);
+  const pct=Math.min(100,Math.round(wocheH/soll*100));
+  document.getElementById('week-label').textContent=wocheH.toFixed(1)+' / '+soll+' h';
+  document.getElementById('week-bar').style.width=pct+'%';
+  let urlaubGesamt=stammdaten.urlaubstage||30;
+  if(stammdaten.eintrittsdatum){const eintr=new Date(stammdaten.eintrittsdatum);if(eintr.getFullYear()===now.getFullYear()){urlaubGesamt=Math.round(urlaubGesamt*(12-eintr.getMonth())/12);}}
+  const genommen=urlaubAntraege.filter(u=>u.worker===currentWorker.name&&u.status==='approved'&&u.von&&u.von.startsWith(now.getFullYear()+'')).reduce((s,u)=>s+(parseInt(u.tage)||0),0);
+  document.getElementById('m-urlaub').textContent=Math.max(0,urlaubGesamt-genommen)+' Tage';
+  const diffH=wocheH-soll;
+  const ueberEl=document.getElementById('m-ueber');
+  ueberEl.textContent=(diffH>=0?'+':'')+diffH.toFixed(1)+' h';
+  ueberEl.className='m-val '+(diffH>=0?'green':'red');
+  if(stammdaten.probezeit){const probzEnd=new Date(stammdaten.probezeit);const diffDays=Math.ceil((probzEnd-now)/86400000);if(diffDays>0&&diffDays<=30){const el=document.getElementById('late-warn');el.textContent='⏰ Probezeit endet in '+diffDays+' Tagen ('+stammdaten.probezeit+')';el.style.display='block';}}
+}
+
+function checkMissingDays(){
+  const now=new Date();const missing=[];
+  const feiertage=getBayernFeiertage(now.getFullYear());
+  for(let i=1;i<=7;i++){
+    const d=new Date(now);d.setDate(d.getDate()-i);
+    const dow=d.getDay();if(dow===0||dow===6)continue;
+    const ds=d.toISOString().slice(0,10);
+    if(feiertage[ds])continue;
+    const hasEntry=allEntries.some(e=>e.worker===currentWorker.name&&e.datum===ds);
+    const isUrlaub=urlaubAntraege.some(u=>u.worker===currentWorker.name&&u.status==='approved'&&ds>=u.von&&ds<=u.bis);
+    if(!hasEntry&&!isUrlaub){const deadline=new Date(ds+'T18:00:00');deadline.setDate(deadline.getDate()+1);if(now>deadline)missing.push(ds);}
+  }
+  const box=document.getElementById('reminder-box');
+  if(!box)return;
+  const daysEl=document.getElementById('reminder-days');
+  if(missing.length>0){
+    box.style.display='block';
+    daysEl.innerHTML=missing.slice(0,5).map(ds=>{const d=new Date(ds+'T12:00:00');return '<div class="reminder-day">'+d.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'})+'</div>';}).join('');
+  } else {box.style.display='none';}
+}
+
+// ============================================================
+//  Kalender
+// ============================================================
+let kalYear=new Date().getFullYear();
+let kalMonth=new Date().getMonth();
+function kalPrevMonth(){if(kalMonth===0){kalMonth=11;kalYear--;}else kalMonth--;renderKalender();}
+function kalNextMonth(){if(kalMonth===11){kalMonth=0;kalYear++;}else kalMonth++;renderKalender();}
+
+function getBayernFeiertage(year){
+  const a=year%19,b=Math.floor(year/100),c=year%100;
+  const d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25);
+  const g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30;
+  const i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7;
+  const m=Math.floor((a+11*h+22*l)/451);
+  const month=Math.floor((h+l-7*m+114)/31);
+  const day=((h+l-7*m+114)%31)+1;
+  const ostern=new Date(year,month-1,day);
+  const fmt=d=>d.toISOString().slice(0,10);
+  const add=n=>{const x=new Date(ostern);x.setDate(x.getDate()+n);return fmt(x);};
+  const feste={};
+  feste[year+'-01-01']='Neujahr';feste[year+'-01-06']='Heilige Drei Könige';
+  feste[year+'-05-01']='Tag der Arbeit';feste[year+'-08-15']='Mariä Himmelfahrt';
+  feste[year+'-10-03']='Tag der Deutschen Einheit';feste[year+'-11-01']='Allerheiligen';
+  feste[year+'-12-25']='1. Weihnachtstag';feste[year+'-12-26']='2. Weihnachtstag';
+  feste[add(-2)]='Karfreitag';feste[fmt(ostern)]='Ostersonntag';feste[add(1)]='Ostermontag';
+  feste[add(39)]='Christi Himmelfahrt';feste[add(49)]='Pfingstsonntag';
+  feste[add(50)]='Pfingstmontag';feste[add(60)]='Fronleichnam';
+  return feste;
+}
+
+function renderKalender(){
+  const monatStr=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'][kalMonth];
+  document.getElementById('kal-month-title').textContent=monatStr+' '+kalYear;
+  const monatKey=kalYear+'-'+String(kalMonth+1).padStart(2,'0');
+  const mine=allEntries.filter(e=>e.worker===currentWorker.name&&String(e.datum).startsWith(monatKey));
+  const myUrlaub=urlaubAntraege.filter(u=>u.worker===currentWorker.name&&u.status==='approved');
+  const feiertage=getBayernFeiertage(kalYear);
+  const tage=new Date(kalYear,kalMonth+1,0).getDate();
+  const heute=new Date().toISOString().slice(0,10);
+  let totalH=0,urlaubTage=0;
+  const rows=[];
+  for(let d=1;d<=tage;d++){
+    const ds=kalYear+'-'+String(kalMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const dow=new Date(ds+'T12:00:00').getDay();
+    const isWE=dow===0||dow===6;const isHeute=ds===heute;
+    const isFeiertag=!!feiertage[ds];const feiertagName=feiertage[ds]||'';
+    const eintrag=mine.find(e=>e.datum===ds);
+    const isUrlaub=!eintrag&&myUrlaub.some(u=>ds>=u.von&&ds<=u.bis);
+    let dotColor='#e0e0e0',info='–',sub='',badge='',badgeClass='',rowExtra='';
+    if((isWE||isFeiertag)&&!eintrag&&!isUrlaub){
+      info=isFeiertag?feiertagName:'Wochenende';badge=isFeiertag?'Feiertag':'';
+      badgeClass=isFeiertag?'feiertag':'';rowExtra=isFeiertag?' feiertag':' weekend';
+      rows.push({ds,d,isWE,isFeiertag,isHeute,dotColor:isFeiertag?'#c8a84b':'#e0e0e0',info,sub:isFeiertag?'Bayern':'',badge,badgeClass,rowExtra});
+      continue;
+    }
+    if(isUrlaub){dotColor='#1565c0';info='Urlaub';sub='genehmigt';badge='Urlaub';badgeClass='urlaub';urlaubTage++;}
+    else if(eintrag){
+      const s=eintrag.status;
+      if(s==='approved'||s==='auto'||s==='Tagesbericht'){dotColor='#4caf50';badge='✓';badgeClass='approved';}
+      else if(s==='pending'){dotColor='#f59f00';badge='Ausstehend';badgeClass='pending';}
+      else{dotColor='#e0e0e0';}
+      info=eintrag.proj?eintrag.proj.split(',')[0]:'–';
+      sub=eintrag.von+'–'+eintrag.bis+' · '+(+eintrag.netto).toFixed(1)+' h';
+      totalH+=parseFloat(eintrag.netto)||0;
+    }
+    rows.push({ds,d,isWE,isFeiertag:false,isHeute,dotColor,info,sub,badge,badgeClass,rowExtra:isWE?' weekend':''});
+  }
+  document.getElementById('kal-arbeit').textContent=(Math.round(totalH*10)/10)+' h';
+  document.getElementById('kal-urlaub').textContent=urlaubTage+' T';
+  document.getElementById('kal-krank').textContent='0 T';
+  document.getElementById('kal-list').innerHTML=rows.map(r=>`
+    <div class="kal-row${r.rowExtra}${r.isHeute?' today':''}">
+      <div class="kal-num">${r.d}</div>
+      <div class="kal-name">${['So','Mo','Di','Mi','Do','Fr','Sa'][new Date(r.ds+'T12:00:00').getDay()]}</div>
+      <div class="kal-dot-big" style="background:${r.dotColor}"></div>
+      <div class="kal-info">
+        <div class="kal-proj">${r.info}</div>
+        ${r.sub?'<div class="kal-sub">'+r.sub+'</div>':''}
+      </div>
+      ${r.badge?'<span class="kal-badge '+r.badgeClass+'">'+r.badge+'</span>':''}
+    </div>`).join('');
+}
+
+// ============================================================
 //  Tagesbericht
 // ============================================================
 function tbGoStep(step){
@@ -829,10 +986,14 @@ function tbGoStep(step){
 function tbInit(){
   const now=new Date();
   document.getElementById('tb-datum').value=now.toISOString().slice(0,10);
+  document.getElementById('tb-von').value='07:00';
+  document.getElementById('tb-bis').value='16:30';
+  document.getElementById('tb-pause').value='30';
   tbCalcNetto();
   const sel=document.getElementById('tb-proj');
-  sel.innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');
+  if(sel)sel.innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');
   tbGoStep('allgemein');
+  tbLadeVorschlaege();
 }
 
 function tbCalcNetto(){
@@ -840,20 +1001,21 @@ function tbCalcNetto(){
   const bis=document.getElementById('tb-bis').value;
   const pause=parseInt(document.getElementById('tb-pause').value)||0;
   if(von&&bis){
-    const v=von.split(':').map(Number);
-    const b=bis.split(':').map(Number);
+    const v=von.split(':').map(Number);const b=bis.split(':').map(Number);
     const diff=((b[0]*60+b[1])-(v[0]*60+v[1])-pause)/60;
-    document.getElementById('tb-netto').value=diff>0?diff.toFixed(1).replace('.',',')+' h':'–';
+    const el=document.getElementById('tb-netto');
+    if(el){el.value=diff>0?diff.toFixed(1).replace('.',',')+' h':'–';el.style.color=diff>0?'var(--gx-green-dark)':'var(--red)';}
   }
 }
 
 function tbRenderTeam(){
+  const netto=parseFloat((document.getElementById('tb-netto').value||'').replace(',','.').replace(' h',''))||0;
   const liste=document.getElementById('tb-ma-liste');
-  liste.innerHTML=workers.map((w,i)=>`
+  liste.innerHTML=workers.map(w=>`
     <div class="tb-ma-row">
       <div class="tb-check${w.name===currentWorker.name?' checked':''}" onclick="tbToggleMA(this)">✓</div>
       <div class="tb-ma-name">${w.name}</div>
-      <input class="tb-ma-h" type="number" value="${w.name===currentWorker.name?document.getElementById('tb-netto').value.replace(',','.').replace(' h',''):''}" placeholder="h" min="0" max="14" step="0.5" ${w.name!==currentWorker.name?'disabled':''}>
+      <input class="tb-ma-h" type="number" value="${w.name===currentWorker.name?netto:''}" placeholder="h" min="0" max="14" step="0.5" ${w.name!==currentWorker.name?'disabled':''}>
       <span style="font-size:11px;color:var(--gx-muted)">h</span>
     </div>`).join('');
 }
@@ -864,22 +1026,68 @@ function tbToggleMA(el){
   const inp=row.querySelector('.tb-ma-h');
   if(checked){
     inp.disabled=false;
-    if(!inp.value){const n=document.getElementById('tb-netto').value.replace(',','.').replace(' h','');inp.value=parseFloat(n)||'';}
+    if(!inp.value){const n=parseFloat((document.getElementById('tb-netto').value||'').replace(',','.').replace(' h',''))||0;inp.value=n||'';}
   } else {inp.disabled=true;inp.value='';}
+}
+
+// Material Vorschläge
+let matVorschlaege=[];
+async function tbLadeVorschlaege(){
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){
+    matVorschlaege=[
+      {name:'Schotter 16/32',einheit:'to',intern:'EN'},
+      {name:'Oberboden',einheit:'m³',intern:'LA'},
+      {name:'Split',einheit:'BigPack',intern:'LA'},
+      {name:'Rollrasen',einheit:'m²',intern:'LA'},
+      {name:'Pflastersplitt',einheit:'to',intern:'EN'},
+      {name:'LKW Arocs',einheit:'Std.',intern:''},
+      {name:'Minibagger',einheit:'Std.',intern:''},
+      {name:'Radlader',einheit:'Std.',intern:''},
+      {name:'Gartenabfall',einheit:'cbm',intern:'GO'},
+      {name:'Aushub',einheit:'cbm',intern:'LA'},
+    ];return;
+  }
+  try{
+    const r=await fetch(SCRIPT_URL+'?action=getMaterialien');
+    const d=await r.json();
+    if(d.ok&&d.materialien)matVorschlaege=d.materialien;
+  }catch{}
+}
+
+function tbShowVorschlaege(input,containerId){
+  const val=input.value.toLowerCase();
+  let list=document.getElementById('vorschlag-'+containerId);
+  if(!list){list=document.createElement('div');list.id='vorschlag-'+containerId;list.style.cssText='position:absolute;background:#fff;border:1px solid var(--gx-border);border-radius:8px;z-index:100;width:100%;max-height:150px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,.1)';input.parentElement.style.position='relative';input.parentElement.appendChild(list);}
+  if(!val){list.style.display='none';return;}
+  const matches=matVorschlaege.filter(m=>m.name.toLowerCase().includes(val)).slice(0,6);
+  if(!matches.length){list.style.display='none';return;}
+  list.style.display='block';
+  list.innerHTML=matches.map(m=>`<div style="padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:0.5px solid var(--gx-border)" onclick="tbSelectVorschlag(this,'${m.name}','${m.einheit}','${m.intern}','${containerId}')">${m.name} <span style="color:var(--gx-muted);font-size:11px">${m.einheit}${m.intern?' · '+m.intern:''}</span></div>`).join('');
+}
+
+function tbSelectVorschlag(el,name,einheit,intern,containerId){
+  const row=el.closest('.tb-mat-grid')||el.parentElement.parentElement;
+  const inputs=row.querySelectorAll('input');
+  if(inputs[0])inputs[0].value=name;
+  if(inputs[2])inputs[2].value=einheit;
+  if(inputs[3])inputs[3].value=intern;
+  const list=document.getElementById('vorschlag-'+containerId);
+  if(list)list.style.display='none';
+  if(inputs[1])inputs[1].focus();
 }
 
 function tbAddMatRow(containerId,einheit,intern){
   const c=document.getElementById(containerId);
+  const rowId=containerId+'_'+Date.now();
   const div=document.createElement('div');
-  div.className='tb-mat-grid';
-  div.innerHTML=`<input class="tb-mat-inp name" type="text" placeholder="Material…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="${einheit||'Einh.'}"><input class="tb-mat-intern" type="text" placeholder="${intern||'EN/LA'}">`;
+  div.className='tb-mat-grid';div.style.position='relative';
+  div.innerHTML=`<input class="tb-mat-inp name" type="text" placeholder="Material…" oninput="tbShowVorschlaege(this,'${rowId}')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="${einheit||'Einh.'}"><input class="tb-mat-intern" type="text" placeholder="${intern||'EN/LA'}">`;
   c.appendChild(div);
 }
 
 function tbAddMaschRow(){
   const c=document.getElementById('tb-masch-rows');
-  const div=document.createElement('div');
-  div.className='tb-mat-grid';
+  const div=document.createElement('div');div.className='tb-mat-grid';
   div.innerHTML='<input class="tb-mat-inp name" type="text" placeholder="Maschine…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div>';
   c.appendChild(div);
 }
@@ -888,9 +1096,7 @@ function tbGetMatRows(containerId){
   const rows=[];
   document.getElementById(containerId).querySelectorAll('.tb-mat-grid').forEach(row=>{
     const inputs=row.querySelectorAll('input');
-    if(inputs[0]&&inputs[0].value.trim()){
-      rows.push({name:inputs[0].value.trim(),menge:inputs[1]?inputs[1].value:'',einheit:inputs[2]?inputs[2].value:'',intern:inputs[3]?inputs[3].value:''});
-    }
+    if(inputs[0]&&inputs[0].value.trim()){rows.push({name:inputs[0].value.trim(),menge:inputs[1]?inputs[1].value:'',einheit:inputs[2]?inputs[2].value:'',intern:inputs[3]?inputs[3].value:''});}
   });
   return rows;
 }
@@ -952,105 +1158,124 @@ async function saveTagesbericht(){
   if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
     try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveTagesbericht',bericht:{datum,proj,von,bis,pause,netto:nettoH,auftraggeber:auftr,ersteller:currentWorker.name,notiz,mitarbeiter:anwesend,material,maschinen,rueckgabe,savedAt:new Date().toISOString()}})});}catch{}
   }
-  showMsg('tb-ok',3000);
-  setStatus('Tagesbericht gespeichert ✓','ok');
-  setTimeout(()=>{
-    document.getElementById('tb-auftraggeber').value='';
-    document.getElementById('tb-notiz').value='';
-    tbGoStep('allgemein');
-  },2500);
+  showMsg('tb-ok',3000);setStatus('Tagesbericht gespeichert ✓','ok');
+  setTimeout(()=>{document.getElementById('tb-auftraggeber').value='';document.getElementById('tb-notiz').value='';tbGoStep('allgemein');},2500);
 }
 
-
-// Kalender
-let kalYear=new Date().getFullYear();
-let kalMonth=new Date().getMonth();
-function kalPrevMonth(){if(kalMonth===0){kalMonth=11;kalYear--;}else kalMonth--;renderKalender();}
-function kalNextMonth(){if(kalMonth===11){kalMonth=0;kalYear++;}else kalMonth++;renderKalender();}
-function getBayernFeiertage(year){
-  const a=year%19,b=Math.floor(year/100),c=year%100;
-  const d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25);
-  const g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30;
-  const i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7;
-  const m=Math.floor((a+11*h+22*l)/451);
-  const month=Math.floor((h+l-7*m+114)/31);
-  const day=((h+l-7*m+114)%31)+1;
-  const ostern=new Date(year,month-1,day);
-  const fmt=d=>d.toISOString().slice(0,10);
-  const add=n=>{const x=new Date(ostern);x.setDate(x.getDate()+n);return fmt(x);};
-  const feste={};
-  feste[year+'-01-01']='Neujahr';feste[year+'-01-06']='Heilige Drei Könige';
-  feste[year+'-05-01']='Tag der Arbeit';feste[year+'-08-15']='Mariä Himmelfahrt';
-  feste[year+'-10-03']='Tag der Deutschen Einheit';feste[year+'-11-01']='Allerheiligen';
-  feste[year+'-12-25']='1. Weihnachtstag';feste[year+'-12-26']='2. Weihnachtstag';
-  feste[add(-2)]='Karfreitag';feste[fmt(ostern)]='Ostersonntag';feste[add(1)]='Ostermontag';
-  feste[add(39)]='Christi Himmelfahrt';feste[add(49)]='Pfingstsonntag';
-  feste[add(50)]='Pfingstmontag';feste[add(60)]='Fronleichnam';
-  return feste;
+// ============================================================
+//  Medien / Foto-Upload
+// ============================================================
+function switchMedienTab(tab){
+  ['baudoku','krank','problem'].forEach(t=>{
+    document.getElementById('mtab-'+t).classList.toggle('active',t===tab);
+    document.getElementById('mtp-'+t).style.display=t===tab?'block':'none';
+  });
+  // Projektliste befüllen
+  ['med-proj-baudoku','med-proj-problem'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');
+  });
 }
-function renderKalender(){
-  const monatStr=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'][kalMonth];
-  document.getElementById('kal-month-title').textContent=monatStr+' '+kalYear;
-  const monatKey=kalYear+'-'+String(kalMonth+1).padStart(2,'0');
-  const mine=allEntries.filter(e=>e.worker===currentWorker.name&&String(e.datum).startsWith(monatKey));
-  const myUrlaub=urlaubAntraege.filter(u=>u.worker===currentWorker.name&&u.status==='approved');
-  const feiertage=getBayernFeiertage(kalYear);
-  const tage=new Date(kalYear,kalMonth+1,0).getDate();
-  const heute=new Date().toISOString().slice(0,10);
-  let totalH=0,urlaubTage=0;
-  const rows=[];
-  for(let d=1;d<=tage;d++){
-    const ds=kalYear+'-'+String(kalMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    const dow=new Date(ds+'T12:00:00').getDay();
-    const isWE=dow===0||dow===6;const isHeute=ds===heute;
-    const isFeiertag=!!feiertage[ds];const feiertagName=feiertage[ds]||'';
-    const eintrag=mine.find(e=>e.datum===ds);
-    const isUrlaub=!eintrag&&myUrlaub.some(u=>ds>=u.von&&ds<=u.bis);
-    let dotColor='#e0e0e0',info='–',sub='',badge='',badgeClass='',rowExtra='';
-    if((isWE||isFeiertag)&&!eintrag&&!isUrlaub){
-      info=isFeiertag?feiertagName:'Wochenende';badge=isFeiertag?'Feiertag':'';
-      badgeClass=isFeiertag?'feiertag':'';rowExtra=isFeiertag?' feiertag':' weekend';
-      rows.push({ds,d,isWE,isFeiertag,isHeute,dotColor:isFeiertag?'#c8a84b':'#e0e0e0',info,sub:isFeiertag?'Bayern':'',badge,badgeClass,rowExtra});
-      continue;
-    }
-    if(isUrlaub){dotColor='#1565c0';info='Urlaub';sub='genehmigt';badge='Urlaub';badgeClass='urlaub';urlaubTage++;}
-    else if(eintrag){
-      const s=eintrag.status;
-      if(s==='approved'||s==='auto'){dotColor='#4caf50';badge='✓';badgeClass='approved';}
-      else if(s==='pending'){dotColor='#f59f00';badge='Ausstehend';badgeClass='pending';}
-      else{dotColor='#e0e0e0';}
-      info=eintrag.proj.split(',')[0];sub=eintrag.von+'–'+eintrag.bis+' · '+(+eintrag.netto).toFixed(1)+' h';
-      totalH+=parseFloat(eintrag.netto)||0;
-    }
-    rows.push({ds,d,isWE,isFeiertag:false,isHeute,dotColor,info,sub,badge,badgeClass,rowExtra:isWE?' weekend':''});
+
+function onFileSelect(input, kategorie){
+  const file=input.files[0];
+  if(!file)return;
+  if(file.size>5*1024*1024){alert('Datei zu groß! Maximal 5 MB.');input.value='';return;}
+  const preview=document.getElementById('preview-'+kategorie);
+  const hint=document.getElementById('upload-hint-'+kategorie);
+  const box=document.getElementById('upload-box-'+kategorie);
+  const reader=new FileReader();
+  reader.onload=e=>{
+    preview.src=e.target.result;preview.style.display='block';
+    hint.style.display='none';box.classList.add('has-file');
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadMedia(kategorie){
+  const fileInput=document.getElementById('file-'+kategorie);
+  const okEl=document.getElementById('med-ok-'+kategorie);
+  const errEl=document.getElementById('med-err-'+kategorie);
+  const prog=document.getElementById('prog-'+kategorie);
+  const progFill=document.getElementById('prog-fill-'+kategorie);
+  okEl.style.display='none';errEl.style.display='none';
+
+  // Validierung
+  if(kategorie==='problem'){
+    const text=document.getElementById('med-problem-text').value.trim();
+    if(!text){errEl.style.display='block';return;}
   }
-  document.getElementById('kal-arbeit').textContent=(Math.round(totalH*10)/10)+' h';
-  document.getElementById('kal-urlaub').textContent=urlaubTage+' T';
-  document.getElementById('kal-krank').textContent='0 T';
-  document.getElementById('kal-list').innerHTML=rows.map(r=>`<div class="kal-row${r.rowExtra}${r.isHeute?' today':''}"><div class="kal-num">${r.d}</div><div class="kal-name">${['So','Mo','Di','Mi','Do','Fr','Sa'][new Date(r.ds+'T12:00:00').getDay()]}</div><div class="kal-dot-big" style="background:${r.dotColor}"></div><div class="kal-info"><div class="kal-proj">${r.info}</div>${r.sub?'<div class="kal-sub">'+r.sub+'</div>':''}</div>${r.badge?'<span class="kal-badge '+r.badgeClass+'">'+r.badge+'</span>':''}</div>`).join('');
-}
-
-// checkMissingDays
-function checkMissingDays(){
-  const now=new Date();const missing=[];
-  const feiertage=getBayernFeiertage(now.getFullYear());
-  for(let i=1;i<=7;i++){
-    const d=new Date(now);d.setDate(d.getDate()-i);
-    const dow=d.getDay();if(dow===0||dow===6)continue;
-    const ds=d.toISOString().slice(0,10);
-    if(feiertage[ds])continue;
-    const hasEntry=allEntries.some(e=>e.worker===currentWorker.name&&e.datum===ds);
-    const isUrlaub=urlaubAntraege.some(u=>u.worker===currentWorker.name&&u.status==='approved'&&ds>=u.von&&ds<=u.bis);
-    if(!hasEntry&&!isUrlaub){const deadline=new Date(ds+'T18:00:00');deadline.setDate(deadline.getDate()+1);if(now>deadline)missing.push(ds);}
+  if(kategorie==='krank'){
+    const von=document.getElementById('med-krank-von').value;
+    const bis=document.getElementById('med-krank-bis').value;
+    if(!von||!bis){errEl.style.display='block';return;}
   }
-  const box=document.getElementById('reminder-box');
-  const daysEl=document.getElementById('reminder-days');
-  if(missing.length>0){
-    box.style.display='block';
-    daysEl.innerHTML=missing.slice(0,5).map(ds=>{const d=new Date(ds+'T12:00:00');return '<div class="reminder-day">'+d.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'})+'</div>';}).join('');
-  } else {box.style.display='none';}
+
+  const file=fileInput.files[0];
+  if(!file&&kategorie!=='problem'){errEl.style.display='block';return;}
+
+  prog.style.display='block';
+  progFill.style.width='20%';
+
+  // Bild komprimieren
+  let base64='';
+  if(file){
+    base64=await compressAndEncode(file);
+    progFill.style.width='60%';
+  }
+
+  const payload={
+    action:'saveMedia',
+    media:{
+      worker:currentWorker.name,
+      kategorie,
+      projekt:document.getElementById('med-proj-'+kategorie)?document.getElementById('med-proj-'+kategorie).value:'',
+      notiz:kategorie==='baudoku'?document.getElementById('med-notiz-baudoku').value:
+            kategorie==='problem'?document.getElementById('med-problem-text').value:'',
+      krankvon:kategorie==='krank'?document.getElementById('med-krank-von').value:'',
+      krankbis:kategorie==='krank'?document.getElementById('med-krank-bis').value:'',
+      base64,
+      filename:file?file.name:'',
+      savedAt:new Date().toISOString()
+    }
+  };
+
+  progFill.style.width='80%';
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+    try{
+      const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
+      const d=await r.json();
+      progFill.style.width='100%';
+      if(d.ok){okEl.style.display='block';fileInput.value='';document.getElementById('preview-'+kategorie).style.display='none';document.getElementById('upload-hint-'+kategorie).style.display='block';document.getElementById('upload-box-'+kategorie).classList.remove('has-file');}
+      else{errEl.textContent='Fehler: '+(d.error||'Unbekannt');errEl.style.display='block';}
+    }catch{errEl.textContent='Verbindungsfehler';errEl.style.display='block';}
+  } else {
+    // Demo-Modus
+    progFill.style.width='100%';
+    okEl.style.display='block';
+  }
+  setTimeout(()=>{prog.style.display='none';progFill.style.width='0%';},1000);
 }
 
+function compressAndEncode(file){
+  return new Promise(resolve=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const canvas=document.createElement('canvas');
+        const MAX=1200;
+        let w=img.width,h=img.height;
+        if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
+        canvas.width=w;canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL('image/jpeg',0.8).split(',')[1]);
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 // Krank
 const KRANK_FORM_URL='https://forms.gle/M44kwaPUZKKUFB3V6';
