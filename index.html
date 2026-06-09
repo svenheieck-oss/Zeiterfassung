@@ -639,9 +639,35 @@ async function enterWorker(){
   document.getElementById('dash-name').textContent=currentWorker.name;
   document.getElementById('dash-date').textContent=now.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('man-datum').value=now.toISOString().slice(0,10);
+  document.getElementById('dash-entries').innerHTML='<div class="empty-hint">Lädt…</div>';
+  goTo('v-dashboard');
+  ['dashboard','stempel','manuell','urlaub','krank','kalender','tagesbericht','medien'].forEach(n=>{
+    const el=document.getElementById('nav-'+n);if(el)el.classList.toggle('active',n==='dashboard');
+  });
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+    const today=new Date();
+    const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
+    try{
+      const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
+      const d=await r.json();
+      if(d.ok&&d.entries){
+        allEntries=allEntries.filter(e=>!(e.worker===currentWorker.name&&String(e.datum).startsWith(monat)));
+        d.entries.forEach(e=>allEntries.push(e));
+        localStorage.setItem('gx_entries',JSON.stringify(allEntries));
+      }
+    }catch{}
+    try{
+      const rs=await fetch(SCRIPT_URL+'?action=getStammdaten&worker='+encodeURIComponent(currentWorker.name));
+      const ds=await rs.json();
+      if(ds.ok&&ds.stammdaten)stammdaten=ds.stammdaten;
+    }catch{}
+  }
+  const rolle=stammdaten.rolle||'Mitarbeiter';
+  const tbBtn=document.getElementById('nav-tagesbericht');
+  if(tbBtn)tbBtn.style.display=(rolle==='Vorarbeiter'||rolle==='Facharbeiter'||rolle==='Admin')?'flex':'none';
   checkLateWarning();
   renderDashboard();
-  switchMain('dashboard');
+  updateDashboardMetrics();
 }
 
 function enterAdmin(){
