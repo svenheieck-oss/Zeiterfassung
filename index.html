@@ -1844,9 +1844,10 @@ async function ladeTrelloEinsaetze(){
             <div style="font-size:11px;color:var(--gx-muted);margin-top:3px">📋 ${e.liste}</div>
           </div>
           <div style="text-align:right;flex-shrink:0;margin-left:8px">
-            ${e.heute
-              ? '<span class="sbadge green">Heute</span>'
-              : `<span style="font-size:11px;color:var(--gx-muted)">${new Date(e.datum+'T12:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'})}</span>`
+            ${e.heute ? '<span class="sbadge green">Aktiv</span>' : ''}
+            ${e.mehrtaegig
+              ? `<span style="font-size:10px;color:var(--gx-muted)">${new Date(e.datum+'T12:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'})} – ${new Date(e.datumBis+'T12:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'})}</span>`
+              : `<span style="font-size:10px;color:var(--gx-muted)">${new Date(e.datum+'T12:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'})}</span>`
             }
           </div>
         </div>
