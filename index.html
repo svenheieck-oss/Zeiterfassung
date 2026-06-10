@@ -532,7 +532,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 // ============================================================
 //  *** GOOGLE APPS SCRIPT URL HIER EINTRAGEN ***
 // ============================================================
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkobQq6n9KmE4ox21Y7Um9e7hvRTUW0Z0MPfWy_RSvj9V-WrMHMfpIU2-DsNmpsjuH/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMel0O3XuZbUkZkAam7vRE-_vhCUNzTRt1amUXcyHDiw9tsr6N0y2J4xFlpRr5MLwS/exec";
 // ============================================================
 
 const ADMIN_PIN = "0000"; // Admin-PIN — bitte ändern!
@@ -1357,21 +1357,19 @@ async function tbLadeLVListe(){
     try{
       const r=await fetch(SCRIPT_URL+'?action=getLVListe');
       const d=await r.json();
-      console.log('LV Liste:', JSON.stringify(d));
       if(d.ok&&d.lvliste&&d.lvliste.length>0){
         lvListe=d.lvliste;
         sel.innerHTML='<option value="">-- LV auswählen --</option>'+
           d.lvliste.map(lv=>`<option value="${lv.lvnr}">${lv.lvnr} · ${lv.kunde}</option>`).join('');
       } else {
-        sel.innerHTML='<option value="">-- Kein LV gefunden ('+JSON.stringify(d)+') --</option>';
+        sel.innerHTML='<option value="">-- Kein LV vorhanden --</option>';
       }
     }catch(err){
-      console.error('LV Fehler:', err);
-      sel.innerHTML='<option value="">-- Fehler: '+err.message+' --</option>';
+      console.error('LV Fehler:',err);
+      sel.innerHTML='<option value="">-- Fehler beim Laden --</option>';
     }
   }
 }
-
 async function tbLadeLVPositionen(){
   const sel=document.getElementById('tb-lv-select');
   const liste=document.getElementById('tb-pos-liste');
