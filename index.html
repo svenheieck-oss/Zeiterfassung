@@ -1357,12 +1357,18 @@ async function tbLadeLVListe(){
     try{
       const r=await fetch(SCRIPT_URL+'?action=getLVListe');
       const d=await r.json();
-      if(d.ok&&d.lvliste){
+      console.log('LV Liste:', JSON.stringify(d));
+      if(d.ok&&d.lvliste&&d.lvliste.length>0){
         lvListe=d.lvliste;
         sel.innerHTML='<option value="">-- LV auswählen --</option>'+
           d.lvliste.map(lv=>`<option value="${lv.lvnr}">${lv.lvnr} · ${lv.kunde}</option>`).join('');
+      } else {
+        sel.innerHTML='<option value="">-- Kein LV gefunden ('+JSON.stringify(d)+') --</option>';
       }
-    }catch{}
+    }catch(err){
+      console.error('LV Fehler:', err);
+      sel.innerHTML='<option value="">-- Fehler: '+err.message+' --</option>';
+    }
   }
 }
 
