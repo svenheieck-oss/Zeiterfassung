@@ -288,6 +288,10 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
       <div class="progress-bar"><div class="progress-fill" id="week-bar" style="width:91%"></div></div>
     </div>
   </div>
+  <div id="trello-einsatz-box" style="display:none;margin-bottom:12px">
+    <div class="section-label">📋 Mein heutiger Einsatz</div>
+    <div id="trello-einsatz-liste"></div>
+  </div>
   <div class="section-label">Meine letzten Einträge</div>
   <div class="card" style="padding:8px 12px">
     <div id="dash-entries"><div class="empty-hint">Keine Einträge</div></div>
@@ -700,17 +704,19 @@ async function ladeProjekte(){
     fillProjekte();return;
   }
   try{
-    const r=await fetch(SCRIPT_URL+'?action=getProjekte');
+    // Projektliste aus Trello-synchronisiertem Sheet laden
+    const r=await fetch(SCRIPT_URL+'?action=getProjektliste');
     const d=await r.json();
     if(d.ok&&d.projekte&&d.projekte.length>0){
-      PROJEKTE=d.projekte.map(p=>p.name);
+      PROJEKTE=d.projekte;
       fillProjekte();
       setStatus('Projekte geladen ✓','ok');
+      return;
     }
-  }catch{
-    PROJEKTE=["Garten Müller, Leipzig","Wegebau Gohlis-Mitte"];
-    fillProjekte();
-  }
+  }catch{}
+  // Fallback
+  PROJEKTE=["⚒ Kleinauftrag / Sonstiges"];
+  fillProjekte();
 }
 
 function renderWorkerGrid(){
@@ -809,6 +815,7 @@ async function enterWorker(){
   checkLateWarning();
   renderDashboard();
   updateDashboardMetrics();
+  ladeTrelloEinsaetze();
 }
 
 function enterAdmin(){
@@ -1673,20 +1680,48 @@ function rgRenderZusammenfassung(){
 function rgInitCanvas(canvas){
   const ctx=canvas.getContext('2d');
   ctx.strokeStyle='#1a2e1a';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
-  function resize(){
+  const dpr=window.devicePixelRatio||1;
+  const r=canvas.getBoundingClientRect();
+  canvas.width=r.width*dpr;
+  canvas.height=140*dpr;
+  ctx.scale(dpr,dpr);
+  ctx.strokeStyle='#1a2e1a';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+
+  function getPos(e){
     const r=canvas.getBoundingClientRect();
-    const dpr=window.devicePixelRatio||1;
-    canvas.width=r.width*dpr;canvas.height=140*dpr;
-    ctx.scale(dpr,dpr);
-    ctx.strokeStyle='#1a2e1a';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+    const s=e.touches?e.touches[0]:e;
+    return{x:s.clientX-r.left,y:s.clientY-r.top};
   }
-  resize();
-  function getPos(e){const r=canvas.getBoundingClientRect();const s=e.touches?e.touches[0]:e;return{x:s.clientX-r.left,y:s.clientY-r.top};}
-  canvas.addEventListener('mousedown',e=>{sigActive=true;const p=getPos(e);sigLastX=p.x;sigLastY=p.y;});
-  canvas.addEventListener('touchstart',e=>{e.preventDefault();sigActive=true;const p=getPos(e);sigLastX=p.x;sigLastY=p.y;},{passive:false});
-  canvas.addEventListener('mousemove',e=>{if(!sigActive)return;const p=getPos(e);ctx.beginPath();ctx.moveTo(sigLastX,sigLastY);ctx.lineTo(p.x,p.y);ctx.stroke();sigLastX=p.x;sigLastY=p.y;});
-  canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!sigActive)return;const p=getPos(e);ctx.beginPath();ctx.moveTo(sigLastX,sigLastY);ctx.lineTo(p.x,p.y);ctx.stroke();sigLastX=p.x;sigLastY=p.y;},{passive:false});
-  canvas.addEventListener('mouseup',()=>sigActive=false);
+
+  // Mouse events
+  canvas.addEventListener('mousedown',e=>{
+    e.preventDefault();
+    sigActive=true;
+    const p=getPos(e);sigLastX=p.x;sigLastY=p.y;
+  });
+  canvas.addEventListener('mousemove',e=>{
+    if(!sigActive)return;
+    e.preventDefault();
+    const p=getPos(e);
+    ctx.beginPath();ctx.moveTo(sigLastX,sigLastY);ctx.lineTo(p.x,p.y);ctx.stroke();
+    sigLastX=p.x;sigLastY=p.y;
+  });
+  canvas.addEventListener('mouseup',e=>{sigActive=false;});
+  canvas.addEventListener('mouseleave',e=>{sigActive=false;});
+
+  // Touch events
+  canvas.addEventListener('touchstart',e=>{
+    e.preventDefault();
+    sigActive=true;
+    const p=getPos(e);sigLastX=p.x;sigLastY=p.y;
+  },{passive:false});
+  canvas.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    if(!sigActive)return;
+    const p=getPos(e);
+    ctx.beginPath();ctx.moveTo(sigLastX,sigLastY);ctx.lineTo(p.x,p.y);ctx.stroke();
+    sigLastX=p.x;sigLastY=p.y;
+  },{passive:false});
   canvas.addEventListener('touchend',()=>sigActive=false);
 }
 
@@ -1777,6 +1812,48 @@ async function saveRegiebericht(){
     sigClear();sigSaved=false;
     rgGoStep('allgemein');
   },2500);
+}
+
+
+// ============================================================
+//  TRELLO — Einsätze im Dashboard anzeigen
+// ============================================================
+async function ladeTrelloEinsaetze(){
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
+  try{
+    const r=await fetch(SCRIPT_URL+'?action=getTrelloEinsaetze&worker='+encodeURIComponent(currentWorker.name));
+    const d=await r.json();
+    if(!d.ok||!d.einsaetze||!d.einsaetze.length)return;
+
+    const box=document.getElementById('trello-einsatz-box');
+    const liste=document.getElementById('trello-einsatz-liste');
+    if(!box||!liste)return;
+
+    // Nur heutige + nächste 7 Tage anzeigen
+    const heute=new Date().toISOString().slice(0,10);
+    const relevant=d.einsaetze.filter(e=>e.datum>=heute).slice(0,3);
+    if(!relevant.length)return;
+
+    box.style.display='block';
+    liste.innerHTML=relevant.map(e=>`
+      <div class="card" style="padding:10px 14px;margin-bottom:8px;border-left:3px solid ${e.heute?'var(--gx-green)':'var(--gx-gold)'}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--gx-text)">${e.name}</div>
+            ${e.beschreibung?`<div style="font-size:11px;color:var(--gx-muted);margin-top:2px">${e.beschreibung.slice(0,80)}</div>`:''}
+            <div style="font-size:11px;color:var(--gx-muted);margin-top:3px">📋 ${e.liste}</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;margin-left:8px">
+            ${e.heute
+              ? '<span class="sbadge green">Heute</span>'
+              : `<span style="font-size:11px;color:var(--gx-muted)">${new Date(e.datum+'T12:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'})}</span>`
+            }
+          </div>
+        </div>
+      </div>`).join('');
+  }catch(err){
+    // Trello nicht verfügbar — kein Problem
+  }
 }
 
 init();
