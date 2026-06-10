@@ -216,6 +216,25 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 .tb-mat-intern{font-size:12px;padding:7px 8px;border:1px solid #e8d8a0;border-radius:8px;background:#fdf8f0;color:#633806;width:100%;text-align:center}
 .tb-add-btn{width:100%;padding:9px;border:1.5px dashed var(--gx-border);border-radius:9px;background:none;color:var(--gx-muted);font-size:12px;cursor:pointer;margin-top:4px;font-weight:500}
 .tb-add-btn:active{background:var(--gx-bg)}
+
+/* Regiebericht */
+.rg-step-bar{display:flex;gap:4px;margin-bottom:14px;overflow-x:auto}
+.rg-step{flex:1;padding:7px 4px;border-radius:8px;background:var(--gx-bg);border:1px solid var(--gx-border);text-align:center;font-size:10px;color:var(--gx-muted);cursor:pointer;white-space:nowrap;min-width:55px}
+.rg-step.active{background:var(--gx-green-light);border-color:var(--gx-green);color:var(--gx-green-dark);font-weight:700}
+.sig-box{border:2px dashed var(--gx-border);border-radius:12px;background:#fafaf8;margin-bottom:8px;position:relative;overflow:hidden;cursor:crosshair}
+.sig-canvas{display:block;width:100%;touch-action:none}
+.sig-linie{position:absolute;bottom:32px;left:16px;right:16px;height:1px;background:#ddd;pointer-events:none}
+.sig-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:11px;color:#bbb;pointer-events:none;white-space:nowrap}
+.sig-actions{display:flex;gap:8px;margin-bottom:10px}
+.sig-clear{flex:1;padding:8px;border-radius:8px;background:var(--red-light);color:var(--red);border:none;font-size:12px;font-weight:600;cursor:pointer}
+.sig-ok{flex:2;padding:8px;border-radius:8px;background:var(--gx-green-light);color:var(--gx-green-dark);border:none;font-size:12px;font-weight:600;cursor:pointer}
+.rg-summary{background:var(--gx-bg);border:1px solid var(--gx-border);border-radius:12px;padding:14px;margin-bottom:14px}
+.rg-sum-title{font-size:15px;font-weight:800;color:var(--gx-dark);margin-bottom:2px}
+.rg-sum-sub{font-size:11px;color:var(--gx-muted);margin-bottom:12px}
+.rg-sum-block{margin-bottom:10px;padding-bottom:10px;border-bottom:.5px solid var(--gx-border)}
+.rg-sum-block:last-child{border:none;margin:0;padding:0}
+.rg-sum-label{font-size:9px;font-weight:700;color:var(--gx-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.rg-sum-val{font-size:12px;color:var(--gx-text);line-height:1.6}
 </style>
 </head>
 <body>
@@ -491,6 +510,94 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   </div>
 </div>
 
+
+<!-- REGIEBERICHT -->
+<div class="view" id="v-regiebericht">
+  <div class="rg-step-bar">
+    <div class="rg-step active" id="rgstep-allgemein" onclick="rgGoStep('allgemein')">Allgemein</div>
+    <div class="rg-step" id="rgstep-team" onclick="rgGoStep('team')">Team</div>
+    <div class="rg-step" id="rgstep-material" onclick="rgGoStep('material')">Material</div>
+    <div class="rg-step" id="rgstep-abschluss" onclick="rgGoStep('abschluss')">Abschluss</div>
+  </div>
+
+  <!-- Allgemein -->
+  <div id="rgp-allgemein">
+    <div class="tb-sec-label">Auftraggeber & Datum</div>
+    <div class="field"><label>Kunde / Auftraggeber</label><input type="text" id="rg-kunde" placeholder="z.B. Familie Müller"></div>
+    <div class="field"><label>Baustelle / Adresse</label><input type="text" id="rg-baustelle" placeholder="z.B. Hauptstr. 12, Erlangen"></div>
+    <div class="field"><label>Datum</label><input type="date" id="rg-datum"></div>
+    <div class="tb-sec-label" style="margin-top:4px">Arbeitszeit</div>
+    <div class="row2">
+      <div class="field"><label>Von</label><input type="time" id="rg-von" value="07:00" oninput="rgCalcNetto()"></div>
+      <div class="field"><label>Bis</label><input type="time" id="rg-bis" value="16:30" oninput="rgCalcNetto()"></div>
+    </div>
+    <div class="field"><label>Pause (min)</label><input type="number" id="rg-pause" value="30" min="0" step="15" oninput="rgCalcNetto()"></div>
+    <div class="calc-box"><span style="font-size:13px;color:var(--gx-muted);font-weight:500">Nettostunden</span><span class="calc-val" id="rg-netto">9,0 h</span></div>
+    <div class="field"><label>Tätigkeitsbeschreibung</label><textarea id="rg-taetigkeit" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;resize:none;height:80px" placeholder="Was wurde heute gemacht?"></textarea></div>
+    <button class="btn-primary" onclick="rgGoStep('team')">Weiter: Team →</button>
+  </div>
+
+  <!-- Team -->
+  <div id="rgp-team" style="display:none">
+    <div class="tb-sec-label">Anwesende Mitarbeiter</div>
+    <div style="display:grid;grid-template-columns:26px 1fr 70px 16px;gap:8px;padding:5px 0;font-size:10px;font-weight:700;color:var(--gx-muted);border-bottom:1px solid var(--gx-border);margin-bottom:4px">
+      <div></div><div>Name</div><div style="text-align:center">Std.</div><div></div>
+    </div>
+    <div id="rg-team-liste"></div>
+    <div class="row2" style="margin-top:14px">
+      <button class="btn-outline" onclick="rgGoStep('allgemein')">← Zurück</button>
+      <button class="btn-primary" onclick="rgGoStep('material')">Weiter →</button>
+    </div>
+  </div>
+
+  <!-- Material -->
+  <div id="rgp-material" style="display:none">
+    <div class="tb-sec-label">Materialverbrauch</div>
+    <div class="tb-mat-grid" style="margin-bottom:4px"><div class="tb-mat-head">Material</div><div class="tb-mat-head">Menge</div><div class="tb-mat-head">Einheit</div><div class="tb-mat-head" style="background:#fdf8f0;border-radius:5px;padding:2px;color:#633806">Intern</div></div>
+    <div id="rg-mat-rows">
+      <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="Material…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="to"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div>
+    </div>
+    <button class="tb-add-btn" onclick="rgAddMatRow('rg-mat-rows')">+ Material hinzufügen</button>
+    <div class="tb-sec-label" style="margin-top:10px">Maschineneinsatz</div>
+    <div id="rg-masch-rows">
+      <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. LKW Arocs"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div></div>
+    </div>
+    <button class="tb-add-btn" onclick="rgAddMaschRow()">+ Maschine hinzufügen</button>
+    <div class="tb-sec-label" style="margin-top:10px">Materialrückgabe</div>
+    <div id="rg-rueck-rows">
+      <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Gartenabfall"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="cbm"><input class="tb-mat-intern" type="text" placeholder="GO/LA"></div>
+    </div>
+    <button class="tb-add-btn" onclick="rgAddMatRow('rg-rueck-rows','cbm','GO/LA')">+ Rückgabe hinzufügen</button>
+    <div class="row2" style="margin-top:14px">
+      <button class="btn-outline" onclick="rgGoStep('team')">← Zurück</button>
+      <button class="btn-primary" onclick="rgGoStep('abschluss')">Weiter →</button>
+    </div>
+  </div>
+
+  <!-- Abschluss -->
+  <div id="rgp-abschluss" style="display:none">
+    <div class="rg-summary" id="rg-zf"></div>
+    <div class="field"><label>Notizen / Besonderheiten</label><textarea id="rg-notiz" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;resize:none;height:60px" placeholder="z.B. Schlechtwetter, Materialmangel…"></textarea></div>
+    <div class="tb-sec-label">Kundenunterschrift</div>
+    <div class="sig-box">
+      <canvas id="sig-canvas" class="sig-canvas" height="140"></canvas>
+      <div class="sig-linie"></div>
+      <div class="sig-hint">Bitte hier unterschreiben</div>
+    </div>
+    <div class="sig-actions">
+      <button class="sig-clear" onclick="sigClear()">✕ Löschen</button>
+      <button class="sig-ok" onclick="sigBestaetigen()">✓ Unterschrift bestätigen</button>
+    </div>
+    <div id="sig-bestaetigt" class="success-msg">✓ Unterschrift gespeichert</div>
+    <div class="success-msg" id="rg-ok">✓ Regiebericht gespeichert!</div>
+    <div class="error-msg" id="rg-err">Bitte Kunde und Baustelle ausfüllen!</div>
+    <div class="row2" style="margin-bottom:10px">
+      <button class="btn-outline" onclick="rgGoStep('material')">← Zurück</button>
+      <button class="btn-primary" onclick="saveRegiebericht()">Speichern ✓</button>
+    </div>
+  </div>
+</div>
+
 <!-- ADMIN: Dashboard -->
 <div class="view" id="v-admin">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -522,6 +629,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <button class="nav-btn" id="nav-kalender" onclick="switchMain('kalender')"><i class="ti ti-calendar" aria-hidden="true"></i><span>Kalender</span></button>
   <button class="nav-btn" id="nav-medien" onclick="switchMain('medien')"><i class="ti ti-photo" aria-hidden="true"></i><span>Medien</span></button>
   <button class="nav-btn" id="nav-tagesbericht" onclick="switchMain('tagesbericht')" style="display:none"><i class="ti ti-clipboard-list" aria-hidden="true"></i><span>Bericht</span></button>
+  <button class="nav-btn" id="nav-regiebericht" onclick="switchMain('regiebericht')" style="display:none"><i class="ti ti-file-text" aria-hidden="true"></i><span>Regie</span></button>
 </div>
 
 <div class="status-bar" id="status-bar">Verbinde…</div>
@@ -628,6 +736,7 @@ function switchMain(name){
   if(name==='urlaub')renderUrlaubList();
   if(name==='kalender')renderKalender();
   if(name==='tagesbericht')tbInit();
+  if(name==='regiebericht')rgInit();
 }
 
 // Worker select & PIN
@@ -695,6 +804,8 @@ async function enterWorker(){
   const rolle=stammdaten.rolle||'Mitarbeiter';
   const tbBtn=document.getElementById('nav-tagesbericht');
   if(tbBtn)tbBtn.style.display=(rolle==='Vorarbeiter'||rolle==='Facharbeiter'||rolle==='Admin')?'flex':'none';
+  const rgBtn=document.getElementById('nav-regiebericht');
+  if(rgBtn)rgBtn.style.display='flex';
   checkLateWarning();
   renderDashboard();
   updateDashboardMetrics();
@@ -1365,7 +1476,6 @@ async function tbLadeLVListe(){
         sel.innerHTML='<option value="">-- Kein LV vorhanden --</option>';
       }
     }catch(err){
-      console.error('LV Fehler:',err);
       sel.innerHTML='<option value="">-- Fehler beim Laden --</option>';
     }
   }
@@ -1437,6 +1547,237 @@ function tbGetPositionen(){
 // Krank
 const KRANK_FORM_URL='https://forms.gle/M44kwaPUZKKUFB3V6';
 function openKrankForm(){window.open(KRANK_FORM_URL,'_blank');}
+
+
+// ============================================================
+//  REGIEBERICHT
+// ============================================================
+let sigActive=false,sigLastX=0,sigLastY=0,sigSaved=false;
+
+function rgInit(){
+  document.getElementById('rg-datum').value=new Date().toISOString().slice(0,10);
+  document.getElementById('rg-von').value='07:00';
+  document.getElementById('rg-bis').value='16:30';
+  document.getElementById('rg-pause').value='30';
+  rgCalcNetto();
+  rgGoStep('allgemein');
+  // Canvas initialisieren
+  setTimeout(()=>{
+    const canvas=document.getElementById('sig-canvas');
+    if(canvas&&!canvas._init){
+      rgInitCanvas(canvas);
+      canvas._init=true;
+    }
+  },100);
+}
+
+function rgGoStep(step){
+  ['allgemein','team','material','abschluss'].forEach(s=>{
+    const p=document.getElementById('rgp-'+s);
+    const t=document.getElementById('rgstep-'+s);
+    if(p)p.style.display=s===step?'block':'none';
+    if(t)t.classList.toggle('active',s===step);
+  });
+  if(step==='team')rgRenderTeam();
+  if(step==='abschluss')rgRenderZusammenfassung();
+}
+
+function rgCalcNetto(){
+  const von=document.getElementById('rg-von').value;
+  const bis=document.getElementById('rg-bis').value;
+  const pause=parseInt(document.getElementById('rg-pause').value)||0;
+  if(von&&bis){
+    const v=von.split(':').map(Number),b=bis.split(':').map(Number);
+    const diff=((b[0]*60+b[1])-(v[0]*60+v[1])-pause)/60;
+    document.getElementById('rg-netto').textContent=diff>0?diff.toFixed(1).replace('.',',')+' h':'–';
+  }
+}
+
+function rgRenderTeam(){
+  const netto=parseFloat(document.getElementById('rg-netto').textContent.replace(',','.').replace(' h',''))||0;
+  document.getElementById('rg-team-liste').innerHTML=workers.map(w=>{
+    const isMe=w.name===currentWorker.name;
+    return `<div class="tb-ma-row" style="display:grid;grid-template-columns:26px 1fr 70px 16px;gap:8px">
+      <div class="tb-check${isMe?' checked':''}" onclick="rgToggleMA(this)">${isMe?'✓':''}</div>
+      <div class="tb-ma-name">${w.name}</div>
+      <input class="tb-ma-h" type="number" value="${isMe?netto:''}" placeholder="–" min="0" max="14" step="0.5" ${!isMe?'disabled':''}>
+      <span style="font-size:11px;color:var(--gx-muted)">h</span>
+    </div>`;
+  }).join('');
+}
+
+function rgToggleMA(el){
+  const checked=el.classList.toggle('checked');
+  el.textContent=checked?'✓':'';
+  const row=el.closest('.tb-ma-row');
+  const inp=row.querySelector('input');
+  if(checked){
+    inp.disabled=false;
+    if(!inp.value){const n=parseFloat(document.getElementById('rg-netto').textContent.replace(',','.').replace(' h',''))||0;inp.value=n||'';}
+  } else {inp.disabled=true;inp.value='';}
+}
+
+function rgAddMatRow(id,einheit,intern){
+  const c=document.getElementById(id);
+  const d=document.createElement('div');d.className='tb-mat-grid';
+  d.innerHTML=`<input class="tb-mat-inp name" type="text" placeholder="Material…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="${einheit||'Einh.'}"><input class="tb-mat-intern" type="text" placeholder="${intern||'EN/LA'}">`;
+  c.appendChild(d);
+}
+
+function rgAddMaschRow(){
+  const c=document.getElementById('rg-masch-rows');
+  const d=document.createElement('div');d.className='tb-mat-grid';
+  d.innerHTML='<input class="tb-mat-inp name" type="text" placeholder="Maschine…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div>';
+  c.appendChild(d);
+}
+
+function rgGetMatRows(id){
+  const rows=[];
+  document.getElementById(id).querySelectorAll('.tb-mat-grid').forEach(row=>{
+    const ins=row.querySelectorAll('input');
+    if(ins[0]&&ins[0].value.trim())rows.push({name:ins[0].value.trim(),menge:ins[1]?ins[1].value:'',einheit:ins[2]?ins[2].value:'',intern:ins[3]?ins[3].value:''});
+  });
+  return rows;
+}
+
+function rgRenderZusammenfassung(){
+  const kunde=document.getElementById('rg-kunde').value||'–';
+  const baustelle=document.getElementById('rg-baustelle').value||'–';
+  const datum=document.getElementById('rg-datum').value;
+  const von=document.getElementById('rg-von').value;
+  const bis=document.getElementById('rg-bis').value;
+  const netto=document.getElementById('rg-netto').textContent;
+  const taetigkeit=document.getElementById('rg-taetigkeit').value||'–';
+  const datumFmt=datum?new Date(datum+'T12:00').toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'–';
+  const team=[];
+  document.getElementById('rg-team-liste').querySelectorAll('.tb-ma-row').forEach(row=>{
+    if(row.querySelector('.tb-check').classList.contains('checked')){
+      const name=row.querySelector('.tb-ma-name').textContent;
+      const h=row.querySelector('input').value;
+      team.push(name+(h?' ('+h+' h)':''));
+    }
+  });
+  document.getElementById('rg-zf').innerHTML=`
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="width:36px;height:36px;border-radius:8px;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--gx-dark);font-size:13px;flex-shrink:0">GX</div>
+      <div><div class="rg-sum-title">Regiebericht</div><div class="rg-sum-sub">${datumFmt}</div></div>
+    </div>
+    <div class="rg-sum-block"><div class="rg-sum-label">Auftraggeber</div><div class="rg-sum-val"><strong>${kunde}</strong><br><span style="color:var(--gx-muted)">${baustelle}</span></div></div>
+    <div class="rg-sum-block"><div class="rg-sum-label">Arbeitszeit</div><div class="rg-sum-val">${von} – ${bis} Uhr · <strong>${netto}</strong></div></div>
+    <div class="rg-sum-block"><div class="rg-sum-label">Tätigkeiten</div><div class="rg-sum-val">${taetigkeit}</div></div>
+    <div class="rg-sum-block"><div class="rg-sum-label">Team (${team.length} Personen)</div><div class="rg-sum-val">${team.join(', ')||'–'}</div></div>
+  `;
+}
+
+// Unterschrift Canvas
+function rgInitCanvas(canvas){
+  const ctx=canvas.getContext('2d');
+  ctx.strokeStyle='#1a2e1a';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  function resize(){
+    const r=canvas.getBoundingClientRect();
+    const dpr=window.devicePixelRatio||1;
+    canvas.width=r.width*dpr;canvas.height=140*dpr;
+    ctx.scale(dpr,dpr);
+    ctx.strokeStyle='#1a2e1a';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  }
+  resize();
+  function getPos(e){const r=canvas.getBoundingClientRect();const s=e.touches?e.touches[0]:e;return{x:s.clientX-r.left,y:s.clientY-r.top};}
+  canvas.addEventListener('mousedown',e=>{sigActive=true;const p=getPos(e);sigLastX=p.x;sigLastY=p.y;});
+  canvas.addEventListener('touchstart',e=>{e.preventDefault();sigActive=true;const p=getPos(e);sigLastX=p.x;sigLastY=p.y;},{passive:false});
+  canvas.addEventListener('mousemove',e=>{if(!sigActive)return;const p=getPos(e);ctx.beginPath();ctx.moveTo(sigLastX,sigLastY);ctx.lineTo(p.x,p.y);ctx.stroke();sigLastX=p.x;sigLastY=p.y;});
+  canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!sigActive)return;const p=getPos(e);ctx.beginPath();ctx.moveTo(sigLastX,sigLastY);ctx.lineTo(p.x,p.y);ctx.stroke();sigLastX=p.x;sigLastY=p.y;},{passive:false});
+  canvas.addEventListener('mouseup',()=>sigActive=false);
+  canvas.addEventListener('touchend',()=>sigActive=false);
+}
+
+function sigClear(){
+  const canvas=document.getElementById('sig-canvas');
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  sigSaved=false;
+  document.getElementById('sig-bestaetigt').style.display='none';
+}
+
+function sigBestaetigen(){
+  const canvas=document.getElementById('sig-canvas');
+  const ctx=canvas.getContext('2d');
+  const data=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+  const hasContent=Array.from(data).some(v=>v!==0);
+  if(!hasContent){alert('Bitte zuerst unterschreiben!');return;}
+  sigSaved=true;
+  showMsg('sig-bestaetigt',3000);
+}
+
+async function saveRegiebericht(){
+  const kunde=document.getElementById('rg-kunde').value;
+  const baustelle=document.getElementById('rg-baustelle').value;
+  document.getElementById('rg-err').style.display='none';
+  if(!kunde||!baustelle){document.getElementById('rg-err').style.display='block';return;}
+
+  const datum=document.getElementById('rg-datum').value;
+  const von=document.getElementById('rg-von').value;
+  const bis=document.getElementById('rg-bis').value;
+  const pause=parseInt(document.getElementById('rg-pause').value)||0;
+  const v=von.split(':').map(Number),b=bis.split(':').map(Number);
+  const nettoH=parseFloat((((b[0]*60+b[1])-(v[0]*60+v[1])-pause)/60).toFixed(2));
+
+  // Team zusammenstellen
+  const anwesend=[];
+  document.getElementById('rg-team-liste').querySelectorAll('.tb-ma-row').forEach(row=>{
+    if(row.querySelector('.tb-check').classList.contains('checked')){
+      const name=row.querySelector('.tb-ma-name').textContent;
+      const h=parseFloat(row.querySelector('input').value)||nettoH;
+      anwesend.push({name,h});
+    }
+  });
+
+  // Zeiteinträge für alle Teammitglieder speichern
+  for(const ma of anwesend){
+    const entry={worker:ma.name,datum,von,bis,pause,netto:ma.h,proj:baustelle,art:'Regiebericht',status:'approved',savedAt:new Date().toISOString(),notiz:'RB: '+kunde};
+    allEntries=allEntries.filter(e=>!(e.worker===ma.name&&e.datum===datum&&e.art==='Regiebericht'));
+    allEntries.push(entry);
+    if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+      try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveEntry',entry})});}catch{}
+    }
+  }
+  localStorage.setItem('gx_entries',JSON.stringify(allEntries));
+
+  // Unterschrift als Base64
+  let sigBase64='';
+  if(sigSaved){
+    const canvas=document.getElementById('sig-canvas');
+    sigBase64=canvas.toDataURL('image/png').split(',')[1];
+  }
+
+  const material=rgGetMatRows('rg-mat-rows');
+  const maschinen=rgGetMatRows('rg-masch-rows');
+  const rueckgabe=rgGetMatRows('rg-rueck-rows');
+
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
+    try{
+      await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({
+        action:'saveRegiebericht',
+        bericht:{datum,kunde,baustelle,von,bis,pause,netto:nettoH,
+          taetigkeit:document.getElementById('rg-taetigkeit').value,
+          notiz:document.getElementById('rg-notiz').value,
+          ersteller:currentWorker.name,mitarbeiter:anwesend,
+          material,maschinen,rueckgabe,unterschrift:sigBase64,
+          savedAt:new Date().toISOString()}
+      })});
+    }catch{}
+  }
+
+  showMsg('rg-ok',3000);
+  setStatus('Regiebericht gespeichert ✓','ok');
+  setTimeout(()=>{
+    document.getElementById('rg-kunde').value='';
+    document.getElementById('rg-baustelle').value='';
+    document.getElementById('rg-taetigkeit').value='';
+    document.getElementById('rg-notiz').value='';
+    sigClear();sigSaved=false;
+    rgGoStep('allgemein');
+  },2500);
+}
 
 init();
 </script>
