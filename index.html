@@ -1078,12 +1078,12 @@ async function ladeTrelloEinsaetze(){
     trelloEinsaetze=d.einsaetze;
     localStorage.setItem('gx_trello',JSON.stringify(trelloEinsaetze));
 
-    // Dashboard: heute + nächste 7 Tage
+    // Dashboard: NUR heutige Einsätze (datum <= heute <= datumBis)
     const heute=new Date().toISOString().slice(0,10);
     const box=document.getElementById('trello-einsatz-box');
     const liste=document.getElementById('trello-einsatz-liste');
     if(!box||!liste)return;
-    const relevant=d.einsaetze.filter(e=>e.datum>=heute).slice(0,3);
+    const relevant=d.einsaetze.filter(e=>e.datum<=heute&&heute<=(e.datumBis||e.datum));
     if(!relevant.length){box.style.display='none';return;}
     box.style.display='block';
     liste.innerHTML=relevant.map(e=>{
