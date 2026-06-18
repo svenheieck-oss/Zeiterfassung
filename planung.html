@@ -910,22 +910,50 @@ async function loadKrank() {
 
 async function loadTrello() {
   try {
-    // Trello-Daten kommen über das Apps Script Backend — kein Token im Frontend nötig
-    const r = await fetch(SCRIPT_URL + '?action=getTrelloPlanung');
-    const d = await r.json();
-    if(!d.ok) { trelloData = []; return; }
+    const url = `https://api.trello.com/1/boards/${TRELLO_BOARD}/cards?key=${TRELLO_KEY}&token=${TRELLO_TOKEN}&fields=name,desc,due,start,idList,idChecklists&checklists=all`;
+    const r = await fetch(url);
+    const cards = await r.json();
 
-    trelloData = (d.einsaetze || []).map(e => ({
-      id:           e.id,
-      name:         e.name,
-      datum:        e.datum,
-      datumBis:     e.datumBis || e.datum,
-      liste:        e.liste || '–',
-      beschreibung: e.beschreibung || '',
-      mitarbeiter:  e.mitarbeiter || []
-    }));
+    const listsUrl = `https://api.trello.com/1/boards/${TRELLO_BOARD}/lists?key=${TRELLO_KEY}&token=${TRELLO_TOKEN}&fields=name`;
+    const lists = await (await fetch(listsUrl)).json();
+    const listMap = {};
+    lists.forEach(l => listMap[l.id] = l.name);
+
+    trelloData = [];
+    cards.forEach(card => {
+      if(!card.due) return;
+      const dueDate   = card.due.slice(0,10);
+      const startDate = card.start
+        ? new Date(card.start).toISOString().slice(0,10)
+        : dueDate;
+
+      // Mitarbeiter aus Checkliste
+      const mitarbeiter = [];
+      if(card.checklists) {
+        card.checklists.forEach(cl => {
+          if(!cl.name) return;
+          if(cl.name.toLowerCase().includes('mitarbeiter')) {
+            cl.checkItems.forEach(item => {
+              if(item.state==='complete' && item.name) {
+                mitarbeiter.push(item.name.trim());
+              }
+            });
+          }
+        });
+      }
+
+      trelloData.push({
+        id:          card.id,
+        name:        card.name,
+        datum:       startDate,
+        datumBis:    dueDate,
+        liste:       listMap[card.idList]||'–',
+        beschreibung: card.desc||'',
+        mitarbeiter
+      });
+    });
   } catch(e) {
-    console.error('Trello Ladefehler:', e);
+    console.error('Trello error:', e);
     trelloData = [];
   }
 }
@@ -1092,58 +1120,61 @@ function renderGantt() {
       </div>`;
     row.appendChild(nameCell);
 
-    // Tag-Zellen
+    // Tag-Zellen — ALLE Einträge sammeln, dann Badge-Logik
     days.forEach(ds => {
       const cell = document.createElement('div');
       cell.className = 'gantt-cell' + (ds===t?' today':'') + (isWeekend(ds)?' weekend':'');
 
-      // Trello-Einsatz?
-      const einsatz = trelloData.find(e=>{
+      // Alle Einträge für diesen Tag sammeln
+      const tagesItems = [];
+
+      // Krank (höchste Priorität)
+      const krank = krankData.find(k=>k.worker===worker.name&&k.krankvon&&k.krankbis&&ds>=k.krankvon&&ds<=k.krankbis);
+      if(krank) tagesItems.push({type:'krank',icon:'🤒',label:'Krank',rawLabel:'Krank',sub:formatDate(krank.krankvon)+' – '+formatDate(krank.krankbis),zeit:''});
+
+      // Urlaub
+      const urlaub = urlaubData.find(u=>u.worker===worker.name&&ds>=u.von&&ds<=u.bis);
+      if(urlaub) tagesItems.push({type:'urlaub',icon:'✈',label:'Urlaub',rawLabel:'Urlaub',sub:formatDate(urlaub.von)+' – '+formatDate(urlaub.bis)+' · '+urlaub.tage+' Tage',zeit:''});
+
+      // ALLE Trello-Einsätze (find → filter!)
+      trelloData.filter(e=>{
         const start=e.datum,end=e.datumBis||e.datum;
         return ds>=start&&ds<=end&&e.mitarbeiter.some(m=>{
           const ml=m.toLowerCase(),wl=worker.name.toLowerCase();
           return ml.includes(wl.split(' ')[0])||wl.includes(ml.split(' ')[0]);
         });
+      }).forEach(e=>{
+        const zm=e.name.match(/^(\d{1,2}:\d{2})\s*[-–]\s*(\d{1,2}:\d{2})\s*(.*)/);
+        const rawLabel=zm?zm[3]||e.name:e.name;
+        const zeit=zm?zm[1]+'–'+zm[2]:'';
+        tagesItems.push({type:'einsatz',icon:'📋',label:(zeit?zeit+' ':'')+rawLabel,rawLabel,sub:e.liste,zeit});
       });
 
-      // Urlaub?
-      const urlaub = urlaubData.find(u=>u.worker===worker.name&&ds>=u.von&&ds<=u.bis);
-
-      // Krank?
-      const krank = krankData.find(k=>k.worker===worker.name&&k.krankvon&&k.krankbis&&ds>=k.krankvon&&ds<=k.krankbis);
-
-      // Gestempelt?
+      // Gestempelt
       const eintrag = allEntries.find(e=>e.worker===worker.name&&e.datum===ds&&(e.status==='approved'||e.status==='auto'));
+      if(eintrag) tagesItems.push({type:'aktiv',icon:'✓',label:eintrag.von+'–'+eintrag.bis,rawLabel:eintrag.proj.split(',')[0],sub:(+eintrag.netto).toFixed(1)+' h',zeit:eintrag.von+'–'+eintrag.bis});
 
-      let bar = null;
+      if(!tagesItems.length){ row.appendChild(cell); return; }
 
-      if(krank) {
-        bar = document.createElement('div');
-        bar.className = 'gantt-bar krank';
-        bar.textContent = '🤒 Krank';
-        bar.onclick = e=>{e.stopPropagation();showTooltip(e,{title:'Krankmeldung',rows:[['Mitarbeiter',worker.name],['Zeitraum',formatDate(krank.krankvon)+' – '+formatDate(krank.krankbis)]]});};
-      } else if(urlaub) {
-        bar = document.createElement('div');
-        bar.className = 'gantt-bar urlaub';
-        bar.textContent = '✈ Urlaub';
-        bar.onclick = e=>{e.stopPropagation();showTooltip(e,{title:'Urlaub',rows:[['Mitarbeiter',worker.name],['Zeitraum',formatDate(urlaub.von)+' – '+formatDate(urlaub.bis)],['Tage',urlaub.tage]]});};
-      } else if(einsatz) {
-        bar = document.createElement('div');
-        bar.className = 'gantt-bar einsatz';
-        // Uhrzeiten aus Name parsen
-        const zeitMatch = einsatz.name.match(/^(\d{1,2}:\d{2})\s*[-–]\s*(\d{1,2}:\d{2})\s*(.*)/);
-        const label = zeitMatch ? zeitMatch[3]||einsatz.name : einsatz.name;
-        const zeit  = zeitMatch ? zeitMatch[1]+'–'+zeitMatch[2] : '';
-        bar.textContent = (zeit?zeit+' ':'')+label;
-        bar.onclick = e=>{e.stopPropagation();showTooltip(e,{title:label,rows:[['Mitarbeiter',worker.name],['Datum',formatDate(ds)+(einsatz.datum!==einsatz.datumBis?' – '+formatDate(einsatz.datumBis):'')],['Liste',einsatz.liste],[zeit?'Uhrzeit':'',''].filter(r=>r[1]),['Team',einsatz.mitarbeiter.join(', ')]]});};
-      } else if(eintrag) {
-        bar = document.createElement('div');
-        bar.className = 'gantt-bar aktiv';
-        bar.textContent = '✓ '+eintrag.von+'–'+eintrag.bis;
-        bar.onclick = e=>{e.stopPropagation();showTooltip(e,{title:'Gestempelt',rows:[['Mitarbeiter',worker.name],['Zeit',eintrag.von+'–'+eintrag.bis],['Stunden',(+eintrag.netto).toFixed(1)+' h'],['Projekt',eintrag.proj]]});};
+      // Ersten Eintrag als Hauptbalken
+      const first = tagesItems[0];
+      const bar = document.createElement('div');
+      bar.className = 'gantt-bar ' + first.type;
+      bar.style.cssText = 'position:relative;padding-right:'+(tagesItems.length>1?'28px':'8px');
+
+      if(tagesItems.length === 1) {
+        bar.textContent = first.label;
+      } else {
+        // Badge mit Anzahl weiterer Einträge
+        bar.innerHTML = `<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;max-width:calc(100% - 4px)">${first.label}</span><span style="position:absolute;right:3px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.45);border-radius:9px;padding:1px 5px;font-size:9px;font-weight:800;color:#fff">+${tagesItems.length-1}</span>`;
       }
 
-      if(bar) cell.appendChild(bar);
+      // Klick öffnet Tages-Detail
+      const wName = worker.name;
+      bar.onclick = ev => { ev.stopPropagation(); openDayDetail(wName, ds, tagesItems); };
+      cell.onclick = () => openDayDetail(wName, ds, tagesItems);
+
+      cell.appendChild(bar);
       row.appendChild(cell);
     });
 
@@ -1252,6 +1283,46 @@ function openDetail(workerName) {
   }
 
   renderGantt(); // Highlight aktualisieren
+}
+
+// Tages-Detail: alle Einträge eines Tages im Detail-Panel
+function openDayDetail(workerName, ds, tagesItems) {
+  selectedWorker = workerName;
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('dp-avatar').textContent = initials(workerName);
+  document.getElementById('dp-name').textContent   = workerName;
+
+  const wochentag = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'][new Date(ds+'T12:00:00').getDay()];
+  document.getElementById('dp-sub').textContent = wochentag+', '+formatDate(ds);
+
+  const typeLabels = {einsatz:'Trello-Einsatz',urlaub:'Urlaub',krank:'Krankmeldung',aktiv:'Gestempelt'};
+  const colors = {einsatz:'var(--green)',urlaub:'var(--blue)',krank:'var(--red)',aktiv:'var(--green)'};
+
+  const body = document.getElementById('dp-body');
+  body.innerHTML = `
+    <div class="detail-section">
+      <div class="detail-sec-label">${tagesItems.length} Eintrag${tagesItems.length>1?'e':''} · ${wochentag}</div>
+      ${tagesItems.map(item=>`
+        <div class="detail-item ${item.type}">
+          <div class="detail-item-icon">${item.icon}</div>
+          <div style="flex:1">
+            <div class="detail-item-main">${item.rawLabel}</div>
+            ${item.zeit?`<div class="detail-item-sub">🕐 ${item.zeit} Uhr</div>`:''}
+            <div class="detail-item-sub">${item.sub}</div>
+            <div style="font-size:9px;color:${colors[item.type]};margin-top:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">${typeLabels[item.type]||''}</div>
+          </div>
+        </div>`).join('')}
+    </div>
+    <div style="margin-top:4px">
+      <button onclick="openDetail('${workerName.replace(/'/g,"\\'")}')"
+        style="width:100%;padding:9px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:11px;cursor:pointer;transition:all 0.15s"
+        onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+        onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+        Gesamte Übersicht → ${workerName}
+      </button>
+    </div>`;
+
+  renderGantt();
 }
 
 function closeDetail() {
