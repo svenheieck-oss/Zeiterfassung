@@ -910,48 +910,16 @@ async function loadKrank() {
 
 async function loadTrello() {
   try {
-    const url = `https://api.trello.com/1/boards/${TRELLO_BOARD}/cards?key=${TRELLO_KEY}&token=${TRELLO_TOKEN}&fields=name,desc,due,start,idList,idChecklists&checklists=all`;
-    const r = await fetch(url);
-    const cards = await r.json();
-
-    const listsUrl = `https://api.trello.com/1/boards/${TRELLO_BOARD}/lists?key=${TRELLO_KEY}&token=${TRELLO_TOKEN}&fields=name`;
-    const lists = await (await fetch(listsUrl)).json();
-    const listMap = {};
-    lists.forEach(l => listMap[l.id] = l.name);
-
-    trelloData = [];
-    cards.forEach(card => {
-      if(!card.due) return;
-      const dueDate   = card.due.slice(0,10);
-      const startDate = card.start
-        ? new Date(card.start).toISOString().slice(0,10)
-        : dueDate;
-
-      // Mitarbeiter aus Checkliste
-      const mitarbeiter = [];
-      if(card.checklists) {
-        card.checklists.forEach(cl => {
-          if(!cl.name) return;
-          if(cl.name.toLowerCase().includes('mitarbeiter')) {
-            cl.checkItems.forEach(item => {
-              if(item.state==='complete' && item.name) {
-                mitarbeiter.push(item.name.trim());
-              }
-            });
-          }
-        });
-      }
-
-      trelloData.push({
-        id:          card.id,
-        name:        card.name,
-        datum:       startDate,
-        datumBis:    dueDate,
-        liste:       listMap[card.idList]||'–',
-        beschreibung: card.desc||'',
-        mitarbeiter
-      });
-    });
+    // Über Apps Script — kein Token im Frontend nötig
+    const r = await fetch(SCRIPT_URL + '?action=getTrelloPlanung');
+    const data = await r.json();
+    if(data.ok && data.einsaetze) {
+      trelloData = data.einsaetze;
+      console.log('Trello geladen:', trelloData.length, 'Einsätze');
+    } else {
+      console.error('getTrelloPlanung Fehler:', data.error);
+      trelloData = [];
+    }
   } catch(e) {
     console.error('Trello error:', e);
     trelloData = [];
@@ -1055,7 +1023,7 @@ function renderGantt() {
   if(activeBaustelle) {
     const card = trelloData.find(c=>c.name===activeBaustelle);
     if(card) {
-      filteredWorkers = filteredWorkers.filter(w=>card.mitarbeiter.some(m=>m.toLowerCase().includes(w.name.toLowerCase().split(' ')[0])||w.name.toLowerCase().includes(m.toLowerCase().split(' ')[0])));
+      filteredWorkers = filteredWorkers.filter(w=>card.mitarbeiter.some(m=>{const ml=m.toLowerCase().trim();const parts=w.name.toLowerCase().trim().split(' ');return parts.every(p=>ml.includes(p))||parts.some(p=>p.length>3&&ml.includes(p));}));
     }
   }
 
@@ -1140,8 +1108,9 @@ function renderGantt() {
       trelloData.filter(e=>{
         const start=e.datum,end=e.datumBis||e.datum;
         return ds>=start&&ds<=end&&e.mitarbeiter.some(m=>{
-          const ml=m.toLowerCase(),wl=worker.name.toLowerCase();
-          return ml.includes(wl.split(' ')[0])||wl.includes(ml.split(' ')[0]);
+          const ml=m.toLowerCase().trim();
+          const parts=worker.name.toLowerCase().trim().split(' ');
+          return parts.every(p=>ml.includes(p))||parts.some(p=>p.length>3&&ml.includes(p));
         });
       }).forEach(e=>{
         const zm=e.name.match(/^(\d{1,2}:\d{2})\s*[-–]\s*(\d{1,2}:\d{2})\s*(.*)/);
@@ -1236,8 +1205,8 @@ function openDetail(workerName) {
     const start=e.datum,end=e.datumBis||e.datum;
     const inRange=start<=addDays(monday,13)&&end>=monday;
     return inRange&&e.mitarbeiter.some(m=>{
-      const ml=m.toLowerCase(),wl=workerName.toLowerCase();
-      return ml.includes(wl.split(' ')[0])||wl.includes(ml.split(' ')[0]);
+      const ml=m.toLowerCase().trim();const parts=workerName.toLowerCase().trim().split(' ');
+      return parts.every(p=>ml.includes(p))||parts.some(p=>p.length>3&&ml.includes(p));
     });
   }).forEach(e=>{
     const zeitMatch=e.name.match(/^(\d{1,2}:\d{2})\s*[-–]\s*(\d{1,2}:\d{2})\s*(.*)/);
