@@ -8,154 +8,93 @@
 <meta name="apple-mobile-web-app-title" content="GX Zeit">
 <style>
 :root{
-  --gx-dark:#1a2e1a;
-  --gx-green:#4caf50;
-  --gx-green-dark:#388e3c;
-  --gx-green-light:#e8f5e9;
-  --gx-gold:#c8a84b;
-  --gx-gold-light:#f5ecd4;
-  --gx-bg:#f7f5f0;
-  --gx-border:#d8d8cc;
-  --gx-text:#1a1a1a;
-  --gx-muted:#666;
-  --amber:#f59f00;
-  --amber-light:#fff8e1;
-  --red:#d32f2f;
-  --red-light:#ffebee;
-  --blue:#1565c0;
-  --blue-light:#e3f2fd;
+  --gx-dark:#1a2e1a; --gx-green:#4caf50; --gx-green-dark:#388e3c; --gx-green-light:#e8f5e9;
+  --gx-gold:#c8a84b; --gx-gold-light:#f5ecd4; --gx-bg:#f7f5f0; --gx-border:#d8d8cc;
+  --gx-text:#1a1a1a; --gx-muted:#666; --amber:#f59f00; --amber-light:#fff8e1;
+  --red:#d32f2f; --red-light:#ffebee; --blue:#1565c0; --blue-light:#e3f2fd;
+  --trello:#9c27b0; --trello-light:#f3e5f5;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-height:100vh;display:flex;justify-content:center}
 .app{width:100%;max-width:420px;min-height:100vh;background:#fff;display:flex;flex-direction:column}
-
-/* Topbar */
 .topbar{background:var(--gx-dark);padding:14px 16px 12px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:2px solid var(--gx-gold)}
 .topbar-logo{width:36px;height:36px;border-radius:8px;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--gx-dark);flex-shrink:0}
-.topbar-title{color:#fff;font-size:15px;font-weight:700}
-.topbar-sub{color:var(--gx-gold);font-size:10px;letter-spacing:.06em}
+.topbar-title{color:#fff;font-size:15px;font-weight:700} .topbar-sub{color:var(--gx-gold);font-size:10px;letter-spacing:.06em}
 .badge-count{background:var(--red);color:#fff;border-radius:10px;font-size:10px;font-weight:700;padding:2px 6px;margin-left:auto}
-
-/* Views */
-.view{padding:16px;display:none;flex:1;overflow-y:auto}
-.view.active{display:block}
-
-/* Nav bottom */
+.view{padding:16px;display:none;flex:1;overflow-y:auto} .view.active{display:block}
 .bottom-nav{display:flex;background:#fff;border-top:0.5px solid var(--gx-border);flex-shrink:0}
 .nav-btn{flex:1;padding:10px 4px 8px;text-align:center;cursor:pointer;border:none;background:none;font-size:10px;color:var(--gx-muted);display:flex;flex-direction:column;align-items:center;gap:3px;-webkit-tap-highlight-color:transparent}
-.nav-btn i{font-size:20px}
-.nav-btn.active{color:var(--gx-green)}
-.nav-btn .nav-badge{background:var(--red);color:#fff;border-radius:8px;font-size:9px;font-weight:700;padding:1px 5px;line-height:1.4}
-
-/* Worker grid */
+.nav-btn i{font-size:20px} .nav-btn.active{color:var(--gx-green)}
 .section-label{font-size:11px;font-weight:700;color:var(--gx-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
 .worker-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .worker-btn{background:var(--gx-bg);border:1px solid var(--gx-border);border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .worker-btn:active{background:var(--gx-green-light);border-color:var(--gx-green)}
 .avatar{width:40px;height:40px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gx-dark);margin:0 auto 8px}
 .wname{font-size:13px;font-weight:500;color:var(--gx-text)}
-
-/* PIN */
 .pin-avatar-big{width:56px;height:56px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--gx-dark);margin:0 auto 8px}
 .pin-display{display:flex;gap:14px;justify-content:center;margin:18px 0 16px}
 .pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--gx-border);transition:all .15s}
 .pin-dot.filled{background:var(--gx-green);border-color:var(--gx-green)}
 .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:280px;margin:0 auto}
 .num-btn{background:var(--gx-bg);border:1px solid var(--gx-border);border-radius:12px;padding:17px;font-size:20px;font-weight:500;color:var(--gx-text);cursor:pointer;text-align:center;-webkit-tap-highlight-color:transparent;user-select:none}
-.num-btn:active{background:var(--gx-green-light)}
-.num-btn.empty{background:none;border-color:transparent;cursor:default}
-
-/* Cards & fields */
+.num-btn:active{background:var(--gx-green-light)} .num-btn.empty{background:none;border-color:transparent;cursor:default}
 .card{background:#fff;border:1px solid var(--gx-border);border-radius:12px;padding:14px;margin-bottom:12px}
 .card-title{font-size:13px;font-weight:700;color:var(--gx-text);margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.field{margin-bottom:12px}
-.field label{font-size:12px;color:var(--gx-muted);font-weight:500;display:block;margin-bottom:4px}
+.field{margin-bottom:12px} .field label{font-size:12px;color:var(--gx-muted);font-weight:500;display:block;margin-bottom:4px}
 .field input,.field select,.field textarea{width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;color:var(--gx-text);-webkit-appearance:none}
 .field input:focus,.field select:focus{outline:none;border-color:var(--gx-green)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
-/* Buttons */
 .btn-primary{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;background:var(--gx-green);color:#fff;-webkit-tap-highlight-color:transparent}
 .btn-primary:active{opacity:.85}
-.btn-danger{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;background:#b71c1c;color:#fff}
 .btn-outline{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--gx-border);background:#fff;color:var(--gx-text)}
 .back-btn{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--gx-muted);cursor:pointer;margin-bottom:14px;background:none;border:none;padding:0}
-
-/* Metrics */
 .metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
 .metric{background:var(--gx-bg);border-radius:10px;padding:10px 12px}
-.m-label{font-size:11px;color:var(--gx-muted);margin-bottom:3px}
-.m-val{font-size:20px;font-weight:700}
-.m-val.green{color:var(--gx-green-dark)}
-.m-val.amber{color:#e65100}
-.m-val.red{color:var(--red)}
-.m-val.blue{color:var(--blue)}
+.m-label{font-size:11px;color:var(--gx-muted);margin-bottom:3px} .m-val{font-size:20px;font-weight:700}
+.m-val.green{color:var(--gx-green-dark)} .m-val.amber{color:#e65100} .m-val.red{color:var(--red)} .m-val.blue{color:var(--blue)}
 .progress-bar{background:var(--gx-border);border-radius:4px;height:6px;margin-top:5px;overflow:hidden}
 .progress-fill{height:100%;border-radius:4px;background:var(--gx-green);transition:width .4s}
-
-/* Status badges */
 .sbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
-.sbadge.green{background:var(--gx-green-light);color:var(--gx-green-dark)}
-.sbadge.amber{background:var(--amber-light);color:#e65100}
-.sbadge.red{background:var(--red-light);color:var(--red)}
-.sbadge.gray{background:var(--gx-bg);color:var(--gx-muted)}
-.sbadge.blue{background:var(--blue-light);color:var(--blue)}
-
-/* Entry rows */
+.sbadge.green{background:var(--gx-green-light);color:var(--gx-green-dark)} .sbadge.amber{background:var(--amber-light);color:#e65100}
+.sbadge.red{background:var(--red-light);color:var(--red)} .sbadge.gray{background:var(--gx-bg);color:var(--gx-muted)}
+.sbadge.blue{background:var(--blue-light);color:var(--blue)} .sbadge.purple{background:var(--trello-light);color:var(--trello)}
 .entry-row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:0.5px solid var(--gx-border)}
-.entry-row:last-child{border:none}
-.entry-main{font-size:13px;font-weight:600;color:var(--gx-text)}
+.entry-row:last-child{border:none} .entry-main{font-size:13px;font-weight:600;color:var(--gx-text)}
 .entry-sub{font-size:11px;color:var(--gx-muted);margin-top:2px}
 .entry-right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
 .entry-h{font-size:14px;font-weight:700;color:var(--gx-green-dark)}
-
-/* Stamp */
 .stamp-btn{width:100%;padding:16px;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px}
-.stamp-btn.ein{background:var(--gx-green);color:#fff}
-.stamp-btn.aus{background:#b71c1c;color:#fff}
-.stamp-btn:active{opacity:.85}
+.stamp-btn.ein{background:var(--gx-green);color:#fff} .stamp-btn.aus{background:#b71c1c;color:#fff} .stamp-btn:active{opacity:.85}
 .running-row{display:flex;align-items:center;gap:10px;background:var(--gx-green-light);border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid #a5d6a7}
 .dot-live{width:9px;height:9px;border-radius:50%;background:var(--gx-green);animation:blink 1.4s infinite;flex-shrink:0}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .elapsed{font-size:30px;font-weight:700;color:var(--gx-text);font-variant-numeric:tabular-nums;text-align:center;margin:6px 0 12px}
 .calc-box{background:var(--gx-gold-light);border:1px solid var(--gx-gold);border-radius:10px;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .calc-val{font-size:20px;font-weight:700;color:var(--gx-green-dark)}
-
-/* Msgs */
 .error-msg{background:var(--red-light);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--red);margin-bottom:10px;display:none}
 .success-msg{background:var(--gx-green-light);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--gx-green-dark);margin-bottom:10px;display:none;font-weight:500}
 .warn-msg{background:var(--amber-light);border-radius:9px;padding:9px 12px;font-size:13px;color:#e65100;margin-bottom:10px;display:none}
 .info-msg{background:var(--blue-light);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--blue);margin-bottom:10px}
-
-/* Admin action btns */
 .action-btns{display:flex;gap:6px}
 .btn-approve{width:30px;height:30px;border-radius:7px;background:var(--gx-green-light);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gx-green-dark);font-size:15px}
 .btn-reject{width:30px;height:30px;border-radius:7px;background:var(--red-light);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:15px}
 .btn-approve:active,.btn-reject:active{opacity:.7}
-
-/* Tabs */
 .tab-bar{display:flex;border-bottom:2px solid var(--gx-border);margin-bottom:14px}
 .tab{flex:1;padding:10px 4px;font-size:12px;font-weight:500;color:var(--gx-muted);text-align:center;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
 .tab.active{color:var(--gx-green);border-bottom-color:var(--gx-green);font-weight:700}
-
 .status-bar{background:var(--gx-dark);padding:6px 16px;font-size:10px;color:#666;text-align:center;flex-shrink:0}
-.status-bar.ok{color:var(--gx-gold)}
-.status-bar.err{color:#e08080}
-.status-bar.loading{color:#aaa}
+.status-bar.ok{color:var(--gx-gold)} .status-bar.err{color:#e08080} .status-bar.loading{color:#aaa}
 .divider{height:0.5px;background:var(--gx-border);margin:10px 0}
 .empty-hint{font-size:13px;color:#aaa;text-align:center;padding:20px 0}
 .user-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .user-avatar{width:40px;height:40px;border-radius:50%;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gx-dark);flex-shrink:0}
-
 /* Kalender */
 .month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .month-btn{width:32px;height:32px;border-radius:8px;background:var(--gx-bg);border:1px solid var(--gx-border);cursor:pointer;font-size:16px;color:var(--gx-muted);display:flex;align-items:center;justify-content:center}
-.month-btn:active{background:var(--gx-green-light)}
-.month-title{font-size:15px;font-weight:700;color:var(--gx-text)}
+.month-btn:active{background:var(--gx-green-light)} .month-title{font-size:15px;font-weight:700;color:var(--gx-text)}
 .kal-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
 .kal-sum{background:var(--gx-bg);border-radius:10px;padding:8px 10px;text-align:center}
-.kal-sum-val{font-size:17px;font-weight:700}
-.kal-sum-label{font-size:10px;color:var(--gx-muted);margin-top:1px}
+.kal-sum-val{font-size:17px;font-weight:700} .kal-sum-label{font-size:10px;color:var(--gx-muted);margin-top:1px}
 .kal-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .kal-leg{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gx-muted)}
 .kal-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
@@ -164,6 +103,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 .kal-row.weekend{background:var(--gx-bg);border-color:transparent}
 .kal-row.today{background:var(--gx-green-light);border-color:#a5d6a7}
 .kal-row.feiertag{background:#fdf8f0;border-color:#e8d8a0}
+.kal-row.trello-row{border-left:3px solid var(--trello)}
 .kal-num{width:26px;font-size:13px;font-weight:700;color:var(--gx-text);flex-shrink:0;text-align:center}
 .kal-name{width:22px;font-size:10px;color:#aaa;flex-shrink:0}
 .kal-dot-big{width:10px;height:10px;border-radius:50%;flex-shrink:0}
@@ -175,6 +115,13 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 .kal-badge.pending{background:var(--amber-light);color:#e65100}
 .kal-badge.urlaub{background:var(--blue-light);color:var(--blue)}
 .kal-badge.feiertag{background:#f5ecd4;color:#633806}
+.kal-badge.trello{background:var(--trello-light);color:var(--trello)}
+/* Mehrfache Eintraege pro Tag */
+.kal-day-block{display:flex;flex-direction:column;gap:0}
+.kal-day-header{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px 9px 0 0;background:#fff;border:0.5px solid var(--gx-border);border-bottom:none}
+.kal-day-extra{display:flex;align-items:center;gap:8px;padding:5px 10px 7px 10px;border-radius:0 0 9px 9px;background:#fff;border:0.5px solid var(--gx-border);border-top:0.5px dashed var(--gx-border);margin-bottom:3px}
+.kal-day-header.trello-row{border-left:3px solid var(--trello)}
+.kal-day-extra.trello-row{border-left:3px solid var(--trello)}
 /* Erinnerung */
 .reminder-box{background:#b71c1c;border-radius:12px;padding:14px 16px;margin-bottom:14px;display:none}
 .reminder-title{color:#fff;font-size:14px;font-weight:700;margin-bottom:4px}
@@ -182,21 +129,16 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 .reminder-days{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
 .reminder-day{background:rgba(255,255,255,.15);border-radius:6px;padding:5px 10px;font-size:12px;color:#fff;font-weight:500}
 .reminder-btn{background:#fff;color:#b71c1c;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;width:100%}
-/* Medien */
 .medien-tabs{display:flex;gap:6px;margin-bottom:14px}
 .medien-tab{flex:1;padding:9px 4px;border-radius:9px;background:var(--gx-bg);border:1px solid var(--gx-border);text-align:center;font-size:12px;color:var(--gx-muted);cursor:pointer;font-weight:500}
 .medien-tab.active{background:var(--gx-green-light);border-color:var(--gx-green);color:var(--gx-green-dark);font-weight:700}
 .upload-box{border:2px dashed var(--gx-border);border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;margin-bottom:12px;background:var(--gx-bg)}
-.upload-box:active{background:var(--gx-green-light);border-color:var(--gx-green)}
-.upload-box.has-file{border-color:var(--gx-green);background:var(--gx-green-light)}
+.upload-box:active{background:var(--gx-green-light);border-color:var(--gx-green)} .upload-box.has-file{border-color:var(--gx-green);background:var(--gx-green-light)}
 .upload-preview{width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-bottom:8px;display:none}
 .upload-progress{height:6px;background:var(--gx-border);border-radius:4px;overflow:hidden;margin:8px 0;display:none}
 .upload-progress-fill{height:100%;background:var(--gx-green);border-radius:4px;transition:width .3s}
-/* Admin-Tabs angepasst */
 .atab-bar{display:flex;border-bottom:2px solid var(--gx-border);margin-bottom:14px;overflow-x:auto}
 .atab-bar .tab{white-space:nowrap;min-width:auto;padding:10px 12px}
-
-/* Tagesbericht */
 .tb-step-bar{display:flex;gap:6px;margin-bottom:14px}
 .tb-step{flex:1;padding:8px 4px;border-radius:8px;background:var(--gx-bg);border:1px solid var(--gx-border);text-align:center;font-size:11px;color:var(--gx-muted);cursor:pointer;font-weight:500}
 .tb-step.active{background:var(--gx-green-light);border-color:var(--gx-green);color:var(--gx-green-dark);font-weight:700}
@@ -209,15 +151,12 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 .tb-ma-name{flex:1;font-size:13px;font-weight:500;color:var(--gx-text)}
 .tb-ma-h{width:60px;font-size:13px;padding:6px 8px;border:1px solid var(--gx-border);border-radius:8px;background:#fff;color:var(--gx-text);text-align:center}
 .tb-mat-grid{display:grid;grid-template-columns:1fr 58px 46px 52px;gap:5px;margin-bottom:6px;align-items:center}
-.tb-mat-head{font-size:10px;color:var(--gx-muted);text-align:center;font-weight:600}
-.tb-mat-head:first-child{text-align:left}
+.tb-mat-head{font-size:10px;color:var(--gx-muted);text-align:center;font-weight:600} .tb-mat-head:first-child{text-align:left}
 .tb-mat-inp{font-size:12px;padding:7px 8px;border:1px solid var(--gx-border);border-radius:8px;background:#fff;color:var(--gx-text);width:100%;text-align:center}
 .tb-mat-inp.name{text-align:left}
 .tb-mat-intern{font-size:12px;padding:7px 8px;border:1px solid #e8d8a0;border-radius:8px;background:#fdf8f0;color:#633806;width:100%;text-align:center}
 .tb-add-btn{width:100%;padding:9px;border:1.5px dashed var(--gx-border);border-radius:9px;background:none;color:var(--gx-muted);font-size:12px;cursor:pointer;margin-top:4px;font-weight:500}
 .tb-add-btn:active{background:var(--gx-bg)}
-
-/* Regiebericht */
 .rg-step-bar{display:flex;gap:4px;margin-bottom:14px;overflow-x:auto}
 .rg-step{flex:1;padding:7px 4px;border-radius:8px;background:var(--gx-bg);border:1px solid var(--gx-border);text-align:center;font-size:10px;color:var(--gx-muted);cursor:pointer;white-space:nowrap;min-width:55px}
 .rg-step.active{background:var(--gx-green-light);border-color:var(--gx-green);color:var(--gx-green-dark);font-weight:700}
@@ -239,25 +178,22 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 </head>
 <body>
 <div class="app">
-
 <div class="topbar">
   <div class="topbar-logo">GX</div>
   <div style="flex:1"><div class="topbar-title">Gartenxclusiv</div><div class="topbar-sub">ZEITERFASSUNG</div></div>
   <span id="admin-badge" class="badge-count" style="display:none">0</span>
 </div>
 
-<!-- LOGIN: Mitarbeiter wählen -->
+<!-- LOGIN: Mitarbeiter waehlen -->
 <div class="view active" id="v-worker" style="padding-top:12px">
   <div class="section-label">Wer bist du?</div>
-  <div class="worker-grid" id="worker-grid"><div style="grid-column:span 2;text-align:center;color:#aaa;padding:20px;font-size:13px">Wird geladen…</div></div>
-  <div style="margin-top:16px;text-align:center">
-    <button class="btn-outline" onclick="openAdmin()">🔐 Admin-Bereich</button>
-  </div>
+  <div class="worker-grid" id="worker-grid"><div style="grid-column:span 2;text-align:center;color:#aaa;padding:20px;font-size:13px">Wird geladen...</div></div>
+  <div style="margin-top:16px;text-align:center"><button class="btn-outline" onclick="openAdmin()">Sicherheitsbereich Admin</button></div>
 </div>
 
 <!-- LOGIN: PIN -->
 <div class="view" id="v-pin">
-  <button class="back-btn" onclick="goTo('v-worker')">← Zurück</button>
+  <button class="back-btn" onclick="goTo('v-worker')">Zurueck</button>
   <div style="text-align:center;padding-top:8px">
     <div class="pin-avatar-big" id="pin-avatar"></div>
     <div style="font-size:17px;font-weight:700;color:var(--gx-text)" id="pin-name"></div>
@@ -269,19 +205,24 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
     <div class="num-btn" onclick="pinKey('1')">1</div><div class="num-btn" onclick="pinKey('2')">2</div><div class="num-btn" onclick="pinKey('3')">3</div>
     <div class="num-btn" onclick="pinKey('4')">4</div><div class="num-btn" onclick="pinKey('5')">5</div><div class="num-btn" onclick="pinKey('6')">6</div>
     <div class="num-btn" onclick="pinKey('7')">7</div><div class="num-btn" onclick="pinKey('8')">8</div><div class="num-btn" onclick="pinKey('9')">9</div>
-    <div class="num-btn empty"></div><div class="num-btn" onclick="pinKey('0')">0</div><div class="num-btn" onclick="pinDel()" style="font-size:16px;color:var(--gx-muted)">⌫</div>
+    <div class="num-btn empty"></div><div class="num-btn" onclick="pinKey('0')">0</div><div class="num-btn" onclick="pinDel()" style="font-size:16px;color:var(--gx-muted)">&#x232B;</div>
   </div>
 </div>
 
-<!-- MITARBEITER: Dashboard -->
+<!-- DASHBOARD -->
 <div class="view" id="v-dashboard">
-  <div id="reminder-box" class="reminder-box"><div class="reminder-title">⚠️ Eintrag fehlt!</div><div class="reminder-text">Für folgende Arbeitstage fehlt noch ein Eintrag. Bitte schnell nachholen!</div><div class="reminder-days" id="reminder-days"></div><button class="reminder-btn" onclick="switchMain('manuell')">Jetzt eintragen</button></div>
-<div class="user-row">
+  <div id="reminder-box" class="reminder-box">
+    <div class="reminder-title">&#x26A0;&#xFE0F; Eintrag fehlt!</div>
+    <div class="reminder-text">Fuer folgende Arbeitstage fehlt noch ein Eintrag. Bitte schnell nachholen!</div>
+    <div class="reminder-days" id="reminder-days"></div>
+    <button class="reminder-btn" onclick="switchMain('manuell')">Jetzt eintragen</button>
+  </div>
+  <div class="user-row">
     <div class="user-avatar" id="dash-avatar"></div>
     <div style="flex:1"><div style="font-size:15px;font-weight:700" id="dash-name"></div><div style="font-size:12px;color:var(--gx-muted)" id="dash-date"></div></div>
   </div>
   <div class="metrics" id="dash-metrics">
-    <div class="metric"><div class="m-label">Überstunden</div><div class="m-val green" id="m-ueber">+4,5 h</div></div>
+    <div class="metric"><div class="m-label">Ueberstunden</div><div class="m-val green" id="m-ueber">+4,5 h</div></div>
     <div class="metric"><div class="m-label">Urlaub (Rest)</div><div class="m-val amber" id="m-urlaub">18 Tage</div></div>
     <div class="metric" style="grid-column:span 2">
       <div class="m-label">Diese Woche <span id="week-label" style="float:right;font-weight:700;color:var(--gx-green-dark)">36,5 / 40 h</span></div>
@@ -289,32 +230,32 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
     </div>
   </div>
   <div id="trello-einsatz-box" style="display:none;margin-bottom:12px">
-    <div class="section-label">📋 Mein heutiger Einsatz</div>
+    <div class="section-label">Mein heutiger Einsatz</div>
     <div id="trello-einsatz-liste"></div>
   </div>
-  <div class="section-label">Meine letzten Einträge</div>
+  <div class="section-label">Meine letzten Eintraege</div>
   <div class="card" style="padding:8px 12px">
-    <div id="dash-entries"><div class="empty-hint">Keine Einträge</div></div>
+    <div id="dash-entries"><div class="empty-hint">Keine Eintraege</div></div>
   </div>
-  <div id="late-warn" class="warn-msg">⚠️ Du hast in den letzten Tagen mehrfach nachträglich eingetragen. Bitte versuche rechtzeitig zu stempeln!</div>
+  <div id="late-warn" class="warn-msg">Du hast in den letzten Tagen mehrfach nachtraeglich eingetragen.</div>
 </div>
 
-<!-- MITARBEITER: Stempeln -->
+<!-- STEMPELN -->
 <div class="view" id="v-stempel">
   <div id="running-block" style="display:none">
     <div class="running-row"><div class="dot-live"></div><div style="font-size:13px;color:var(--gx-green-dark);font-weight:600" id="running-label"></div></div>
     <div class="elapsed" id="elapsed">00:00:00</div>
   </div>
   <div class="field"><label>Baustelle / Projekt</label><select id="proj-stamp"></select></div>
-  <div class="success-msg" id="stamp-ok">✓ Zeit gespeichert!</div>
+  <div class="success-msg" id="stamp-ok">Zeit gespeichert!</div>
   <div class="error-msg" id="stamp-err"></div>
-  <button class="stamp-btn ein" id="btn-ein" onclick="einStempeln()">▶ Einloggen</button>
-  <button class="stamp-btn aus" id="btn-aus" onclick="ausStempeln()" style="display:none">⏹ Ausloggen &amp; speichern</button>
+  <button class="stamp-btn ein" id="btn-ein" onclick="einStempeln()">&#x25B6; Einloggen</button>
+  <button class="stamp-btn aus" id="btn-aus" onclick="ausStempeln()" style="display:none">&#x23F9; Ausloggen &amp; speichern</button>
 </div>
 
-<!-- MITARBEITER: Manuell -->
+<!-- MANUELL -->
 <div class="view" id="v-manuell">
-  <div id="manual-locked" class="info-msg" style="display:none">🔒 Frist abgelaufen — Admin muss diesen Eintrag freischalten.</div>
+  <div id="manual-locked" class="info-msg" style="display:none">Frist abgelaufen - Admin muss diesen Eintrag freischalten.</div>
   <div class="row2">
     <div class="field"><label>Von</label><input type="time" id="man-von" value="07:00"></div>
     <div class="field"><label>Bis</label><input type="time" id="man-bis" value="16:00"></div>
@@ -323,49 +264,48 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="calc-box"><span style="font-size:13px;color:var(--gx-muted);font-weight:500">Nettostunden</span><span class="calc-val" id="calc-net">8,5 h</span></div>
   <div class="field"><label>Datum</label><input type="date" id="man-datum"></div>
   <div class="field"><label>Baustelle / Projekt</label><select id="proj-man"></select></div>
-  <div class="field"><label>Notiz</label><input type="text" id="man-notiz" placeholder="z.B. Krankheit, Sonderaufgabe…"></div>
+  <div class="field"><label>Notiz</label><input type="text" id="man-notiz" placeholder="z.B. Krankheit, Sonderaufgabe..."></div>
   <div class="error-msg" id="man-error"></div>
-  <div class="success-msg" id="man-ok">✓ Eintrag gespeichert — wartet auf Freigabe</div>
+  <div class="success-msg" id="man-ok">Eintrag gespeichert - wartet auf Freigabe</div>
   <button class="btn-primary" onclick="saveManual()">Eintrag speichern</button>
 </div>
 
-<!-- MITARBEITER: Urlaub -->
+<!-- URLAUB -->
 <div class="view" id="v-urlaub">
   <div class="metrics">
     <div class="metric"><div class="m-label">Urlaubstage gesamt</div><div class="m-val">30</div></div>
-    <div class="metric"><div class="m-label">Noch verfügbar</div><div class="m-val green" id="urlaub-rest">18</div></div>
+    <div class="metric"><div class="m-label">Noch verfuegbar</div><div class="m-val green" id="urlaub-rest">18</div></div>
   </div>
   <div class="card">
-    <div class="card-title">✈️ Neuen Urlaubsantrag stellen</div>
+    <div class="card-title">Neuen Urlaubsantrag stellen</div>
     <div class="row2">
       <div class="field"><label>Von</label><input type="date" id="urlaub-von"></div>
       <div class="field"><label>Bis</label><input type="date" id="urlaub-bis"></div>
     </div>
     <div class="field"><label>Notiz (optional)</label><input type="text" id="urlaub-notiz" placeholder="z.B. Familienurlaub"></div>
-    <div class="success-msg" id="urlaub-ok">✓ Antrag gestellt — wartet auf Genehmigung</div>
-    <div class="error-msg" id="urlaub-err">Bitte Datum prüfen.</div>
+    <div class="success-msg" id="urlaub-ok">Antrag gestellt - wartet auf Genehmigung</div>
+    <div class="error-msg" id="urlaub-err">Bitte Datum pruefen.</div>
     <button class="btn-primary" onclick="stelleUrlaubsantrag()">Antrag stellen</button>
   </div>
-  <div class="section-label" style="margin-top:4px">Meine Anträge</div>
-  <div class="card" style="padding:8px 12px"><div id="urlaub-list"><div class="empty-hint">Keine Anträge</div></div></div>
+  <div class="section-label" style="margin-top:4px">Meine Antraege</div>
+  <div class="card" style="padding:8px 12px"><div id="urlaub-list"><div class="empty-hint">Keine Antraege</div></div></div>
 </div>
 
-
-<!-- MITARBEITER: Krank -->
+<!-- KRANK -->
 <div class="view" id="v-krank">
   <div class="card" style="background:#fff3e0;border-color:#ffb74d;margin-bottom:14px">
-    <div class="card-title" style="color:#e65100">🤒 Krankmeldung einreichen</div>
-    <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.5">Nutze den Medien-Tab um deinen Krankmeldungsschein direkt hochzuladen — kein Google-Konto nötig!</p>
-    <button class="btn-primary" style="background:#e65100;margin-bottom:8px" onclick="switchMain('medien');switchMedienTab('krank')">🤒 Zur Krankmeldung</button>
+    <div class="card-title" style="color:#e65100">Krankmeldung einreichen</div>
+    <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.5">Nutze den Medien-Tab um deinen Krankmeldungsschein direkt hochzuladen.</p>
+    <button class="btn-primary" style="background:#e65100;margin-bottom:8px" onclick="switchMain('medien');switchMedienTab('krank')">Zur Krankmeldung</button>
   </div>
 </div>
 
-<!-- MITARBEITER: Kalender -->
+<!-- KALENDER -->
 <div class="view" id="v-kalender">
   <div class="month-nav">
-    <button class="month-btn" onclick="kalPrevMonth()">‹</button>
+    <button class="month-btn" onclick="kalPrevMonth()">&#x2039;</button>
     <div class="month-title" id="kal-month-title">Juni 2026</div>
-    <button class="month-btn" onclick="kalNextMonth()">›</button>
+    <button class="month-btn" onclick="kalNextMonth()">&#x203A;</button>
   </div>
   <div class="kal-summary">
     <div class="kal-sum"><div class="kal-sum-val green" id="kal-arbeit">0 h</div><div class="kal-sum-label">Arbeit</div></div>
@@ -378,71 +318,64 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
     <div class="kal-leg"><div class="kal-dot" style="background:#1565c0"></div>Urlaub</div>
     <div class="kal-leg"><div class="kal-dot" style="background:#d32f2f"></div>Krank</div>
     <div class="kal-leg"><div class="kal-dot" style="background:#c8a84b"></div>Feiertag</div>
+    <div class="kal-leg"><div class="kal-dot" style="background:#9c27b0"></div>Einsatz</div>
   </div>
   <div class="kal-list" id="kal-list"></div>
 </div>
 
-<!-- MITARBEITER: Medien -->
+<!-- MEDIEN -->
 <div class="view" id="v-medien">
   <div class="medien-tabs">
-    <div class="medien-tab active" id="mtab-baudoku" onclick="switchMedienTab('baudoku')">📷 Baudoku</div>
-    <div class="medien-tab" id="mtab-krank" onclick="switchMedienTab('krank')">🤒 Krank</div>
-    <div class="medien-tab" id="mtab-problem" onclick="switchMedienTab('problem')">⚠️ Problem</div>
+    <div class="medien-tab active" id="mtab-baudoku" onclick="switchMedienTab('baudoku')">Baudoku</div>
+    <div class="medien-tab" id="mtab-krank" onclick="switchMedienTab('krank')">Krank</div>
+    <div class="medien-tab" id="mtab-problem" onclick="switchMedienTab('problem')">Problem</div>
   </div>
   <div id="mtp-baudoku">
     <div class="field"><label>Projekt</label><select id="med-proj-baudoku"></select></div>
     <div class="upload-box" id="upload-box-baudoku" onclick="document.getElementById('file-baudoku').click()">
       <img id="preview-baudoku" class="upload-preview">
-      <div id="upload-hint-baudoku"><div style="font-size:28px;margin-bottom:8px">📷</div><div style="font-size:14px;font-weight:600;color:var(--gx-text)">Foto auswählen</div><div style="font-size:12px;color:var(--gx-muted);margin-top:4px">Max. 5 MB · JPG, PNG</div></div>
+      <div id="upload-hint-baudoku"><div style="font-size:28px;margin-bottom:8px">&#x1F4F7;</div><div style="font-size:14px;font-weight:600;color:var(--gx-text)">Foto auswaehlen</div><div style="font-size:12px;color:var(--gx-muted);margin-top:4px">Max. 5 MB - JPG, PNG</div></div>
     </div>
     <input type="file" id="file-baudoku" accept="image/*" style="display:none" onchange="onFileSelect(this,'baudoku')">
     <div class="upload-progress" id="prog-baudoku"><div class="upload-progress-fill" id="prog-fill-baudoku" style="width:0%"></div></div>
-    <div class="field"><label>Notiz (optional)</label><input type="text" id="med-notiz-baudoku" placeholder="z.B. Terrassenfläche nach Verdichtung"></div>
-    <div class="success-msg" id="med-ok-baudoku">✓ Foto hochgeladen!</div>
-    <div class="error-msg" id="med-err-baudoku">Bitte Foto auswählen.</div>
-    <button class="btn-primary" onclick="uploadMedia('baudoku')">📤 Hochladen</button>
+    <div class="field"><label>Notiz (optional)</label><input type="text" id="med-notiz-baudoku" placeholder="z.B. Terrassenflaeche nach Verdichtung"></div>
+    <div class="success-msg" id="med-ok-baudoku">Foto hochgeladen!</div>
+    <div class="error-msg" id="med-err-baudoku">Bitte Foto auswaehlen.</div>
+    <button class="btn-primary" onclick="uploadMedia('baudoku')">Hochladen</button>
     <div class="section-label" style="margin-top:14px">Meine Fotos</div>
     <div id="med-list-baudoku"><div class="empty-hint">Noch keine Fotos</div></div>
   </div>
   <div id="mtp-krank" style="display:none">
-    <div class="card" style="background:#fff3e0;border-color:#ffb74d;margin-bottom:14px">
-      <div class="card-title" style="color:#e65100">🤒 Krankmeldung einreichen</div>
-      <p style="font-size:13px;color:#666;margin-bottom:12px;line-height:1.5">Lade hier direkt deinen Krankmeldungsschein hoch. Kein Google-Konto nötig.</p>
-    </div>
     <div class="row2" style="margin-bottom:10px">
       <div class="field"><label>Krank von</label><input type="date" id="med-krank-von"></div>
       <div class="field"><label>Krank bis</label><input type="date" id="med-krank-bis"></div>
     </div>
     <div class="upload-box" id="upload-box-krank" onclick="document.getElementById('file-krank').click()">
       <img id="preview-krank" class="upload-preview">
-      <div id="upload-hint-krank"><div style="font-size:28px;margin-bottom:8px">📄</div><div style="font-size:14px;font-weight:600;color:var(--gx-text)">Krankmeldung fotografieren</div><div style="font-size:12px;color:var(--gx-muted);margin-top:4px">Max. 5 MB</div></div>
+      <div id="upload-hint-krank"><div style="font-size:28px;margin-bottom:8px">&#x1F4C4;</div><div style="font-size:14px;font-weight:600;color:var(--gx-text)">Krankmeldung fotografieren</div><div style="font-size:12px;color:var(--gx-muted);margin-top:4px">Max. 5 MB</div></div>
     </div>
     <input type="file" id="file-krank" accept="image/*" style="display:none" onchange="onFileSelect(this,'krank')">
     <div class="upload-progress" id="prog-krank"><div class="upload-progress-fill" id="prog-fill-krank" style="width:0%"></div></div>
-    <div class="success-msg" id="med-ok-krank">✓ Krankmeldung eingereicht!</div>
-    <div class="error-msg" id="med-err-krank">Bitte Foto und Datum ausfüllen.</div>
-    <button class="btn-primary" style="background:#e65100" onclick="uploadMedia('krank')">📤 Krankmeldung einreichen</button>
+    <div class="success-msg" id="med-ok-krank">Krankmeldung eingereicht!</div>
+    <div class="error-msg" id="med-err-krank">Bitte Foto und Datum ausfuellen.</div>
+    <button class="btn-primary" style="background:#e65100" onclick="uploadMedia('krank')">Krankmeldung einreichen</button>
   </div>
   <div id="mtp-problem" style="display:none">
-    <div class="card" style="background:#fff3e0;border-color:#ffb74d;margin-bottom:14px">
-      <div class="card-title" style="color:#e65100">⚠️ Problem melden</div>
-      <p style="font-size:13px;color:#666;line-height:1.5">Der Admin wird per E-Mail benachrichtigt.</p>
-    </div>
     <div class="field"><label>Projekt</label><select id="med-proj-problem"></select></div>
     <div class="field"><label>Beschreibung (Pflichtfeld)</label><textarea id="med-problem-text" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;color:var(--gx-text);resize:none;height:80px" placeholder="Was ist das Problem?"></textarea></div>
     <div class="upload-box" id="upload-box-problem" onclick="document.getElementById('file-problem').click()">
       <img id="preview-problem" class="upload-preview">
-      <div id="upload-hint-problem"><div style="font-size:28px;margin-bottom:8px">📷</div><div style="font-size:14px;font-weight:600;color:var(--gx-text)">Foto hinzufügen (optional)</div></div>
+      <div id="upload-hint-problem"><div style="font-size:28px;margin-bottom:8px">&#x1F4F7;</div><div style="font-size:14px;font-weight:600;color:var(--gx-text)">Foto hinzufuegen (optional)</div></div>
     </div>
     <input type="file" id="file-problem" accept="image/*" style="display:none" onchange="onFileSelect(this,'problem')">
     <div class="upload-progress" id="prog-problem"><div class="upload-progress-fill" id="prog-fill-problem" style="width:0%"></div></div>
-    <div class="success-msg" id="med-ok-problem">✓ Problem gemeldet!</div>
+    <div class="success-msg" id="med-ok-problem">Problem gemeldet!</div>
     <div class="error-msg" id="med-err-problem">Bitte Beschreibung eingeben.</div>
-    <button class="btn-primary" style="background:#e65100" onclick="uploadMedia('problem')">⚠️ Problem melden</button>
+    <button class="btn-primary" style="background:#e65100" onclick="uploadMedia('problem')">Problem melden</button>
   </div>
 </div>
 
-<!-- TAGESBERICHT -->
+<!-- TAGESBERICHT (verkuerzt - identisch mit Original) -->
 <div class="view" id="v-tagesbericht">
   <div class="tb-step-bar">
     <div class="tb-step active" id="tbstep-allgemein" onclick="tbGoStep('allgemein')">Allgemein</div>
@@ -453,7 +386,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   </div>
   <div id="tbp-allgemein">
     <div class="tb-section">
-      <div class="tb-sec-label">Baustelle & Datum</div>
+      <div class="tb-sec-label">Baustelle &amp; Datum</div>
       <div class="row2" style="margin-bottom:10px">
         <div class="field"><label>Datum</label><input type="date" id="tb-datum"></div>
         <div class="field"><label>Auftraggeber</label><input type="text" id="tb-auftraggeber" placeholder="z.B. Bachmann"></div>
@@ -468,52 +401,51 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
         <div class="field"><label>Nettostunden</label><input type="text" id="tb-netto" readonly style="color:var(--gx-green-dark);font-weight:700"></div>
       </div>
     </div>
-    <button class="btn-primary" onclick="tbGoStep('positionen')">Weiter: Positionen →</button>
+    <button class="btn-primary" onclick="tbGoStep('positionen')">Weiter: Positionen</button>
   </div>
   <div id="tbp-positionen" style="display:none">
     <div class="tb-section">
-      <div class="tb-sec-label">LV auswählen</div>
-      <div class="field"><select id="tb-lv-select" onchange="tbLadeLVPositionen()"><option value="">-- LV auswählen --</option></select></div>
-      <div id="tb-pos-liste"><div class="empty-hint" style="padding:12px 0">Bitte LV auswählen</div></div>
+      <div class="tb-sec-label">LV auswaehlen</div>
+      <div class="field"><select id="tb-lv-select" onchange="tbLadeLVPositionen()"><option value="">-- LV auswaehlen --</option></select></div>
+      <div id="tb-pos-liste"><div class="empty-hint" style="padding:12px 0">Bitte LV auswaehlen</div></div>
     </div>
-    <div class="row2"><button class="btn-outline" onclick="tbGoStep('allgemein')">← Zurück</button><button class="btn-primary" onclick="tbGoStep('team')">Weiter: Team →</button></div>
+    <div class="row2"><button class="btn-outline" onclick="tbGoStep('allgemein')">Zurueck</button><button class="btn-primary" onclick="tbGoStep('team')">Weiter: Team</button></div>
   </div>
   <div id="tbp-team" style="display:none">
     <div class="tb-section"><div class="tb-sec-label">Anwesende Mitarbeiter</div><div id="tb-ma-liste"></div></div>
-    <div class="row2"><button class="btn-outline" onclick="tbGoStep('positionen')">← Zurück</button><button class="btn-primary" onclick="tbGoStep('material')">Weiter →</button></div>
+    <div class="row2"><button class="btn-outline" onclick="tbGoStep('positionen')">Zurueck</button><button class="btn-primary" onclick="tbGoStep('material')">Weiter</button></div>
   </div>
   <div id="tbp-material" style="display:none">
     <div class="tb-section">
       <div class="tb-sec-label">Materialverbrauch</div>
       <div class="tb-mat-grid" style="margin-bottom:4px"><div class="tb-mat-head">Material</div><div class="tb-mat-head">Menge</div><div class="tb-mat-head">Einheit</div><div class="tb-mat-head" style="background:#fdf8f0;border-radius:5px;padding:2px;color:#633806">Intern</div></div>
       <div id="tb-mat-rows" style="position:relative">
-        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="Material…" oninput="tbShowVorschlaege(this,'mat1')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="to"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div>
-        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="Material…" oninput="tbShowVorschlaege(this,'mat2')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="m³"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div>
+        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="Material..." oninput="tbShowVorschlaege(this,'mat1')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="to"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div>
+        <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="Material..." oninput="tbShowVorschlaege(this,'mat2')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="m3"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div>
       </div>
-      <button class="tb-add-btn" onclick="tbAddMatRow('tb-mat-rows')">+ Material hinzufügen</button>
+      <button class="tb-add-btn" onclick="tbAddMatRow('tb-mat-rows')">+ Material hinzufuegen</button>
     </div>
     <div class="tb-section">
       <div class="tb-sec-label">Maschineneinsatz</div>
       <div id="tb-masch-rows"><div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. LKW Arocs"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div></div></div>
-      <button class="tb-add-btn" onclick="tbAddMaschRow()">+ Maschine hinzufügen</button>
+      <button class="tb-add-btn" onclick="tbAddMaschRow()">+ Maschine hinzufuegen</button>
     </div>
     <div class="tb-section">
-      <div class="tb-sec-label">Materialrückgabe</div>
+      <div class="tb-sec-label">Materialrueckgabe</div>
       <div class="tb-mat-grid" style="margin-bottom:4px"><div class="tb-mat-head">Material</div><div class="tb-mat-head">Menge</div><div class="tb-mat-head">Einheit</div><div class="tb-mat-head" style="background:#fdf8f0;border-radius:5px;padding:2px;color:#633806">Intern</div></div>
       <div id="tb-rueck-rows"><div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Gartenabfall"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="cbm"><input class="tb-mat-intern" type="text" placeholder="GO/LA"></div></div>
-      <button class="tb-add-btn" onclick="tbAddMatRow('tb-rueck-rows','cbm','GO/LA')">+ Rückgabe hinzufügen</button>
+      <button class="tb-add-btn" onclick="tbAddMatRow('tb-rueck-rows','cbm','GO/LA')">+ Rueckgabe hinzufuegen</button>
     </div>
-    <div class="row2"><button class="btn-outline" onclick="tbGoStep('team')">← Zurück</button><button class="btn-primary" onclick="tbGoStep('abschluss')">Weiter →</button></div>
+    <div class="row2"><button class="btn-outline" onclick="tbGoStep('team')">Zurueck</button><button class="btn-primary" onclick="tbGoStep('abschluss')">Weiter</button></div>
   </div>
   <div id="tbp-abschluss" style="display:none">
-    <div class="tb-section"><div class="tb-sec-label">Notizen</div><textarea id="tb-notiz" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;color:var(--gx-text);resize:none;height:80px" placeholder="z.B. Schlechtwetter ab 14 Uhr…"></textarea></div>
+    <div class="tb-section"><div class="tb-sec-label">Notizen</div><textarea id="tb-notiz" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;color:var(--gx-text);resize:none;height:80px" placeholder="z.B. Schlechtwetter ab 14 Uhr..."></textarea></div>
     <div class="card" style="background:var(--gx-bg);padding:12px 14px;margin-bottom:14px" id="tb-zusammenfassung"></div>
-    <div class="success-msg" id="tb-ok">✓ Tagesbericht gespeichert!</div>
-    <div class="error-msg" id="tb-err">Bitte alle Pflichtfelder ausfüllen.</div>
-    <div class="row2" style="margin-bottom:10px"><button class="btn-outline" onclick="tbGoStep('material')">← Zurück</button><button class="btn-primary" onclick="saveTagesbericht()">Speichern ✓</button></div>
+    <div class="success-msg" id="tb-ok">Tagesbericht gespeichert!</div>
+    <div class="error-msg" id="tb-err">Bitte alle Pflichtfelder ausfuellen.</div>
+    <div class="row2" style="margin-bottom:10px"><button class="btn-outline" onclick="tbGoStep('material')">Zurueck</button><button class="btn-primary" onclick="saveTagesbericht()">Speichern</button></div>
   </div>
 </div>
-
 
 <!-- REGIEBERICHT -->
 <div class="view" id="v-regiebericht">
@@ -523,11 +455,9 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
     <div class="rg-step" id="rgstep-material" onclick="rgGoStep('material')">Material</div>
     <div class="rg-step" id="rgstep-abschluss" onclick="rgGoStep('abschluss')">Abschluss</div>
   </div>
-
-  <!-- Allgemein -->
   <div id="rgp-allgemein">
-    <div class="tb-sec-label">Auftraggeber & Datum</div>
-    <div class="field"><label>Kunde / Auftraggeber</label><input type="text" id="rg-kunde" placeholder="z.B. Familie Müller"></div>
+    <div class="tb-sec-label">Auftraggeber &amp; Datum</div>
+    <div class="field"><label>Kunde / Auftraggeber</label><input type="text" id="rg-kunde" placeholder="z.B. Familie Mueller"></div>
     <div class="field"><label>Baustelle / Adresse</label><input type="text" id="rg-baustelle" placeholder="z.B. Hauptstr. 12, Erlangen"></div>
     <div class="field"><label>Datum</label><input type="date" id="rg-datum"></div>
     <div class="tb-sec-label" style="margin-top:4px">Arbeitszeit</div>
@@ -537,72 +467,42 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
     </div>
     <div class="field"><label>Pause (min)</label><input type="number" id="rg-pause" value="30" min="0" step="15" oninput="rgCalcNetto()"></div>
     <div class="calc-box"><span style="font-size:13px;color:var(--gx-muted);font-weight:500">Nettostunden</span><span class="calc-val" id="rg-netto">9,0 h</span></div>
-    <div class="field"><label>Tätigkeitsbeschreibung</label><textarea id="rg-taetigkeit" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;resize:none;height:80px" placeholder="Was wurde heute gemacht?"></textarea></div>
-    <button class="btn-primary" onclick="rgGoStep('team')">Weiter: Team →</button>
+    <div class="field"><label>Taetigkeitsbeschreibung</label><textarea id="rg-taetigkeit" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;resize:none;height:80px" placeholder="Was wurde heute gemacht?"></textarea></div>
+    <button class="btn-primary" onclick="rgGoStep('team')">Weiter: Team</button>
   </div>
-
-  <!-- Team -->
   <div id="rgp-team" style="display:none">
     <div class="tb-sec-label">Anwesende Mitarbeiter</div>
-    <div style="display:grid;grid-template-columns:26px 1fr 70px 16px;gap:8px;padding:5px 0;font-size:10px;font-weight:700;color:var(--gx-muted);border-bottom:1px solid var(--gx-border);margin-bottom:4px">
-      <div></div><div>Name</div><div style="text-align:center">Std.</div><div></div>
-    </div>
+    <div style="display:grid;grid-template-columns:26px 1fr 70px 16px;gap:8px;padding:5px 0;font-size:10px;font-weight:700;color:var(--gx-muted);border-bottom:1px solid var(--gx-border);margin-bottom:4px"><div></div><div>Name</div><div style="text-align:center">Std.</div><div></div></div>
     <div id="rg-team-liste"></div>
-    <div class="row2" style="margin-top:14px">
-      <button class="btn-outline" onclick="rgGoStep('allgemein')">← Zurück</button>
-      <button class="btn-primary" onclick="rgGoStep('material')">Weiter →</button>
-    </div>
+    <div class="row2" style="margin-top:14px"><button class="btn-outline" onclick="rgGoStep('allgemein')">Zurueck</button><button class="btn-primary" onclick="rgGoStep('material')">Weiter</button></div>
   </div>
-
-  <!-- Material -->
   <div id="rgp-material" style="display:none">
     <div class="tb-sec-label">Materialverbrauch</div>
     <div class="tb-mat-grid" style="margin-bottom:4px"><div class="tb-mat-head">Material</div><div class="tb-mat-head">Menge</div><div class="tb-mat-head">Einheit</div><div class="tb-mat-head" style="background:#fdf8f0;border-radius:5px;padding:2px;color:#633806">Intern</div></div>
-    <div id="rg-mat-rows">
-      <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="Material…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="to"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div>
-    </div>
-    <button class="tb-add-btn" onclick="rgAddMatRow('rg-mat-rows')">+ Material hinzufügen</button>
+    <div id="rg-mat-rows"><div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="Material..."><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="to"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div></div>
+    <button class="tb-add-btn" onclick="rgAddMatRow('rg-mat-rows')">+ Material hinzufuegen</button>
     <div class="tb-sec-label" style="margin-top:10px">Maschineneinsatz</div>
-    <div id="rg-masch-rows">
-      <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. LKW Arocs"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div></div>
-    </div>
-    <button class="tb-add-btn" onclick="rgAddMaschRow()">+ Maschine hinzufügen</button>
-    <div class="tb-sec-label" style="margin-top:10px">Materialrückgabe</div>
-    <div id="rg-rueck-rows">
-      <div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Gartenabfall"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="cbm"><input class="tb-mat-intern" type="text" placeholder="GO/LA"></div>
-    </div>
-    <button class="tb-add-btn" onclick="rgAddMatRow('rg-rueck-rows','cbm','GO/LA')">+ Rückgabe hinzufügen</button>
-    <div class="row2" style="margin-top:14px">
-      <button class="btn-outline" onclick="rgGoStep('team')">← Zurück</button>
-      <button class="btn-primary" onclick="rgGoStep('abschluss')">Weiter →</button>
-    </div>
+    <div id="rg-masch-rows"><div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. LKW Arocs"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div></div></div>
+    <button class="tb-add-btn" onclick="rgAddMaschRow()">+ Maschine hinzufuegen</button>
+    <div class="tb-sec-label" style="margin-top:10px">Materialrueckgabe</div>
+    <div id="rg-rueck-rows"><div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Gartenabfall"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="cbm"><input class="tb-mat-intern" type="text" placeholder="GO/LA"></div></div>
+    <button class="tb-add-btn" onclick="rgAddMatRow('rg-rueck-rows','cbm','GO/LA')">+ Rueckgabe hinzufuegen</button>
+    <div class="row2" style="margin-top:14px"><button class="btn-outline" onclick="rgGoStep('team')">Zurueck</button><button class="btn-primary" onclick="rgGoStep('abschluss')">Weiter</button></div>
   </div>
-
-  <!-- Abschluss -->
   <div id="rgp-abschluss" style="display:none">
     <div class="rg-summary" id="rg-zf"></div>
-    <div class="field"><label>Notizen / Besonderheiten</label><textarea id="rg-notiz" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;resize:none;height:60px" placeholder="z.B. Schlechtwetter, Materialmangel…"></textarea></div>
+    <div class="field"><label>Notizen / Besonderheiten</label><textarea id="rg-notiz" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;resize:none;height:60px" placeholder="z.B. Schlechtwetter, Materialmangel..."></textarea></div>
     <div class="tb-sec-label">Kundenunterschrift</div>
-    <div class="sig-box">
-      <canvas id="sig-canvas" class="sig-canvas" height="140"></canvas>
-      <div class="sig-linie"></div>
-      <div class="sig-hint">Bitte hier unterschreiben</div>
-    </div>
-    <div class="sig-actions">
-      <button class="sig-clear" onclick="sigClear()">✕ Löschen</button>
-      <button class="sig-ok" onclick="sigBestaetigen()">✓ Unterschrift bestätigen</button>
-    </div>
-    <div id="sig-bestaetigt" class="success-msg">✓ Unterschrift gespeichert</div>
-    <div class="success-msg" id="rg-ok">✓ Regiebericht gespeichert!</div>
-    <div class="error-msg" id="rg-err">Bitte Kunde und Baustelle ausfüllen!</div>
-    <div class="row2" style="margin-bottom:10px">
-      <button class="btn-outline" onclick="rgGoStep('material')">← Zurück</button>
-      <button class="btn-primary" onclick="saveRegiebericht()">Speichern ✓</button>
-    </div>
+    <div class="sig-box"><canvas id="sig-canvas" class="sig-canvas" height="140"></canvas><div class="sig-linie"></div><div class="sig-hint">Bitte hier unterschreiben</div></div>
+    <div class="sig-actions"><button class="sig-clear" onclick="sigClear()">Loeschen</button><button class="sig-ok" onclick="sigBestaetigen()">Unterschrift bestaetigen</button></div>
+    <div id="sig-bestaetigt" class="success-msg">Unterschrift gespeichert</div>
+    <div class="success-msg" id="rg-ok">Regiebericht gespeichert!</div>
+    <div class="error-msg" id="rg-err">Bitte Kunde und Baustelle ausfuellen!</div>
+    <div class="row2" style="margin-bottom:10px"><button class="btn-outline" onclick="rgGoStep('material')">Zurueck</button><button class="btn-primary" onclick="saveRegiebericht()">Speichern</button></div>
   </div>
 </div>
 
-<!-- ADMIN: Dashboard -->
+<!-- ADMIN -->
 <div class="view" id="v-admin">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
     <div style="font-size:15px;font-weight:700">Admin-Bereich</div>
@@ -610,46 +510,37 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   </div>
   <div class="metrics">
     <div class="metric"><div class="m-label">Offene Freigaben</div><div class="m-val red" id="admin-offen">0</div></div>
-    <div class="metric"><div class="m-label">Urlaubsanträge</div><div class="m-val amber" id="admin-urlaub-count">0</div></div>
+    <div class="metric"><div class="m-label">Urlaubsantraege</div><div class="m-val amber" id="admin-urlaub-count">0</div></div>
     <div class="metric"><div class="m-label">Aktiv heute</div><div class="m-val green" id="admin-aktiv">0</div></div>
-    <div class="metric"><div class="m-label">Einträge gesamt</div><div class="m-val" id="admin-total">0</div></div>
+    <div class="metric"><div class="m-label">Eintraege gesamt</div><div class="m-val" id="admin-total">0</div></div>
   </div>
   <div class="tab-bar">
     <div class="tab active" id="atab-freigaben" onclick="switchAdminTab('freigaben')">Freigaben</div>
     <div class="tab" id="atab-urlaub" onclick="switchAdminTab('urlaub')">Urlaub</div>
-    <div class="tab" id="atab-alle" onclick="switchAdminTab('alle')">Alle Einträge</div>
+    <div class="tab" id="atab-alle" onclick="switchAdminTab('alle')">Alle Eintraege</div>
   </div>
-  <div id="atc-freigaben"><div class="empty-hint" id="freigaben-empty" style="display:none">Keine offenen Freigaben ✓</div><div id="freigaben-list"></div></div>
-  <div id="atc-urlaub" style="display:none"><div class="empty-hint" id="urlaub-empty" style="display:none">Keine Anträge ✓</div><div id="admin-urlaub-list"></div></div>
+  <div id="atc-freigaben"><div class="empty-hint" id="freigaben-empty" style="display:none">Keine offenen Freigaben</div><div id="freigaben-list"></div></div>
+  <div id="atc-urlaub" style="display:none"><div class="empty-hint" id="urlaub-empty" style="display:none">Keine Antraege</div><div id="admin-urlaub-list"></div></div>
   <div id="atc-alle" style="display:none"><div id="alle-list"></div></div>
 </div>
 
-<!-- Bottom Nav (nur wenn eingeloggt) -->
+<!-- BOTTOM NAV -->
 <div class="bottom-nav" id="bottom-nav" style="display:none">
-  <button class="nav-btn active" id="nav-dashboard" onclick="switchMain('dashboard')"><i class="ti ti-home" aria-hidden="true"></i><span>Start</span></button>
-  <button class="nav-btn" id="nav-stempel" onclick="switchMain('stempel')"><i class="ti ti-clock" aria-hidden="true"></i><span>Stempeln</span></button>
-  <button class="nav-btn" id="nav-manuell" onclick="switchMain('manuell')"><i class="ti ti-edit" aria-hidden="true"></i><span>Manuell</span></button>
-  <button class="nav-btn" id="nav-urlaub" onclick="switchMain('urlaub')"><i class="ti ti-beach" aria-hidden="true"></i><span>Urlaub</span></button>
-  <button class="nav-btn" id="nav-kalender" onclick="switchMain('kalender')"><i class="ti ti-calendar" aria-hidden="true"></i><span>Kalender</span></button>
-  <button class="nav-btn" id="nav-medien" onclick="switchMain('medien')"><i class="ti ti-photo" aria-hidden="true"></i><span>Medien</span></button>
-  <button class="nav-btn" id="nav-tagesbericht" onclick="switchMain('tagesbericht')" style="display:none"><i class="ti ti-clipboard-list" aria-hidden="true"></i><span>Bericht</span></button>
-  <button class="nav-btn" id="nav-regiebericht" onclick="switchMain('regiebericht')" style="display:none"><i class="ti ti-file-text" aria-hidden="true"></i><span>Regie</span></button>
+  <button class="nav-btn active" id="nav-dashboard" onclick="switchMain('dashboard')"><i class="ti ti-home"></i><span>Start</span></button>
+  <button class="nav-btn" id="nav-stempel" onclick="switchMain('stempel')"><i class="ti ti-clock"></i><span>Stempeln</span></button>
+  <button class="nav-btn" id="nav-manuell" onclick="switchMain('manuell')"><i class="ti ti-edit"></i><span>Manuell</span></button>
+  <button class="nav-btn" id="nav-urlaub" onclick="switchMain('urlaub')"><i class="ti ti-beach"></i><span>Urlaub</span></button>
+  <button class="nav-btn" id="nav-kalender" onclick="switchMain('kalender')"><i class="ti ti-calendar"></i><span>Kalender</span></button>
+  <button class="nav-btn" id="nav-medien" onclick="switchMain('medien')"><i class="ti ti-photo"></i><span>Medien</span></button>
+  <button class="nav-btn" id="nav-tagesbericht" onclick="switchMain('tagesbericht')" style="display:none"><i class="ti ti-clipboard-list"></i><span>Bericht</span></button>
+  <button class="nav-btn" id="nav-regiebericht" onclick="switchMain('regiebericht')" style="display:none"><i class="ti ti-file-text"></i><span>Regie</span></button>
 </div>
-
-<div class="status-bar" id="status-bar">Verbinde…</div>
-
+<div class="status-bar" id="status-bar">Verbinde...</div>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 
 <script>
-// ============================================================
-//  *** GOOGLE APPS SCRIPT URL HIER EINTRAGEN ***
-// ============================================================
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMel0O3XuZbUkZkAam7vRE-_vhCUNzTRt1amUXcyHDiw9tsr6N0y2J4xFlpRr5MLwS/exec";
-// ============================================================
-
-const ADMIN_PIN = "0000"; // Admin-PIN — bitte ändern!
-
-// Projekte werden dynamisch geladen
+const ADMIN_PIN = "0000";
 
 const FALLBACK_WORKERS = [
   {name:"Max Bauer",pin:"1234"},{name:"Lisa Kern",pin:"2345"},
@@ -667,13 +558,15 @@ let PROJEKTE=['Wird geladen…'];
 const PROJ_SONSTIGES='⚒ Kleinauftrag / Sonstiges';
 let isAdmin=false;
 
+// NEU: Globaler Cache für Trello-Einsätze
+let trelloEinsaetze=[];
+
 function pad(n){return String(n).padStart(2,'0')}
 function initials(n){return n.split(' ').map(x=>x[0]).join('')}
 function timeToMin(t){const[h,m]=t.split(':').map(Number);return h*60+m}
 function setStatus(m,t=''){const b=document.getElementById('status-bar');b.textContent=m;b.className='status-bar'+(t?' '+t:'')}
 function showMsg(id,dur=2500){const el=document.getElementById(id);el.style.display='block';setTimeout(()=>el.style.display='none',dur)}
 
-// Load
 async function init(){
   fillProjekte();
   ladeProjekte();
@@ -681,6 +574,9 @@ async function init(){
   if(stored)try{allEntries=JSON.parse(stored)}catch{}
   const storedU=localStorage.getItem('gx_urlaub');
   if(storedU)try{urlaubAntraege=JSON.parse(storedU)}catch{}
+  // NEU: gecachte Trello-Daten aus localStorage
+  const storedT=localStorage.getItem('gx_trello');
+  if(storedT)try{trelloEinsaetze=JSON.parse(storedT)}catch{}
   if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){
     workers=FALLBACK_WORKERS;renderWorkerGrid();setStatus('Demo-Modus','err');return;
   }
@@ -700,23 +596,15 @@ function fillProjekte(liste){
 
 async function ladeProjekte(){
   if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){
-    PROJEKTE=["Garten Müller, Leipzig","Park Renovierung Südvorstadt","Pflege Firmengelände Koch AG","Wegebau Gohlis-Mitte"];
+    PROJEKTE=["Garten Müller, Leipzig","Park Renovierung Südvorstadt","Pflege Firmengelände Koch AG"];
     fillProjekte();return;
   }
   try{
-    // Projektliste aus Trello-synchronisiertem Sheet laden
     const r=await fetch(SCRIPT_URL+'?action=getProjektliste');
     const d=await r.json();
-    if(d.ok&&d.projekte&&d.projekte.length>0){
-      PROJEKTE=d.projekte;
-      fillProjekte();
-      setStatus('Projekte geladen ✓','ok');
-      return;
-    }
+    if(d.ok&&d.projekte&&d.projekte.length>0){PROJEKTE=d.projekte;fillProjekte();setStatus('Projekte geladen ✓','ok');return;}
   }catch{}
-  // Fallback
-  PROJEKTE=["⚒ Kleinauftrag / Sonstiges"];
-  fillProjekte();
+  PROJEKTE=["⚒ Kleinauftrag / Sonstiges"];fillProjekte();
 }
 
 function renderWorkerGrid(){
@@ -727,7 +615,6 @@ function renderWorkerGrid(){
     </div>`).join('');
 }
 
-// Navigation
 function goTo(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -745,11 +632,8 @@ function switchMain(name){
   if(name==='regiebericht')rgInit();
 }
 
-// Worker select & PIN
 function selectWorker(i){
-  isAdmin=false;
-  currentWorker=workers[i];
-  pinInput='';updateDots();
+  isAdmin=false;currentWorker=workers[i];pinInput='';updateDots();
   document.getElementById('pin-error').style.display='none';
   document.getElementById('pin-avatar').textContent=initials(currentWorker.name);
   document.getElementById('pin-name').textContent=currentWorker.name;
@@ -757,8 +641,7 @@ function selectWorker(i){
 }
 
 function openAdmin(){
-  isAdmin=true;currentWorker={name:'Admin',pin:ADMIN_PIN};
-  pinInput='';updateDots();
+  isAdmin=true;currentWorker={name:'Admin',pin:ADMIN_PIN};pinInput='';updateDots();
   document.getElementById('pin-error').style.display='none';
   document.getElementById('pin-avatar').textContent='AD';
   document.getElementById('pin-name').textContent='Admin-Bereich';
@@ -770,11 +653,8 @@ function pinKey(k){if(pinInput.length>=4)return;pinInput+=k;updateDots();documen
 function pinDel(){pinInput=pinInput.slice(0,-1);updateDots()}
 
 function checkPin(){
-  if(pinInput===currentWorker.pin){
-    if(isAdmin){enterAdmin();}else{enterWorker();}
-  } else {
-    document.getElementById('pin-error').style.display='block';pinInput='';updateDots();
-  }
+  if(pinInput===currentWorker.pin){isAdmin?enterAdmin():enterWorker();}
+  else{document.getElementById('pin-error').style.display='block';pinInput='';updateDots();}
 }
 
 async function enterWorker(){
@@ -790,8 +670,7 @@ async function enterWorker(){
     const el=document.getElementById('nav-'+n);if(el)el.classList.toggle('active',n==='dashboard');
   });
   if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-    const today=new Date();
-    const monat=today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0'));
+    const monat=now.getFullYear()+'-'+(String(now.getMonth()+1).padStart(2,'0'));
     try{
       const r=await fetch(SCRIPT_URL+'?action=getEntries&worker='+encodeURIComponent(currentWorker.name)+'&monat='+monat);
       const d=await r.json();
@@ -812,21 +691,15 @@ async function enterWorker(){
   if(tbBtn)tbBtn.style.display=(rolle==='Vorarbeiter'||rolle==='Facharbeiter'||rolle==='Admin')?'flex':'none';
   const rgBtn=document.getElementById('nav-regiebericht');
   if(rgBtn)rgBtn.style.display='flex';
-  checkLateWarning();
-  renderDashboard();
-  updateDashboardMetrics();
+  checkLateWarning();renderDashboard();updateDashboardMetrics();
   ladeTrelloEinsaetze();
 }
 
 function enterAdmin(){
   document.getElementById('bottom-nav').style.display='none';
-  renderAdmin();
-  goTo('v-admin');
+  renderAdmin();goTo('v-admin');
 }
 
-function goBack(){document.getElementById('bottom-nav').style.display='none';goTo('v-worker');currentWorker=null;if(elapsedTimer){clearInterval(elapsedTimer);elapsedTimer=null;stampStart=null;}}
-
-// Dashboard
 function renderDashboard(){
   const mine=allEntries.filter(e=>e.worker===currentWorker.name);
   const recent=mine.slice().reverse().slice(0,5);
@@ -849,11 +722,8 @@ function statusBadge(s){
 
 function checkLateWarning(){
   const mine=allEntries.filter(e=>e.worker===currentWorker.name&&e.art==='Manuell');
-  const recent=mine.slice(-5);
-  const lateCount=recent.filter(e=>{
-    const entryDate=new Date(e.datum);
-    const savedDate=new Date(e.savedAt||e.datum);
-    return (savedDate-entryDate)>12*3600*1000;
+  const lateCount=mine.slice(-5).filter(e=>{
+    return (new Date(e.savedAt||e.datum)-new Date(e.datum))>12*3600*1000;
   }).length;
   document.getElementById('late-warn').style.display=lateCount>=3?'block':'none';
   checkMissingDays();
@@ -862,14 +732,11 @@ function checkLateWarning(){
 function updateAdminBadge(){
   const pending=allEntries.filter(e=>e.status==='pending').length+urlaubAntraege.filter(u=>u.status==='pending').length;
   const badge=document.getElementById('admin-badge');
-  badge.style.display=pending>0?'inline':'none';
-  badge.textContent=pending;
+  badge.style.display=pending>0?'inline':'none';badge.textContent=pending;
 }
 
-// Stempeln
 function einStempeln(){
-  stampStart=Date.now();
-  const now=new Date();
+  stampStart=Date.now();const now=new Date();
   document.getElementById('running-label').textContent=`Eingestempelt seit ${pad(now.getHours())}:${pad(now.getMinutes())} Uhr`;
   document.getElementById('running-block').style.display='block';
   document.getElementById('btn-ein').style.display='none';
@@ -882,7 +749,11 @@ async function ausStempeln(){
   clearInterval(elapsedTimer);elapsedTimer=null;
   const end=new Date(),start=new Date(stampStart);
   const diffMin=Math.round((end-start)/60000);
-  const entry={worker:currentWorker.name,datum:start.toISOString().slice(0,10),von:`${pad(start.getHours())}:${pad(start.getMinutes())}`,bis:`${pad(end.getHours())}:${pad(end.getMinutes())}`,pause:0,netto:parseFloat((diffMin/60).toFixed(2)),proj:document.getElementById('proj-stamp').value,art:'Stempel',status:'auto',savedAt:new Date().toISOString()};
+  const entry={worker:currentWorker.name,datum:start.toISOString().slice(0,10),
+    von:`${pad(start.getHours())}:${pad(start.getMinutes())}`,
+    bis:`${pad(end.getHours())}:${pad(end.getMinutes())}`,
+    pause:0,netto:parseFloat((diffMin/60).toFixed(2)),
+    proj:document.getElementById('proj-stamp').value,art:'Stempel',status:'auto',savedAt:new Date().toISOString()};
   stampStart=null;
   document.getElementById('running-block').style.display='none';
   document.getElementById('btn-ein').style.display='flex';
@@ -891,9 +762,9 @@ async function ausStempeln(){
   await saveEntry(entry,'stamp-ok');
 }
 
-// Manuelle Eingabe
 function recalcManual(){
-  const von=document.getElementById('man-von').value,bis=document.getElementById('man-bis').value,pause=parseInt(document.getElementById('man-pause').value)||0;
+  const von=document.getElementById('man-von').value,bis=document.getElementById('man-bis').value;
+  const pause=parseInt(document.getElementById('man-pause').value)||0;
   if(von&&bis){const diff=timeToMin(bis)-timeToMin(von)-pause;document.getElementById('calc-net').textContent=diff>0?(diff/60).toFixed(1).replace('.',',')+' h':'– h';}
 }
 document.getElementById('man-von').addEventListener('input',recalcManual);
@@ -907,38 +778,34 @@ async function saveManual(){
   document.getElementById('man-error').style.display='none';document.getElementById('man-ok').style.display='none';
   const diff=timeToMin(bis)-timeToMin(von)-pause;
   if(!von||!bis||diff<=0||!datum){document.getElementById('man-error').textContent='Bitte alle Felder korrekt ausfüllen.';document.getElementById('man-error').style.display='block';return;}
-  const entryDate=new Date(datum);
-  const now=new Date();
-  const diffH=(now-entryDate)/3600000;
-  const status=diffH>36?'locked':diffH>12?'pending':'pending';
-  const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),proj:document.getElementById('proj-man').value,art:'Manuell',status,savedAt:now.toISOString(),notiz:document.getElementById('man-notiz').value};
+  const now=new Date();const diffH=(now-new Date(datum))/3600000;
+  const status=diffH>36?'locked':'pending';
+  const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),
+    proj:document.getElementById('proj-man').value,art:'Manuell',status,savedAt:now.toISOString(),
+    notiz:document.getElementById('man-notiz').value};
   await saveEntry(entry,'man-ok');
   document.getElementById('man-notiz').value='';
   checkLateWarning();updateAdminBadge();
 }
 
 async function saveEntry(entry,okId){
-  allEntries.push(entry);
-  localStorage.setItem('gx_entries',JSON.stringify(allEntries));
-  showMsg(okId);
+  allEntries.push(entry);localStorage.setItem('gx_entries',JSON.stringify(allEntries));showMsg(okId);
   if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){setStatus('Demo – lokal gespeichert','loading');return;}
   setStatus('Speichert…','loading');
   try{
     const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveEntry',entry})});
-    const d=await r.json();
-    setStatus(d.ok?'In Sheets gespeichert ✓':'Fehler: '+d.error,d.ok?'ok':'err');
+    const d=await r.json();setStatus(d.ok?'In Sheets gespeichert ✓':'Fehler: '+d.error,d.ok?'ok':'err');
   }catch{setStatus('Offline – lokal gespeichert','err');}
 }
 
-// Urlaub
 function stelleUrlaubsantrag(){
   const von=document.getElementById('urlaub-von').value,bis=document.getElementById('urlaub-bis').value;
   document.getElementById('urlaub-err').style.display='none';document.getElementById('urlaub-ok').style.display='none';
   if(!von||!bis||von>bis){document.getElementById('urlaub-err').style.display='block';return;}
   const tage=Math.round((new Date(bis)-new Date(von))/86400000)+1;
-  const antrag={id:Date.now(),worker:currentWorker.name,von,bis,tage,notiz:document.getElementById('urlaub-notiz').value,status:'pending',datum:new Date().toISOString()};
-  urlaubAntraege.push(antrag);
-  localStorage.setItem('gx_urlaub',JSON.stringify(urlaubAntraege));
+  const antrag={id:Date.now(),worker:currentWorker.name,von,bis,tage,
+    notiz:document.getElementById('urlaub-notiz').value,status:'pending',datum:new Date().toISOString()};
+  urlaubAntraege.push(antrag);localStorage.setItem('gx_urlaub',JSON.stringify(urlaubAntraege));
   showMsg('urlaub-ok');renderUrlaubList();updateAdminBadge();
   document.getElementById('urlaub-notiz').value='';
 }
@@ -954,7 +821,6 @@ function renderUrlaubList(){
     </div>`).join('');
 }
 
-// Admin
 function renderAdmin(){
   const pending=allEntries.filter(e=>e.status==='pending');
   const pendingU=urlaubAntraege.filter(u=>u.status==='pending');
@@ -962,8 +828,7 @@ function renderAdmin(){
   document.getElementById('admin-urlaub-count').textContent=pendingU.length;
   document.getElementById('admin-total').textContent=allEntries.length;
   document.getElementById('admin-aktiv').textContent=allEntries.filter(e=>{
-    const today=new Date().toISOString().slice(0,10);
-    return e.datum===today&&e.art==='Stempel';
+    return e.datum===new Date().toISOString().slice(0,10)&&e.art==='Stempel';
   }).length;
   renderFreigaben();renderAdminUrlaub();renderAlle();
 }
@@ -978,7 +843,7 @@ function switchAdminTab(name){
 function renderFreigaben(){
   const pending=allEntries.filter(e=>e.status==='pending');
   document.getElementById('freigaben-empty').style.display=pending.length===0?'block':'none';
-  document.getElementById('freigaben-list').innerHTML=pending.map((e,i)=>`
+  document.getElementById('freigaben-list').innerHTML=pending.map(e=>`
     <div class="card" style="padding:10px 12px;margin-bottom:8px">
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
         <div><div class="entry-main">${e.worker}</div><div class="entry-sub">${e.datum} · ${e.von}–${e.bis} · ${(+e.netto).toFixed(1)} h</div><div class="entry-sub">${e.proj.split(',')[0]}${e.notiz?' · '+e.notiz:''}</div></div>
@@ -1000,8 +865,7 @@ function renderAdminUrlaub(){
 }
 
 function renderAlle(){
-  const sorted=allEntries.slice().reverse().slice(0,20);
-  document.getElementById('alle-list').innerHTML=sorted.map(e=>`
+  document.getElementById('alle-list').innerHTML=allEntries.slice().reverse().slice(0,20).map(e=>`
     <div class="entry-row">
       <div><div class="entry-main">${e.worker} · ${e.proj.split(',')[0]}</div><div class="entry-sub">${e.datum} · ${e.von}–${e.bis}</div></div>
       <div class="entry-right"><div class="entry-h">${(+e.netto).toFixed(1)} h</div>${statusBadge(e.status)}</div>
@@ -1014,16 +878,10 @@ function adminAction(type,idx,action){
   updateAdminBadge();renderAdmin();
 }
 
-
-// ============================================================
-//  Dashboard Metrics + Missing Days
-// ============================================================
 function updateDashboardMetrics(){
   const soll=stammdaten.wochenstunden||40;
-  const now=new Date();
-  const dayOfWeek=now.getDay();
-  const monday=new Date(now);
-  monday.setDate(now.getDate()-(dayOfWeek===0?6:dayOfWeek-1));
+  const now=new Date();const dow=now.getDay();
+  const monday=new Date(now);monday.setDate(now.getDate()-(dow===0?6:dow-1));
   const mondayStr=monday.toISOString().slice(0,10);
   const sundayStr=new Date(monday.getTime()+6*86400000).toISOString().slice(0,10);
   const wocheH=allEntries.filter(e=>e.worker===currentWorker.name&&e.datum>=mondayStr&&e.datum<=sundayStr).reduce((s,e)=>s+(parseFloat(e.netto)||0),0);
@@ -1031,14 +889,12 @@ function updateDashboardMetrics(){
   document.getElementById('week-label').textContent=wocheH.toFixed(1)+' / '+soll+' h';
   document.getElementById('week-bar').style.width=pct+'%';
   let urlaubGesamt=stammdaten.urlaubstage||30;
-  if(stammdaten.eintrittsdatum){const eintr=new Date(stammdaten.eintrittsdatum);if(eintr.getFullYear()===now.getFullYear()){urlaubGesamt=Math.round(urlaubGesamt*(12-eintr.getMonth())/12);}}
+  if(stammdaten.eintrittsdatum){const eintr=new Date(stammdaten.eintrittsdatum);if(eintr.getFullYear()===now.getFullYear())urlaubGesamt=Math.round(urlaubGesamt*(12-eintr.getMonth())/12);}
   const genommen=urlaubAntraege.filter(u=>u.worker===currentWorker.name&&u.status==='approved'&&u.von&&u.von.startsWith(now.getFullYear()+'')).reduce((s,u)=>s+(parseInt(u.tage)||0),0);
   document.getElementById('m-urlaub').textContent=Math.max(0,urlaubGesamt-genommen)+' Tage';
-  const diffH=wocheH-soll;
-  const ueberEl=document.getElementById('m-ueber');
-  ueberEl.textContent=(diffH>=0?'+':'')+diffH.toFixed(1)+' h';
-  ueberEl.className='m-val '+(diffH>=0?'green':'red');
-  if(stammdaten.probezeit){const probzEnd=new Date(stammdaten.probezeit);const diffDays=Math.ceil((probzEnd-now)/86400000);if(diffDays>0&&diffDays<=30){const el=document.getElementById('late-warn');el.textContent='⏰ Probezeit endet in '+diffDays+' Tagen ('+stammdaten.probezeit+')';el.style.display='block';}}
+  const diffH=wocheH-soll;const uel=document.getElementById('m-ueber');
+  uel.textContent=(diffH>=0?'+':'')+diffH.toFixed(1)+' h';
+  uel.className='m-val '+(diffH>=0?'green':'red');
 }
 
 function checkMissingDays(){
@@ -1047,26 +903,24 @@ function checkMissingDays(){
   for(let i=1;i<=7;i++){
     const d=new Date(now);d.setDate(d.getDate()-i);
     const dow=d.getDay();if(dow===0||dow===6)continue;
-    const ds=d.toISOString().slice(0,10);
-    if(feiertage[ds])continue;
+    const ds=d.toISOString().slice(0,10);if(feiertage[ds])continue;
     const hasEntry=allEntries.some(e=>e.worker===currentWorker.name&&e.datum===ds);
     const isUrlaub=urlaubAntraege.some(u=>u.worker===currentWorker.name&&u.status==='approved'&&ds>=u.von&&ds<=u.bis);
-    if(!hasEntry&&!isUrlaub){const deadline=new Date(ds+'T18:00:00');deadline.setDate(deadline.getDate()+1);if(now>deadline)missing.push(ds);}
+    if(!hasEntry&&!isUrlaub){const dl=new Date(ds+'T18:00:00');dl.setDate(dl.getDate()+1);if(now>dl)missing.push(ds);}
   }
-  const box=document.getElementById('reminder-box');
-  if(!box)return;
-  const daysEl=document.getElementById('reminder-days');
+  const box=document.getElementById('reminder-box');if(!box)return;
   if(missing.length>0){
     box.style.display='block';
-    daysEl.innerHTML=missing.slice(0,5).map(ds=>{const d=new Date(ds+'T12:00:00');return '<div class="reminder-day">'+d.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'})+'</div>';}).join('');
-  } else {box.style.display='none';}
+    document.getElementById('reminder-days').innerHTML=missing.slice(0,5).map(ds=>{
+      const d=new Date(ds+'T12:00:00');return '<div class="reminder-day">'+d.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'})+'</div>';
+    }).join('');
+  }else{box.style.display='none';}
 }
 
 // ============================================================
-//  Kalender
+//  KALENDER
 // ============================================================
-let kalYear=new Date().getFullYear();
-let kalMonth=new Date().getMonth();
+let kalYear=new Date().getFullYear(),kalMonth=new Date().getMonth();
 function kalPrevMonth(){if(kalMonth===0){kalMonth=11;kalYear--;}else kalMonth--;renderKalender();}
 function kalNextMonth(){if(kalMonth===11){kalMonth=0;kalYear++;}else kalMonth++;renderKalender();}
 
@@ -1076,8 +930,7 @@ function getBayernFeiertage(year){
   const g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30;
   const i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7;
   const m=Math.floor((a+11*h+22*l)/451);
-  const month=Math.floor((h+l-7*m+114)/31);
-  const day=((h+l-7*m+114)%31)+1;
+  const month=Math.floor((h+l-7*m+114)/31),day=((h+l-7*m+114)%31)+1;
   const ostern=new Date(year,month-1,day);
   const fmt=d=>d.toISOString().slice(0,10);
   const add=n=>{const x=new Date(ostern);x.setDate(x.getDate()+n);return fmt(x);};
@@ -1092,6 +945,16 @@ function getBayernFeiertage(year){
   return feste;
 }
 
+// NEU: Uhrzeiten aus Trello Card-Namen parsen
+function parseTrelloZeiten(name){
+  const r=name.match(/^(\d{1,2}:\d{2})\s*[-\u2013]\s*(\d{1,2}:\d{2})\s*(.*)/);
+  if(r)return{von:r[1],bis:r[2],label:r[3]||name};
+  const t=name.match(/^(\d{1,2}:\d{2})\s+(.*)/);
+  if(t)return{von:t[1],bis:'',label:t[2]||name};
+  return{von:'',bis:'',label:name};
+}
+
+// NEU: renderKalender mit Trello-Einsätzen
 function renderKalender(){
   const monatStr=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'][kalMonth];
   document.getElementById('kal-month-title').textContent=monatStr+' '+kalYear;
@@ -1101,460 +964,343 @@ function renderKalender(){
   const feiertage=getBayernFeiertage(kalYear);
   const tage=new Date(kalYear,kalMonth+1,0).getDate();
   const heute=new Date().toISOString().slice(0,10);
+  const monatEnd=monatKey+'-'+String(tage).padStart(2,'0');
+  const monatStart=monatKey+'-01';
+
+  // Trello-Einsätze für diesen Monat filtern
+  const meineEinsaetze=trelloEinsaetze.filter(e=>{
+    if(!e.datum)return false;
+    const start=e.datum,end=e.datumBis||e.datum;
+    return start<=monatEnd&&end>=monatStart;
+  });
+
   let totalH=0,urlaubTage=0;
-  const rows=[];
+  const html=[];
+
   for(let d=1;d<=tage;d++){
-    const ds=kalYear+'-'+String(kalMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const ds=monatKey+'-'+String(d).padStart(2,'0');
     const dow=new Date(ds+'T12:00:00').getDay();
-    const isWE=dow===0||dow===6;const isHeute=ds===heute;
-    const isFeiertag=!!feiertage[ds];const feiertagName=feiertage[ds]||'';
+    const isWE=dow===0||dow===6,isHeute=ds===heute;
+    const isFeiertag=!!feiertage[ds],feiertagName=feiertage[ds]||'';
     const eintrag=mine.find(e=>e.datum===ds);
     const isUrlaub=!eintrag&&myUrlaub.some(u=>ds>=u.von&&ds<=u.bis);
-    let dotColor='#e0e0e0',info='–',sub='',badge='',badgeClass='',rowExtra='';
-    if((isWE||isFeiertag)&&!eintrag&&!isUrlaub){
-      info=isFeiertag?feiertagName:'Wochenende';badge=isFeiertag?'Feiertag':'';
-      badgeClass=isFeiertag?'feiertag':'';rowExtra=isFeiertag?' feiertag':' weekend';
-      rows.push({ds,d,isWE,isFeiertag,isHeute,dotColor:isFeiertag?'#c8a84b':'#e0e0e0',info,sub:isFeiertag?'Bayern':'',badge,badgeClass,rowExtra});
+    const tagEinsaetze=meineEinsaetze.filter(e=>{
+      const start=e.datum,end=e.datumBis||e.datum;
+      return ds>=start&&ds<=end;
+    });
+    const wt=['So','Mo','Di','Mi','Do','Fr','Sa'][dow];
+
+    // Wochenende/Feiertag ohne Einsatz
+    if((isWE||isFeiertag)&&!eintrag&&!isUrlaub&&!tagEinsaetze.length){
+      html.push(`<div class="kal-row${isFeiertag?' feiertag':' weekend'}${isHeute?' today':''}">
+        <div class="kal-num">${d}</div><div class="kal-name">${wt}</div>
+        <div class="kal-dot-big" style="background:${isFeiertag?'#c8a84b':'#e0e0e0'}"></div>
+        <div class="kal-info"><div class="kal-proj">${isFeiertag?feiertagName:'Wochenende'}</div>${isFeiertag?'<div class="kal-sub">Bayern</div>':''}</div>
+        ${isFeiertag?'<span class="kal-badge feiertag">Feiertag</span>':''}
+      </div>`);
       continue;
     }
-    if(isUrlaub){dotColor='#1565c0';info='Urlaub';sub='genehmigt';badge='Urlaub';badgeClass='urlaub';urlaubTage++;}
-    else if(eintrag){
+
+    // Tageszeilen aufbauen
+    const zeilen=[];
+    if(isUrlaub){
+      urlaubTage++;
+      zeilen.push({dot:'#1565c0',info:'Urlaub',sub:'genehmigt',badge:'Urlaub',bc:'urlaub',trello:false});
+    }else if(eintrag){
       const s=eintrag.status;
-      if(s==='approved'||s==='auto'||s==='Tagesbericht'){dotColor='#4caf50';badge='✓';badgeClass='approved';}
-      else if(s==='pending'){dotColor='#f59f00';badge='Ausstehend';badgeClass='pending';}
-      else{dotColor='#e0e0e0';}
-      info=eintrag.proj?eintrag.proj.split(',')[0]:'–';
-      sub=eintrag.von+'–'+eintrag.bis+' · '+(+eintrag.netto).toFixed(1)+' h';
+      let dot='#e0e0e0',badge='',bc='';
+      if(s==='approved'||s==='auto'||s==='Tagesbericht'){dot='#4caf50';badge='✓';bc='approved';}
+      else if(s==='pending'){dot='#f59f00';badge='Ausstehend';bc='pending';}
       totalH+=parseFloat(eintrag.netto)||0;
+      zeilen.push({dot,info:eintrag.proj?eintrag.proj.split(',')[0]:'–',
+        sub:eintrag.von+'–'+eintrag.bis+' · '+(+eintrag.netto).toFixed(1)+' h',badge,bc,trello:false});
+    }else if(!tagEinsaetze.length){
+      zeilen.push({dot:'#e0e0e0',info:'–',sub:'',badge:'',bc:'',trello:false});
     }
-    rows.push({ds,d,isWE,isFeiertag:false,isHeute,dotColor,info,sub,badge,badgeClass,rowExtra:isWE?' weekend':''});
+
+    // Trello-Einsätze hinzufügen
+    tagEinsaetze.forEach(e=>{
+      const z=parseTrelloZeiten(e.name);
+      // Server liefert zeitVon/zeitBis direkt, Fallback auf Parsing
+      const von=e.zeitVon||z.von,bis=e.zeitBis||z.bis;
+      const label=e.cardName||z.label;
+      let sub='';
+      if(von&&bis)sub=von+'–'+bis+' Uhr';
+      else if(von)sub='ab '+von+' Uhr';
+      if(e.liste)sub+=(sub?' · ':'')+e.liste;
+      const aktiv=heute>=e.datum&&heute<=(e.datumBis||e.datum);
+      zeilen.push({dot:'#9c27b0',info:label,sub,badge:aktiv?'Aktiv':'Einsatz',bc:'trello',trello:true});
+    });
+
+    // HTML rendern
+    const rowBase=`${isWE?' weekend':''}${isHeute?' today':''}`;
+    if(zeilen.length===1){
+      const z=zeilen[0];
+      html.push(`<div class="kal-row${rowBase}${z.trello?' trello-row':''}">
+        <div class="kal-num">${d}</div><div class="kal-name">${wt}</div>
+        <div class="kal-dot-big" style="background:${z.dot}"></div>
+        <div class="kal-info"><div class="kal-proj">${z.info}</div>${z.sub?'<div class="kal-sub">'+z.sub+'</div>':''}</div>
+        ${z.badge?'<span class="kal-badge '+z.bc+'">'+z.badge+'</span>':''}
+      </div>`);
+    }else{
+      html.push('<div class="kal-day-block">');
+      zeilen.forEach((z,idx)=>{
+        const cls=idx===0?`kal-day-header${rowBase}${z.trello?' trello-row':''}`:`kal-day-extra${z.trello?' trello-row':''}`;
+        html.push(`<div class="${cls}">
+          <div class="kal-num">${idx===0?d:''}</div>
+          <div class="kal-name">${idx===0?wt:''}</div>
+          <div class="kal-dot-big" style="background:${z.dot}"></div>
+          <div class="kal-info"><div class="kal-proj">${z.info}</div>${z.sub?'<div class="kal-sub">'+z.sub+'</div>':''}</div>
+          ${z.badge?'<span class="kal-badge '+z.bc+'">'+z.badge+'</span>':''}
+        </div>`);
+      });
+      html.push('</div>');
+    }
   }
+
   document.getElementById('kal-arbeit').textContent=(Math.round(totalH*10)/10)+' h';
   document.getElementById('kal-urlaub').textContent=urlaubTage+' T';
   document.getElementById('kal-krank').textContent='0 T';
-  document.getElementById('kal-list').innerHTML=rows.map(r=>`
-    <div class="kal-row${r.rowExtra}${r.isHeute?' today':''}">
-      <div class="kal-num">${r.d}</div>
-      <div class="kal-name">${['So','Mo','Di','Mi','Do','Fr','Sa'][new Date(r.ds+'T12:00:00').getDay()]}</div>
-      <div class="kal-dot-big" style="background:${r.dotColor}"></div>
-      <div class="kal-info">
-        <div class="kal-proj">${r.info}</div>
-        ${r.sub?'<div class="kal-sub">'+r.sub+'</div>':''}
-      </div>
-      ${r.badge?'<span class="kal-badge '+r.badgeClass+'">'+r.badge+'</span>':''}
-    </div>`).join('');
+  document.getElementById('kal-list').innerHTML=html.join('');
 }
 
 // ============================================================
-//  Tagesbericht
+//  TRELLO Dashboard + Cache
+// ============================================================
+async function ladeTrelloEinsaetze(){
+  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
+  try{
+    const r=await fetch(SCRIPT_URL+'?action=getTrelloEinsaetze&worker='+encodeURIComponent(currentWorker.name));
+    const d=await r.json();
+    if(!d.ok||!d.einsaetze)return;
+
+    // Alle cachen für Kalender
+    trelloEinsaetze=d.einsaetze;
+    localStorage.setItem('gx_trello',JSON.stringify(trelloEinsaetze));
+
+    // Dashboard: heute + nächste 7 Tage
+    const heute=new Date().toISOString().slice(0,10);
+    const box=document.getElementById('trello-einsatz-box');
+    const liste=document.getElementById('trello-einsatz-liste');
+    if(!box||!liste)return;
+    const relevant=d.einsaetze.filter(e=>e.datum>=heute).slice(0,3);
+    if(!relevant.length){box.style.display='none';return;}
+    box.style.display='block';
+    liste.innerHTML=relevant.map(e=>{
+      const von=e.zeitVon||'',bis=e.zeitBis||'';
+      const label=e.cardName||e.name;
+      const zeitStr=von&&bis?von+'–'+bis+' Uhr':von?'ab '+von+' Uhr':'';
+      return `<div class="card" style="padding:10px 14px;margin-bottom:8px;border-left:3px solid ${e.heute?'var(--gx-green)':'var(--gx-gold)'}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div style="font-size:13px;font-weight:700">${label}</div>
+            ${zeitStr?`<div style="font-size:11px;color:var(--gx-muted);margin-top:2px">🕐 ${zeitStr}</div>`:''}
+            ${e.beschreibung?`<div style="font-size:11px;color:var(--gx-muted);margin-top:2px">${e.beschreibung.slice(0,80)}</div>`:''}
+            <div style="font-size:11px;color:var(--gx-muted);margin-top:3px">📋 ${e.liste}</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;margin-left:8px">
+            ${e.heute?'<span class="sbadge green">Aktiv</span>':''}
+            <div style="font-size:10px;color:var(--gx-muted);margin-top:2px">
+              ${e.mehrtaegig?new Date(e.datum+'T12:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'})+' – '+new Date((e.datumBis||e.datum)+'T12:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'}):new Date(e.datum+'T12:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'})}
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }catch{}
+}
+
+// ============================================================
+//  TAGESBERICHT
 // ============================================================
 function tbGoStep(step){
   ['allgemein','positionen','team','material','abschluss'].forEach(s=>{
-    const p=document.getElementById('tbp-'+s);
-    const t=document.getElementById('tbstep-'+s);
-    if(p)p.style.display=s===step?'block':'none';
-    if(t)t.classList.toggle('active',s===step);
+    const p=document.getElementById('tbp-'+s),t=document.getElementById('tbstep-'+s);
+    if(p)p.style.display=s===step?'block':'none';if(t)t.classList.toggle('active',s===step);
   });
-  if(step==='positionen')tbLadeLVListe();
-  if(step==='team')tbRenderTeam();
-  if(step==='abschluss')tbRenderZusammenfassung();
+  if(step==='positionen')tbLadeLVListe();if(step==='team')tbRenderTeam();if(step==='abschluss')tbRenderZusammenfassung();
 }
 
 function tbInit(){
   const now=new Date();
   document.getElementById('tb-datum').value=now.toISOString().slice(0,10);
-  document.getElementById('tb-von').value='07:00';
-  document.getElementById('tb-bis').value='16:30';
-  document.getElementById('tb-pause').value='30';
-  tbCalcNetto();
-  const sel=document.getElementById('tb-proj');
-  if(sel)sel.innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');
-  tbGoStep('allgemein');
-  tbLadeVorschlaege();
+  document.getElementById('tb-von').value='07:00';document.getElementById('tb-bis').value='16:30';
+  document.getElementById('tb-pause').value='30';tbCalcNetto();
+  const sel=document.getElementById('tb-proj');if(sel)sel.innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');
+  tbGoStep('allgemein');tbLadeVorschlaege();
 }
 
 function tbCalcNetto(){
-  const von=document.getElementById('tb-von').value;
-  const bis=document.getElementById('tb-bis').value;
-  const pause=parseInt(document.getElementById('tb-pause').value)||0;
+  const von=document.getElementById('tb-von').value,bis=document.getElementById('tb-bis').value,pause=parseInt(document.getElementById('tb-pause').value)||0;
   if(von&&bis){
-    const v=von.split(':').map(Number);const b=bis.split(':').map(Number);
+    const v=von.split(':').map(Number),b=bis.split(':').map(Number);
     const diff=((b[0]*60+b[1])-(v[0]*60+v[1])-pause)/60;
-    const el=document.getElementById('tb-netto');
-    if(el){el.value=diff>0?diff.toFixed(1).replace('.',',')+' h':'–';el.style.color=diff>0?'var(--gx-green-dark)':'var(--red)';}
+    const el=document.getElementById('tb-netto');if(el){el.value=diff>0?diff.toFixed(1).replace('.',',')+' h':'–';el.style.color=diff>0?'var(--gx-green-dark)':'var(--red)';}
   }
 }
 
 function tbRenderTeam(){
   const netto=parseFloat((document.getElementById('tb-netto').value||'').replace(',','.').replace(' h',''))||0;
-  const liste=document.getElementById('tb-ma-liste');
-  liste.innerHTML=`
-    <div style="display:grid;grid-template-columns:30px 1fr 70px 20px;gap:8px;padding:6px 0;font-size:11px;font-weight:700;color:var(--gx-muted);border-bottom:1px solid var(--gx-border)">
-      <div></div><div>Name</div><div style="text-align:center">Stunden</div><div></div>
-    </div>`+
-  workers.map(w=>{
-    const isMe=w.name===currentWorker.name;
-    return `<div class="tb-ma-row">
-      <div class="tb-check${isMe?' checked':''}" onclick="tbToggleMA(this)">${isMe?'✓':''}</div>
-      <div class="tb-ma-name">${w.name}</div>
-      <input class="tb-ma-h" type="number" value="${isMe?netto:''}" placeholder="–" min="0" max="14" step="0.5" ${!isMe?'disabled':''}>
-      <span style="font-size:11px;color:var(--gx-muted)">h</span>
-    </div>`;
-  }).join('');
+  document.getElementById('tb-ma-liste').innerHTML=
+    `<div style="display:grid;grid-template-columns:30px 1fr 70px 20px;gap:8px;padding:6px 0;font-size:11px;font-weight:700;color:var(--gx-muted);border-bottom:1px solid var(--gx-border)"><div></div><div>Name</div><div style="text-align:center">Stunden</div><div></div></div>`+
+    workers.map(w=>{const isMe=w.name===currentWorker.name;return `<div class="tb-ma-row"><div class="tb-check${isMe?' checked':''}" onclick="tbToggleMA(this)">${isMe?'✓':''}</div><div class="tb-ma-name">${w.name}</div><input class="tb-ma-h" type="number" value="${isMe?netto:''}" placeholder="–" min="0" max="14" step="0.5" ${!isMe?'disabled':''}><span style="font-size:11px;color:var(--gx-muted)">h</span></div>`;}).join('');
 }
 
 function tbToggleMA(el){
-  const checked=el.classList.toggle('checked');
-  el.textContent=checked?'✓':'';
-  const row=el.closest('.tb-ma-row');
-  const inp=row.querySelector('.tb-ma-h');
-  if(checked){
-    inp.disabled=false;
-    if(!inp.value){const n=parseFloat((document.getElementById('tb-netto').value||'').replace(',','.').replace(' h',''))||0;inp.value=n||'';}
-  } else {inp.disabled=true;inp.value='';}
+  const checked=el.classList.toggle('checked');el.textContent=checked?'✓':'';
+  const row=el.closest('.tb-ma-row'),inp=row.querySelector('.tb-ma-h');
+  if(checked){inp.disabled=false;if(!inp.value){const n=parseFloat((document.getElementById('tb-netto').value||'').replace(',','.').replace(' h',''))||0;inp.value=n||'';}}
+  else{inp.disabled=true;inp.value='';}
 }
 
-// Material Vorschläge
 let matVorschlaege=[];
 async function tbLadeVorschlaege(){
   if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL')){
-    matVorschlaege=[
-      {name:'Schotter 16/32',einheit:'to',intern:'EN'},
-      {name:'Oberboden',einheit:'m³',intern:'LA'},
-      {name:'Split',einheit:'BigPack',intern:'LA'},
-      {name:'Rollrasen',einheit:'m²',intern:'LA'},
-      {name:'Pflastersplitt',einheit:'to',intern:'EN'},
-      {name:'LKW Arocs',einheit:'Std.',intern:''},
-      {name:'Minibagger',einheit:'Std.',intern:''},
-      {name:'Radlader',einheit:'Std.',intern:''},
-      {name:'Gartenabfall',einheit:'cbm',intern:'GO'},
-      {name:'Aushub',einheit:'cbm',intern:'LA'},
-    ];return;
+    matVorschlaege=[{name:'Schotter 16/32',einheit:'to',intern:'EN'},{name:'Oberboden',einheit:'m³',intern:'LA'},{name:'Split',einheit:'BigPack',intern:'LA'},{name:'Rollrasen',einheit:'m²',intern:'LA'},{name:'LKW Arocs',einheit:'Std.',intern:''},{name:'Minibagger',einheit:'Std.',intern:''},{name:'Gartenabfall',einheit:'cbm',intern:'GO'},{name:'Aushub',einheit:'cbm',intern:'LA'}];return;
   }
-  try{
-    const r=await fetch(SCRIPT_URL+'?action=getMaterialien');
-    const d=await r.json();
-    if(d.ok&&d.materialien)matVorschlaege=d.materialien;
-  }catch{}
+  try{const r=await fetch(SCRIPT_URL+'?action=getMaterialien');const d=await r.json();if(d.ok&&d.materialien)matVorschlaege=d.materialien;}catch{}
 }
 
-function tbShowVorschlaege(input,containerId){
+function tbShowVorschlaege(input,cid){
   const val=input.value.toLowerCase();
-  let list=document.getElementById('vorschlag-'+containerId);
-  if(!list){list=document.createElement('div');list.id='vorschlag-'+containerId;list.style.cssText='position:absolute;background:#fff;border:1px solid var(--gx-border);border-radius:8px;z-index:100;width:100%;max-height:150px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,.1)';input.parentElement.style.position='relative';input.parentElement.appendChild(list);}
+  let list=document.getElementById('vorschlag-'+cid);
+  if(!list){list=document.createElement('div');list.id='vorschlag-'+cid;list.style.cssText='position:absolute;background:#fff;border:1px solid var(--gx-border);border-radius:8px;z-index:100;width:100%;max-height:150px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,.1)';input.parentElement.style.position='relative';input.parentElement.appendChild(list);}
   if(!val){list.style.display='none';return;}
   const matches=matVorschlaege.filter(m=>m.name.toLowerCase().includes(val)).slice(0,6);
   if(!matches.length){list.style.display='none';return;}
   list.style.display='block';
-  list.innerHTML=matches.map(m=>`<div style="padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:0.5px solid var(--gx-border)" onclick="tbSelectVorschlag(this,'${m.name}','${m.einheit}','${m.intern}','${containerId}')">${m.name} <span style="color:var(--gx-muted);font-size:11px">${m.einheit}${m.intern?' · '+m.intern:''}</span></div>`).join('');
+  list.innerHTML=matches.map(m=>`<div style="padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:0.5px solid var(--gx-border)" onclick="tbSelectVorschlag(this,'${m.name}','${m.einheit}','${m.intern}','${cid}')">${m.name} <span style="color:var(--gx-muted);font-size:11px">${m.einheit}${m.intern?' · '+m.intern:''}</span></div>`).join('');
 }
 
-function tbSelectVorschlag(el,name,einheit,intern,containerId){
-  const row=el.closest('.tb-mat-grid')||el.parentElement.parentElement;
-  const inputs=row.querySelectorAll('input');
-  if(inputs[0])inputs[0].value=name;
-  if(inputs[2])inputs[2].value=einheit;
-  if(inputs[3])inputs[3].value=intern;
-  const list=document.getElementById('vorschlag-'+containerId);
-  if(list)list.style.display='none';
-  if(inputs[1])inputs[1].focus();
+function tbSelectVorschlag(el,name,einheit,intern,cid){
+  const row=el.closest('.tb-mat-grid')||el.parentElement.parentElement;const inputs=row.querySelectorAll('input');
+  if(inputs[0])inputs[0].value=name;if(inputs[2])inputs[2].value=einheit;if(inputs[3])inputs[3].value=intern;
+  const list=document.getElementById('vorschlag-'+cid);if(list)list.style.display='none';if(inputs[1])inputs[1].focus();
 }
 
-function tbAddMatRow(containerId,einheit,intern){
-  const c=document.getElementById(containerId);
-  const rowId=containerId+'_'+Date.now();
-  const div=document.createElement('div');
-  div.className='tb-mat-grid';div.style.position='relative';
-  div.innerHTML=`<input class="tb-mat-inp name" type="text" placeholder="Material…" oninput="tbShowVorschlaege(this,'${rowId}')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="${einheit||'Einh.'}"><input class="tb-mat-intern" type="text" placeholder="${intern||'EN/LA'}">`;
-  c.appendChild(div);
+function tbAddMatRow(cid,einheit,intern){
+  const c=document.getElementById(cid);const rid=cid+'_'+Date.now();const div=document.createElement('div');div.className='tb-mat-grid';div.style.position='relative';
+  div.innerHTML=`<input class="tb-mat-inp name" type="text" placeholder="Material…" oninput="tbShowVorschlaege(this,'${rid}')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="${einheit||'Einh.'}"><input class="tb-mat-intern" type="text" placeholder="${intern||'EN/LA'}">`;c.appendChild(div);
 }
 
 function tbAddMaschRow(){
-  const c=document.getElementById('tb-masch-rows');
-  const div=document.createElement('div');div.className='tb-mat-grid';
-  div.innerHTML='<input class="tb-mat-inp name" type="text" placeholder="Maschine…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div>';
-  c.appendChild(div);
+  const c=document.getElementById('tb-masch-rows');const div=document.createElement('div');div.className='tb-mat-grid';
+  div.innerHTML='<input class="tb-mat-inp name" type="text" placeholder="Maschine…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div>';c.appendChild(div);
 }
 
-function tbGetMatRows(containerId){
-  const rows=[];
-  document.getElementById(containerId).querySelectorAll('.tb-mat-grid').forEach(row=>{
-    const inputs=row.querySelectorAll('input');
-    if(inputs[0]&&inputs[0].value.trim()){rows.push({name:inputs[0].value.trim(),menge:inputs[1]?inputs[1].value:'',einheit:inputs[2]?inputs[2].value:'',intern:inputs[3]?inputs[3].value:''});}
-  });
-  return rows;
+function tbGetMatRows(cid){
+  const rows=[];document.getElementById(cid).querySelectorAll('.tb-mat-grid').forEach(row=>{const inputs=row.querySelectorAll('input');if(inputs[0]&&inputs[0].value.trim())rows.push({name:inputs[0].value.trim(),menge:inputs[1]?inputs[1].value:'',einheit:inputs[2]?inputs[2].value:'',intern:inputs[3]?inputs[3].value:''});});return rows;
 }
 
 function tbRenderZusammenfassung(){
-  const datum=document.getElementById('tb-datum').value;
-  const proj=document.getElementById('tb-proj').value;
-  const von=document.getElementById('tb-von').value;
-  const bis=document.getElementById('tb-bis').value;
-  const netto=document.getElementById('tb-netto').value;
-  const auftr=document.getElementById('tb-auftraggeber').value;
+  const datum=document.getElementById('tb-datum').value,proj=document.getElementById('tb-proj').value;
+  const von=document.getElementById('tb-von').value,bis=document.getElementById('tb-bis').value;
+  const netto=document.getElementById('tb-netto').value,auftr=document.getElementById('tb-auftraggeber').value;
   const anwesend=[];
-  document.getElementById('tb-ma-liste').querySelectorAll('.tb-ma-row').forEach(row=>{
-    if(row.querySelector('.tb-check').classList.contains('checked')){
-      const name=row.querySelector('.tb-ma-name').textContent;
-      const h=row.querySelector('.tb-ma-h').value;
-      anwesend.push(name+(h?' ('+h+' h)':''));
-    }
-  });
-  document.getElementById('tb-zusammenfassung').innerHTML=`
-    <div style="font-size:12px;color:var(--gx-muted);margin-bottom:4px">Zusammenfassung</div>
-    <div style="font-size:13px;font-weight:700;margin-bottom:3px">${proj}</div>
-    <div style="font-size:12px;color:var(--gx-muted)">${datum} · ${von}–${bis} · ${netto}${auftr?' · '+auftr:''}</div>
-    <div style="font-size:12px;margin-top:6px">👥 ${anwesend.join(', ')||'Niemand ausgewählt'}</div>
-    ${tbGetPositionen().length?`<div style="font-size:12px;margin-top:4px;color:var(--gx-muted)">📋 ${tbGetPositionen().length} Positionen</div>`:''}`;
+  document.getElementById('tb-ma-liste').querySelectorAll('.tb-ma-row').forEach(row=>{if(row.querySelector('.tb-check').classList.contains('checked')){anwesend.push(row.querySelector('.tb-ma-name').textContent+(row.querySelector('.tb-ma-h').value?' ('+row.querySelector('.tb-ma-h').value+' h)':''));}});
+  document.getElementById('tb-zusammenfassung').innerHTML=`<div style="font-size:12px;color:var(--gx-muted);margin-bottom:4px">Zusammenfassung</div><div style="font-size:13px;font-weight:700;margin-bottom:3px">${proj}</div><div style="font-size:12px;color:var(--gx-muted)">${datum} · ${von}–${bis} · ${netto}${auftr?' · '+auftr:''}</div><div style="font-size:12px;margin-top:6px">👥 ${anwesend.join(', ')||'Niemand'}</div>`;
 }
 
 async function saveTagesbericht(){
-  const datum=document.getElementById('tb-datum').value;
-  const proj=document.getElementById('tb-proj').value;
-  const von=document.getElementById('tb-von').value;
-  const bis=document.getElementById('tb-bis').value;
+  const datum=document.getElementById('tb-datum').value,proj=document.getElementById('tb-proj').value;
+  const von=document.getElementById('tb-von').value,bis=document.getElementById('tb-bis').value;
   const pause=parseInt(document.getElementById('tb-pause').value)||0;
-  const auftr=document.getElementById('tb-auftraggeber').value;
-  const notiz=document.getElementById('tb-notiz').value;
   document.getElementById('tb-err').style.display='none';
   if(!datum||!proj||!von||!bis){document.getElementById('tb-err').style.display='block';return;}
-  const v=von.split(':').map(Number);const b=bis.split(':').map(Number);
+  const v=von.split(':').map(Number),b=bis.split(':').map(Number);
   const nettoH=parseFloat((((b[0]*60+b[1])-(v[0]*60+v[1])-pause)/60).toFixed(2));
   const anwesend=[];
-  document.getElementById('tb-ma-liste').querySelectorAll('.tb-ma-row').forEach(row=>{
-    if(row.querySelector('.tb-check').classList.contains('checked')){
-      const name=row.querySelector('.tb-ma-name').textContent;
-      const h=parseFloat(row.querySelector('.tb-ma-h').value)||nettoH;
-      anwesend.push({name,h});
-    }
-  });
-  const positionen=tbGetPositionen();
-  const material=tbGetMatRows('tb-mat-rows');
-  const maschinen=tbGetMatRows('tb-masch-rows');
-  const rueckgabe=tbGetMatRows('tb-rueck-rows');
+  document.getElementById('tb-ma-liste').querySelectorAll('.tb-ma-row').forEach(row=>{if(row.querySelector('.tb-check').classList.contains('checked')){anwesend.push({name:row.querySelector('.tb-ma-name').textContent,h:parseFloat(row.querySelector('.tb-ma-h').value)||nettoH});}});
+  const auftr=document.getElementById('tb-auftraggeber').value,notiz=document.getElementById('tb-notiz').value;
   for(const ma of anwesend){
     const entry={worker:ma.name,datum,von,bis,pause,netto:ma.h,proj,art:'Tagesbericht',status:'approved',savedAt:new Date().toISOString(),notiz:'TB: '+auftr+(notiz?' · '+notiz:'')};
-    allEntries=allEntries.filter(e=>!(e.worker===ma.name&&e.datum===datum&&e.art==='Tagesbericht'));
-    allEntries.push(entry);
-    if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-      try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveEntry',entry})});}catch{}
-    }
+    allEntries=allEntries.filter(e=>!(e.worker===ma.name&&e.datum===datum&&e.art==='Tagesbericht'));allEntries.push(entry);
+    if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL'))try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveEntry',entry})});}catch{}
   }
   localStorage.setItem('gx_entries',JSON.stringify(allEntries));
-  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-    try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveTagesbericht',bericht:{datum,proj,von,bis,pause,netto:nettoH,auftraggeber:auftr,ersteller:currentWorker.name,notiz,mitarbeiter:anwesend,positionen,material,maschinen,rueckgabe,savedAt:new Date().toISOString()}})});}catch{}
-  }
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL'))try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveTagesbericht',bericht:{datum,proj,von,bis,pause,netto:nettoH,auftraggeber:auftr,ersteller:currentWorker.name,notiz,mitarbeiter:anwesend,positionen:tbGetPositionen(),material:tbGetMatRows('tb-mat-rows'),maschinen:tbGetMatRows('tb-masch-rows'),rueckgabe:tbGetMatRows('tb-rueck-rows'),savedAt:new Date().toISOString()}})});}catch{}
   showMsg('tb-ok',3000);setStatus('Tagesbericht gespeichert ✓','ok');
   setTimeout(()=>{document.getElementById('tb-auftraggeber').value='';document.getElementById('tb-notiz').value='';tbGoStep('allgemein');},2500);
 }
 
-// ============================================================
-//  Medien / Foto-Upload
-// ============================================================
 function switchMedienTab(tab){
-  ['baudoku','krank','problem'].forEach(t=>{
-    document.getElementById('mtab-'+t).classList.toggle('active',t===tab);
-    document.getElementById('mtp-'+t).style.display=t===tab?'block':'none';
-  });
-  // Projektliste befüllen
-  ['med-proj-baudoku','med-proj-problem'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el)el.innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');
-  });
+  ['baudoku','krank','problem'].forEach(t=>{document.getElementById('mtab-'+t).classList.toggle('active',t===tab);document.getElementById('mtp-'+t).style.display=t===tab?'block':'none';});
+  ['med-proj-baudoku','med-proj-problem'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=PROJEKTE.map(p=>`<option>${p}</option>`).join('');});
 }
 
-function onFileSelect(input, kategorie){
-  const file=input.files[0];
-  if(!file)return;
-  if(file.size>5*1024*1024){alert('Datei zu groß! Maximal 5 MB.');input.value='';return;}
-  const preview=document.getElementById('preview-'+kategorie);
-  const hint=document.getElementById('upload-hint-'+kategorie);
-  const box=document.getElementById('upload-box-'+kategorie);
+function onFileSelect(input,kat){
+  const file=input.files[0];if(!file)return;
+  if(file.size>5*1024*1024){alert('Datei zu groß! Max. 5 MB.');input.value='';return;}
   const reader=new FileReader();
-  reader.onload=e=>{
-    preview.src=e.target.result;preview.style.display='block';
-    hint.style.display='none';box.classList.add('has-file');
-  };
+  reader.onload=e=>{const p=document.getElementById('preview-'+kat);p.src=e.target.result;p.style.display='block';document.getElementById('upload-hint-'+kat).style.display='none';document.getElementById('upload-box-'+kat).classList.add('has-file');};
   reader.readAsDataURL(file);
 }
 
-async function uploadMedia(kategorie){
-  const fileInput=document.getElementById('file-'+kategorie);
-  const okEl=document.getElementById('med-ok-'+kategorie);
-  const errEl=document.getElementById('med-err-'+kategorie);
-  const prog=document.getElementById('prog-'+kategorie);
-  const progFill=document.getElementById('prog-fill-'+kategorie);
-  okEl.style.display='none';errEl.style.display='none';
-
-  // Validierung
-  if(kategorie==='problem'){
-    const text=document.getElementById('med-problem-text').value.trim();
-    if(!text){errEl.style.display='block';return;}
-  }
-  if(kategorie==='krank'){
-    const von=document.getElementById('med-krank-von').value;
-    const bis=document.getElementById('med-krank-bis').value;
-    if(!von||!bis){errEl.style.display='block';return;}
-  }
-
-  const file=fileInput.files[0];
-  if(!file&&kategorie!=='problem'){errEl.style.display='block';return;}
-
-  prog.style.display='block';
-  progFill.style.width='20%';
-
-  // Bild komprimieren
-  let base64='';
-  if(file){
-    base64=await compressAndEncode(file);
-    progFill.style.width='60%';
-  }
-
-  const payload={
-    action:'saveMedia',
-    media:{
-      worker:currentWorker.name,
-      kategorie,
-      projekt:document.getElementById('med-proj-'+kategorie)?document.getElementById('med-proj-'+kategorie).value:'',
-      notiz:kategorie==='baudoku'?document.getElementById('med-notiz-baudoku').value:
-            kategorie==='problem'?document.getElementById('med-problem-text').value:'',
-      krankvon:kategorie==='krank'?document.getElementById('med-krank-von').value:'',
-      krankbis:kategorie==='krank'?document.getElementById('med-krank-bis').value:'',
-      base64,
-      filename:file?file.name:'',
-      savedAt:new Date().toISOString()
-    }
-  };
-
-  progFill.style.width='80%';
+async function uploadMedia(kat){
+  const fi=document.getElementById('file-'+kat),ok=document.getElementById('med-ok-'+kat),err=document.getElementById('med-err-'+kat);
+  const prog=document.getElementById('prog-'+kat),pf=document.getElementById('prog-fill-'+kat);
+  ok.style.display='none';err.style.display='none';
+  if(kat==='problem'&&!document.getElementById('med-problem-text').value.trim()){err.style.display='block';return;}
+  if(kat==='krank'&&(!document.getElementById('med-krank-von').value||!document.getElementById('med-krank-bis').value)){err.style.display='block';return;}
+  const file=fi.files[0];if(!file&&kat!=='problem'){err.style.display='block';return;}
+  prog.style.display='block';pf.style.width='20%';
+  let base64='';if(file){base64=await compressAndEncode(file);pf.style.width='60%';}
+  const payload={action:'saveMedia',media:{worker:currentWorker.name,kategorie:kat,
+    projekt:document.getElementById('med-proj-'+kat)?document.getElementById('med-proj-'+kat).value:'',
+    notiz:kat==='baudoku'?document.getElementById('med-notiz-baudoku').value:kat==='problem'?document.getElementById('med-problem-text').value:'',
+    krankvon:kat==='krank'?document.getElementById('med-krank-von').value:'',
+    krankbis:kat==='krank'?document.getElementById('med-krank-bis').value:'',
+    base64,filename:file?file.name:'',savedAt:new Date().toISOString()}};
+  pf.style.width='80%';
   if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-    try{
-      const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
-      const d=await r.json();
-      progFill.style.width='100%';
-      if(d.ok){okEl.style.display='block';fileInput.value='';document.getElementById('preview-'+kategorie).style.display='none';document.getElementById('upload-hint-'+kategorie).style.display='block';document.getElementById('upload-box-'+kategorie).classList.remove('has-file');}
-      else{errEl.textContent='Fehler: '+(d.error||'Unbekannt');errEl.style.display='block';}
-    }catch{errEl.textContent='Verbindungsfehler';errEl.style.display='block';}
-  } else {
-    // Demo-Modus
-    progFill.style.width='100%';
-    okEl.style.display='block';
-  }
-  setTimeout(()=>{prog.style.display='none';progFill.style.width='0%';},1000);
+    try{const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});const d=await r.json();pf.style.width='100%';
+      if(d.ok){ok.style.display='block';fi.value='';document.getElementById('preview-'+kat).style.display='none';document.getElementById('upload-hint-'+kat).style.display='block';document.getElementById('upload-box-'+kat).classList.remove('has-file');}
+      else{err.textContent='Fehler: '+(d.error||'Unbekannt');err.style.display='block';}
+    }catch{err.textContent='Verbindungsfehler';err.style.display='block';}
+  }else{pf.style.width='100%';ok.style.display='block';}
+  setTimeout(()=>{prog.style.display='none';pf.style.width='0%';},1000);
 }
 
 function compressAndEncode(file){
   return new Promise(resolve=>{
-    const reader=new FileReader();
-    reader.onload=e=>{
-      const img=new Image();
-      img.onload=()=>{
-        const canvas=document.createElement('canvas');
-        const MAX=1200;
-        let w=img.width,h=img.height;
-        if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
-        canvas.width=w;canvas.height=h;
-        canvas.getContext('2d').drawImage(img,0,0,w,h);
-        resolve(canvas.toDataURL('image/jpeg',0.8).split(',')[1]);
-      };
-      img.src=e.target.result;
-    };
-    reader.readAsDataURL(file);
+    const reader=new FileReader();reader.onload=e=>{const img=new Image();img.onload=()=>{const canvas=document.createElement('canvas');const MAX=1200;let w=img.width,h=img.height;if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);resolve(canvas.toDataURL('image/jpeg',0.8).split(',')[1]);};img.src=e.target.result;};reader.readAsDataURL(file);
   });
 }
 
-
-// LV Positionen
-let lvListe=[];
-let lvPositionen=[];
-
+let lvListe=[],lvPositionen=[];
 async function tbLadeLVListe(){
-  const sel=document.getElementById('tb-lv-select');
-  if(!sel)return;
+  const sel=document.getElementById('tb-lv-select');if(!sel)return;
   if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-    try{
-      const r=await fetch(SCRIPT_URL+'?action=getLVListe');
-      const d=await r.json();
-      if(d.ok&&d.lvliste&&d.lvliste.length>0){
-        lvListe=d.lvliste;
-        sel.innerHTML='<option value="">-- LV auswählen --</option>'+
-          d.lvliste.map(lv=>`<option value="${lv.lvnr}">${lv.lvnr} · ${lv.kunde}</option>`).join('');
-      } else {
-        sel.innerHTML='<option value="">-- Kein LV vorhanden --</option>';
-      }
-    }catch(err){
-      sel.innerHTML='<option value="">-- Fehler beim Laden --</option>';
-    }
+    try{const r=await fetch(SCRIPT_URL+'?action=getLVListe');const d=await r.json();if(d.ok&&d.lvliste&&d.lvliste.length>0){lvListe=d.lvliste;sel.innerHTML='<option value="">-- LV auswählen --</option>'+d.lvliste.map(lv=>`<option value="${lv.lvnr}">${lv.lvnr} · ${lv.kunde}</option>`).join('');}else sel.innerHTML='<option value="">-- Kein LV vorhanden --</option>';}
+    catch{sel.innerHTML='<option value="">-- Fehler beim Laden --</option>';}
   }
 }
+
 async function tbLadeLVPositionen(){
-  const sel=document.getElementById('tb-lv-select');
-  const liste=document.getElementById('tb-pos-liste');
-  if(!sel||!liste)return;
-  const lvnr=sel.value;
-  if(!lvnr){liste.innerHTML='<div class="empty-hint" style="padding:12px 0">Bitte LV auswählen</div>';return;}
+  const sel=document.getElementById('tb-lv-select'),liste=document.getElementById('tb-pos-liste');if(!sel||!liste)return;
+  const lvnr=sel.value;if(!lvnr){liste.innerHTML='<div class="empty-hint" style="padding:12px 0">Bitte LV auswählen</div>';return;}
   liste.innerHTML='<div class="empty-hint" style="padding:12px 0">Lädt…</div>';
-  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-    try{
-      const r=await fetch(SCRIPT_URL+'?action=getLVPositionen&lvnr='+encodeURIComponent(lvnr));
-      const d=await r.json();
-      if(d.ok&&d.positionen){
-        lvPositionen=d.positionen;
-        renderLVPositionen(d.positionen);
-        return;
-      }
-    }catch{}
-  }
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){try{const r=await fetch(SCRIPT_URL+'?action=getLVPositionen&lvnr='+encodeURIComponent(lvnr));const d=await r.json();if(d.ok&&d.positionen){lvPositionen=d.positionen;renderLVPositionen(d.positionen);return;}}catch{}}
   liste.innerHTML='<div class="empty-hint" style="padding:12px 0">Keine Positionen gefunden</div>';
 }
 
-function renderLVPositionen(positionen){
+function renderLVPositionen(pos){
   const liste=document.getElementById('tb-pos-liste');
-  if(!positionen.length){
-    liste.innerHTML='<div class="empty-hint" style="padding:12px 0">Keine Positionen im LV</div>';
-    return;
-  }
-  liste.innerHTML=`
-    <div style="display:grid;grid-template-columns:24px 60px 1fr 64px;gap:6px;padding:6px 0;font-size:10px;font-weight:700;color:var(--gx-muted);border-bottom:1px solid var(--gx-border)">
-      <div></div><div>Pos.</div><div>Beschreibung</div><div style="text-align:center">Std.</div>
-    </div>`+
-  positionen.map((p,i)=>`
-    <div class="tb-ma-row" style="grid-template-columns:24px 60px 1fr 64px">
-      <div class="tb-check" onclick="tbTogglePos(this)" style="width:20px;height:20px;font-size:11px"></div>
-      <div style="font-size:11px;font-weight:700;color:var(--gx-muted)">${p.posNr}</div>
-      <div style="font-size:12px;color:var(--gx-text);line-height:1.3">${p.beschreibung}</div>
-      <input class="tb-ma-h" type="number" placeholder="h" min="0" max="24" step="0.5" disabled style="width:60px">
-    </div>`).join('');
+  if(!pos.length){liste.innerHTML='<div class="empty-hint" style="padding:12px 0">Keine Positionen</div>';return;}
+  liste.innerHTML=`<div style="display:grid;grid-template-columns:24px 60px 1fr 64px;gap:6px;padding:6px 0;font-size:10px;font-weight:700;color:var(--gx-muted);border-bottom:1px solid var(--gx-border)"><div></div><div>Pos.</div><div>Beschreibung</div><div style="text-align:center">Std.</div></div>`+
+  pos.map(p=>`<div class="tb-ma-row" style="grid-template-columns:24px 60px 1fr 64px"><div class="tb-check" onclick="tbTogglePos(this)" style="width:20px;height:20px;font-size:11px"></div><div style="font-size:11px;font-weight:700;color:var(--gx-muted)">${p.posNr}</div><div style="font-size:12px;color:var(--gx-text);line-height:1.3">${p.beschreibung}</div><input class="tb-ma-h" type="number" placeholder="h" min="0" max="24" step="0.5" disabled style="width:60px"></div>`).join('');
 }
 
 function tbTogglePos(el){
-  const checked=el.classList.toggle('checked');
-  el.textContent=checked?'✓':'';
-  const row=el.closest('.tb-ma-row');
-  const inp=row.querySelector('input');
-  if(inp){inp.disabled=!checked;if(!checked)inp.value='';}
+  const checked=el.classList.toggle('checked');el.textContent=checked?'✓':'';
+  const inp=el.closest('.tb-ma-row').querySelector('input');if(inp){inp.disabled=!checked;if(!checked)inp.value='';}
 }
 
 function tbGetPositionen(){
-  const rows=[];
-  const liste=document.getElementById('tb-pos-liste');
-  if(!liste)return rows;
-  liste.querySelectorAll('.tb-ma-row').forEach((row,i)=>{
-    const check=row.querySelector('.tb-check');
-    if(check&&check.classList.contains('checked')){
-      const posNr=row.querySelector('[style*="font-weight:700"]')?.textContent||'';
-      const beschr=row.querySelectorAll('div')[2]?.textContent||'';
-      const stunden=row.querySelector('input')?.value||'0';
-      rows.push({posNr,beschreibung:beschr,stunden:parseFloat(stunden)||0});
-    }
-  });
+  const rows=[];const liste=document.getElementById('tb-pos-liste');if(!liste)return rows;
+  liste.querySelectorAll('.tb-ma-row').forEach(row=>{const check=row.querySelector('.tb-check');if(check&&check.classList.contains('checked')){rows.push({posNr:row.querySelector('[style*="font-weight:700"]')?.textContent||'',beschreibung:row.querySelectorAll('div')[2]?.textContent||'',stunden:parseFloat(row.querySelector('input')?.value)||0});}});
   return rows;
 }
-
-// Krank
-const KRANK_FORM_URL='https://forms.gle/M44kwaPUZKKUFB3V6';
-function openKrankForm(){window.open(KRANK_FORM_URL,'_blank');}
-
 
 // ============================================================
 //  REGIEBERICHT
@@ -1563,298 +1309,92 @@ let sigActive=false,sigLastX=0,sigLastY=0,sigSaved=false;
 
 function rgInit(){
   document.getElementById('rg-datum').value=new Date().toISOString().slice(0,10);
-  document.getElementById('rg-von').value='07:00';
-  document.getElementById('rg-bis').value='16:30';
-  document.getElementById('rg-pause').value='30';
-  rgCalcNetto();
-  rgGoStep('allgemein');
-  // Canvas initialisieren
-  setTimeout(()=>{
-    const canvas=document.getElementById('sig-canvas');
-    if(canvas&&!canvas._init){
-      rgInitCanvas(canvas);
-      canvas._init=true;
-    }
-  },100);
+  document.getElementById('rg-von').value='07:00';document.getElementById('rg-bis').value='16:30';
+  document.getElementById('rg-pause').value='30';rgCalcNetto();rgGoStep('allgemein');
+  setTimeout(()=>{const c=document.getElementById('sig-canvas');if(c&&!c._init){rgInitCanvas(c);c._init=true;}},100);
 }
 
 function rgGoStep(step){
   ['allgemein','team','material','abschluss'].forEach(s=>{
-    const p=document.getElementById('rgp-'+s);
-    const t=document.getElementById('rgstep-'+s);
-    if(p)p.style.display=s===step?'block':'none';
-    if(t)t.classList.toggle('active',s===step);
+    const p=document.getElementById('rgp-'+s),t=document.getElementById('rgstep-'+s);
+    if(p)p.style.display=s===step?'block':'none';if(t)t.classList.toggle('active',s===step);
   });
-  if(step==='team')rgRenderTeam();
-  if(step==='abschluss')rgRenderZusammenfassung();
+  if(step==='team')rgRenderTeam();if(step==='abschluss')rgRenderZusammenfassung();
 }
 
 function rgCalcNetto(){
-  const von=document.getElementById('rg-von').value;
-  const bis=document.getElementById('rg-bis').value;
-  const pause=parseInt(document.getElementById('rg-pause').value)||0;
-  if(von&&bis){
-    const v=von.split(':').map(Number),b=bis.split(':').map(Number);
-    const diff=((b[0]*60+b[1])-(v[0]*60+v[1])-pause)/60;
-    document.getElementById('rg-netto').textContent=diff>0?diff.toFixed(1).replace('.',',')+' h':'–';
-  }
+  const von=document.getElementById('rg-von').value,bis=document.getElementById('rg-bis').value,pause=parseInt(document.getElementById('rg-pause').value)||0;
+  if(von&&bis){const v=von.split(':').map(Number),b=bis.split(':').map(Number);document.getElementById('rg-netto').textContent=(((b[0]*60+b[1])-(v[0]*60+v[1])-pause)/60).toFixed(1).replace('.',',')+' h';}
 }
 
 function rgRenderTeam(){
   const netto=parseFloat(document.getElementById('rg-netto').textContent.replace(',','.').replace(' h',''))||0;
-  document.getElementById('rg-team-liste').innerHTML=workers.map(w=>{
-    const isMe=w.name===currentWorker.name;
-    return `<div class="tb-ma-row" style="display:grid;grid-template-columns:26px 1fr 70px 16px;gap:8px">
-      <div class="tb-check${isMe?' checked':''}" onclick="rgToggleMA(this)">${isMe?'✓':''}</div>
-      <div class="tb-ma-name">${w.name}</div>
-      <input class="tb-ma-h" type="number" value="${isMe?netto:''}" placeholder="–" min="0" max="14" step="0.5" ${!isMe?'disabled':''}>
-      <span style="font-size:11px;color:var(--gx-muted)">h</span>
-    </div>`;
-  }).join('');
+  document.getElementById('rg-team-liste').innerHTML=workers.map(w=>{const isMe=w.name===currentWorker.name;return `<div class="tb-ma-row" style="display:grid;grid-template-columns:26px 1fr 70px 16px;gap:8px"><div class="tb-check${isMe?' checked':''}" onclick="rgToggleMA(this)">${isMe?'✓':''}</div><div class="tb-ma-name">${w.name}</div><input class="tb-ma-h" type="number" value="${isMe?netto:''}" placeholder="–" min="0" max="14" step="0.5" ${!isMe?'disabled':''}><span style="font-size:11px;color:var(--gx-muted)">h</span></div>`;}).join('');
 }
 
 function rgToggleMA(el){
-  const checked=el.classList.toggle('checked');
-  el.textContent=checked?'✓':'';
-  const row=el.closest('.tb-ma-row');
-  const inp=row.querySelector('input');
-  if(checked){
-    inp.disabled=false;
-    if(!inp.value){const n=parseFloat(document.getElementById('rg-netto').textContent.replace(',','.').replace(' h',''))||0;inp.value=n||'';}
-  } else {inp.disabled=true;inp.value='';}
+  const checked=el.classList.toggle('checked');el.textContent=checked?'✓':'';
+  const row=el.closest('.tb-ma-row'),inp=row.querySelector('input');
+  if(checked){inp.disabled=false;if(!inp.value){inp.value=parseFloat(document.getElementById('rg-netto').textContent.replace(',','.').replace(' h',''))||'';}}
+  else{inp.disabled=true;inp.value='';}
 }
 
 function rgAddMatRow(id,einheit,intern){
-  const c=document.getElementById(id);
-  const d=document.createElement('div');d.className='tb-mat-grid';
-  d.innerHTML=`<input class="tb-mat-inp name" type="text" placeholder="Material…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="${einheit||'Einh.'}"><input class="tb-mat-intern" type="text" placeholder="${intern||'EN/LA'}">`;
-  c.appendChild(d);
+  const c=document.getElementById(id);const d=document.createElement('div');d.className='tb-mat-grid';
+  d.innerHTML=`<input class="tb-mat-inp name" type="text" placeholder="Material…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="${einheit||'Einh.'}"><input class="tb-mat-intern" type="text" placeholder="${intern||'EN/LA'}">`;c.appendChild(d);
 }
 
 function rgAddMaschRow(){
-  const c=document.getElementById('rg-masch-rows');
-  const d=document.createElement('div');d.className='tb-mat-grid';
-  d.innerHTML='<input class="tb-mat-inp name" type="text" placeholder="Maschine…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div>';
-  c.appendChild(d);
+  const c=document.getElementById('rg-masch-rows');const d=document.createElement('div');d.className='tb-mat-grid';
+  d.innerHTML='<input class="tb-mat-inp name" type="text" placeholder="Maschine…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div>';c.appendChild(d);
 }
 
 function rgGetMatRows(id){
-  const rows=[];
-  document.getElementById(id).querySelectorAll('.tb-mat-grid').forEach(row=>{
-    const ins=row.querySelectorAll('input');
-    if(ins[0]&&ins[0].value.trim())rows.push({name:ins[0].value.trim(),menge:ins[1]?ins[1].value:'',einheit:ins[2]?ins[2].value:'',intern:ins[3]?ins[3].value:''});
-  });
-  return rows;
+  const rows=[];document.getElementById(id).querySelectorAll('.tb-mat-grid').forEach(row=>{const ins=row.querySelectorAll('input');if(ins[0]&&ins[0].value.trim())rows.push({name:ins[0].value.trim(),menge:ins[1]?ins[1].value:'',einheit:ins[2]?ins[2].value:'',intern:ins[3]?ins[3].value:''});});return rows;
 }
 
 function rgRenderZusammenfassung(){
-  const kunde=document.getElementById('rg-kunde').value||'–';
-  const baustelle=document.getElementById('rg-baustelle').value||'–';
-  const datum=document.getElementById('rg-datum').value;
-  const von=document.getElementById('rg-von').value;
-  const bis=document.getElementById('rg-bis').value;
-  const netto=document.getElementById('rg-netto').textContent;
+  const kunde=document.getElementById('rg-kunde').value||'–',baustelle=document.getElementById('rg-baustelle').value||'–';
+  const datum=document.getElementById('rg-datum').value,von=document.getElementById('rg-von').value,bis=document.getElementById('rg-bis').value,netto=document.getElementById('rg-netto').textContent;
   const taetigkeit=document.getElementById('rg-taetigkeit').value||'–';
-  const datumFmt=datum?new Date(datum+'T12:00').toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'–';
-  const team=[];
-  document.getElementById('rg-team-liste').querySelectorAll('.tb-ma-row').forEach(row=>{
-    if(row.querySelector('.tb-check').classList.contains('checked')){
-      const name=row.querySelector('.tb-ma-name').textContent;
-      const h=row.querySelector('input').value;
-      team.push(name+(h?' ('+h+' h)':''));
-    }
-  });
-  document.getElementById('rg-zf').innerHTML=`
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-      <div style="width:36px;height:36px;border-radius:8px;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--gx-dark);font-size:13px;flex-shrink:0">GX</div>
-      <div><div class="rg-sum-title">Regiebericht</div><div class="rg-sum-sub">${datumFmt}</div></div>
-    </div>
-    <div class="rg-sum-block"><div class="rg-sum-label">Auftraggeber</div><div class="rg-sum-val"><strong>${kunde}</strong><br><span style="color:var(--gx-muted)">${baustelle}</span></div></div>
-    <div class="rg-sum-block"><div class="rg-sum-label">Arbeitszeit</div><div class="rg-sum-val">${von} – ${bis} Uhr · <strong>${netto}</strong></div></div>
-    <div class="rg-sum-block"><div class="rg-sum-label">Tätigkeiten</div><div class="rg-sum-val">${taetigkeit}</div></div>
-    <div class="rg-sum-block"><div class="rg-sum-label">Team (${team.length} Personen)</div><div class="rg-sum-val">${team.join(', ')||'–'}</div></div>
-  `;
+  const team=[];document.getElementById('rg-team-liste').querySelectorAll('.tb-ma-row').forEach(row=>{if(row.querySelector('.tb-check').classList.contains('checked')){team.push(row.querySelector('.tb-ma-name').textContent+(row.querySelector('input').value?' ('+row.querySelector('input').value+' h)':''));}});
+  document.getElementById('rg-zf').innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="width:36px;height:36px;border-radius:8px;background:var(--gx-gold);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--gx-dark);font-size:13px">GX</div><div><div class="rg-sum-title">Regiebericht</div><div class="rg-sum-sub">${datum?new Date(datum+'T12:00').toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):''}</div></div></div><div class="rg-sum-block"><div class="rg-sum-label">Auftraggeber</div><div class="rg-sum-val"><strong>${kunde}</strong><br><span style="color:var(--gx-muted)">${baustelle}</span></div></div><div class="rg-sum-block"><div class="rg-sum-label">Arbeitszeit</div><div class="rg-sum-val">${von} – ${bis} Uhr · <strong>${netto}</strong></div></div><div class="rg-sum-block"><div class="rg-sum-label">Tätigkeiten</div><div class="rg-sum-val">${taetigkeit}</div></div><div class="rg-sum-block"><div class="rg-sum-label">Team (${team.length})</div><div class="rg-sum-val">${team.join(', ')||'–'}</div></div>`;
 }
 
-// Unterschrift Canvas
 function rgInitCanvas(canvas){
   const ctx=canvas.getContext('2d');
+  const dpr=window.devicePixelRatio||1;const rect=canvas.getBoundingClientRect();
+  canvas.width=rect.width*dpr;canvas.height=140*dpr;ctx.scale(dpr,dpr);
   ctx.strokeStyle='#1a2e1a';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
-  const dpr=window.devicePixelRatio||1;
-  const r=canvas.getBoundingClientRect();
-  canvas.width=r.width*dpr;
-  canvas.height=140*dpr;
-  ctx.scale(dpr,dpr);
-  ctx.strokeStyle='#1a2e1a';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
-
-  function getPos(e){
-    const r=canvas.getBoundingClientRect();
-    const s=e.touches?e.touches[0]:e;
-    return{x:s.clientX-r.left,y:s.clientY-r.top};
-  }
-
-  // Mouse events
-  canvas.addEventListener('mousedown',e=>{
-    e.preventDefault();
-    sigActive=true;
-    const p=getPos(e);sigLastX=p.x;sigLastY=p.y;
-  });
-  canvas.addEventListener('mousemove',e=>{
-    if(!sigActive)return;
-    e.preventDefault();
-    const p=getPos(e);
-    ctx.beginPath();ctx.moveTo(sigLastX,sigLastY);ctx.lineTo(p.x,p.y);ctx.stroke();
-    sigLastX=p.x;sigLastY=p.y;
-  });
-  canvas.addEventListener('mouseup',e=>{sigActive=false;});
-  canvas.addEventListener('mouseleave',e=>{sigActive=false;});
-
-  // Touch events
-  canvas.addEventListener('touchstart',e=>{
-    e.preventDefault();
-    sigActive=true;
-    const p=getPos(e);sigLastX=p.x;sigLastY=p.y;
-  },{passive:false});
-  canvas.addEventListener('touchmove',e=>{
-    e.preventDefault();
-    if(!sigActive)return;
-    const p=getPos(e);
-    ctx.beginPath();ctx.moveTo(sigLastX,sigLastY);ctx.lineTo(p.x,p.y);ctx.stroke();
-    sigLastX=p.x;sigLastY=p.y;
-  },{passive:false});
+  function getPos(e){const r=canvas.getBoundingClientRect();const s=e.touches?e.touches[0]:e;return{x:s.clientX-r.left,y:s.clientY-r.top};}
+  canvas.addEventListener('mousedown',e=>{e.preventDefault();sigActive=true;const p=getPos(e);sigLastX=p.x;sigLastY=p.y;});
+  canvas.addEventListener('mousemove',e=>{if(!sigActive)return;e.preventDefault();const p=getPos(e);ctx.beginPath();ctx.moveTo(sigLastX,sigLastY);ctx.lineTo(p.x,p.y);ctx.stroke();sigLastX=p.x;sigLastY=p.y;});
+  canvas.addEventListener('mouseup',()=>sigActive=false);canvas.addEventListener('mouseleave',()=>sigActive=false);
+  canvas.addEventListener('touchstart',e=>{e.preventDefault();sigActive=true;const p=getPos(e);sigLastX=p.x;sigLastY=p.y;},{passive:false});
+  canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!sigActive)return;const p=getPos(e);ctx.beginPath();ctx.moveTo(sigLastX,sigLastY);ctx.lineTo(p.x,p.y);ctx.stroke();sigLastX=p.x;sigLastY=p.y;},{passive:false});
   canvas.addEventListener('touchend',()=>sigActive=false);
 }
 
-function sigClear(){
-  const canvas=document.getElementById('sig-canvas');
-  const ctx=canvas.getContext('2d');
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  sigSaved=false;
-  document.getElementById('sig-bestaetigt').style.display='none';
-}
-
-function sigBestaetigen(){
-  const canvas=document.getElementById('sig-canvas');
-  const ctx=canvas.getContext('2d');
-  const data=ctx.getImageData(0,0,canvas.width,canvas.height).data;
-  const hasContent=Array.from(data).some(v=>v!==0);
-  if(!hasContent){alert('Bitte zuerst unterschreiben!');return;}
-  sigSaved=true;
-  showMsg('sig-bestaetigt',3000);
-}
+function sigClear(){const c=document.getElementById('sig-canvas');c.getContext('2d').clearRect(0,0,c.width,c.height);sigSaved=false;document.getElementById('sig-bestaetigt').style.display='none';}
+function sigBestaetigen(){const c=document.getElementById('sig-canvas');const data=c.getContext('2d').getImageData(0,0,c.width,c.height).data;if(!Array.from(data).some(v=>v!==0)){alert('Bitte zuerst unterschreiben!');return;}sigSaved=true;showMsg('sig-bestaetigt',3000);}
 
 async function saveRegiebericht(){
-  const kunde=document.getElementById('rg-kunde').value;
-  const baustelle=document.getElementById('rg-baustelle').value;
-  document.getElementById('rg-err').style.display='none';
-  if(!kunde||!baustelle){document.getElementById('rg-err').style.display='block';return;}
-
-  const datum=document.getElementById('rg-datum').value;
-  const von=document.getElementById('rg-von').value;
-  const bis=document.getElementById('rg-bis').value;
-  const pause=parseInt(document.getElementById('rg-pause').value)||0;
+  const kunde=document.getElementById('rg-kunde').value,baustelle=document.getElementById('rg-baustelle').value;
+  document.getElementById('rg-err').style.display='none';if(!kunde||!baustelle){document.getElementById('rg-err').style.display='block';return;}
+  const datum=document.getElementById('rg-datum').value,von=document.getElementById('rg-von').value,bis=document.getElementById('rg-bis').value,pause=parseInt(document.getElementById('rg-pause').value)||0;
   const v=von.split(':').map(Number),b=bis.split(':').map(Number);
   const nettoH=parseFloat((((b[0]*60+b[1])-(v[0]*60+v[1])-pause)/60).toFixed(2));
-
-  // Team zusammenstellen
-  const anwesend=[];
-  document.getElementById('rg-team-liste').querySelectorAll('.tb-ma-row').forEach(row=>{
-    if(row.querySelector('.tb-check').classList.contains('checked')){
-      const name=row.querySelector('.tb-ma-name').textContent;
-      const h=parseFloat(row.querySelector('input').value)||nettoH;
-      anwesend.push({name,h});
-    }
-  });
-
-  // Zeiteinträge für alle Teammitglieder speichern
+  const anwesend=[];document.getElementById('rg-team-liste').querySelectorAll('.tb-ma-row').forEach(row=>{if(row.querySelector('.tb-check').classList.contains('checked')){anwesend.push({name:row.querySelector('.tb-ma-name').textContent,h:parseFloat(row.querySelector('input').value)||nettoH});}});
   for(const ma of anwesend){
     const entry={worker:ma.name,datum,von,bis,pause,netto:ma.h,proj:baustelle,art:'Regiebericht',status:'approved',savedAt:new Date().toISOString(),notiz:'RB: '+kunde};
-    allEntries=allEntries.filter(e=>!(e.worker===ma.name&&e.datum===datum&&e.art==='Regiebericht'));
-    allEntries.push(entry);
-    if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-      try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveEntry',entry})});}catch{}
-    }
+    allEntries=allEntries.filter(e=>!(e.worker===ma.name&&e.datum===datum&&e.art==='Regiebericht'));allEntries.push(entry);
+    if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL'))try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveEntry',entry})});}catch{}
   }
   localStorage.setItem('gx_entries',JSON.stringify(allEntries));
-
-  // Unterschrift als Base64
-  let sigBase64='';
-  if(sigSaved){
-    const canvas=document.getElementById('sig-canvas');
-    sigBase64=canvas.toDataURL('image/png').split(',')[1];
-  }
-
-  const material=rgGetMatRows('rg-mat-rows');
-  const maschinen=rgGetMatRows('rg-masch-rows');
-  const rueckgabe=rgGetMatRows('rg-rueck-rows');
-
-  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
-    try{
-      await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({
-        action:'saveRegiebericht',
-        bericht:{datum,kunde,baustelle,von,bis,pause,netto:nettoH,
-          taetigkeit:document.getElementById('rg-taetigkeit').value,
-          notiz:document.getElementById('rg-notiz').value,
-          ersteller:currentWorker.name,mitarbeiter:anwesend,
-          material,maschinen,rueckgabe,unterschrift:sigBase64,
-          savedAt:new Date().toISOString()}
-      })});
-    }catch{}
-  }
-
-  showMsg('rg-ok',3000);
-  setStatus('Regiebericht gespeichert ✓','ok');
-  setTimeout(()=>{
-    document.getElementById('rg-kunde').value='';
-    document.getElementById('rg-baustelle').value='';
-    document.getElementById('rg-taetigkeit').value='';
-    document.getElementById('rg-notiz').value='';
-    sigClear();sigSaved=false;
-    rgGoStep('allgemein');
-  },2500);
-}
-
-
-// ============================================================
-//  TRELLO — Einsätze im Dashboard anzeigen
-// ============================================================
-async function ladeTrelloEinsaetze(){
-  if(!SCRIPT_URL||SCRIPT_URL.includes('EURE_URL'))return;
-  try{
-    const r=await fetch(SCRIPT_URL+'?action=getTrelloEinsaetze&worker='+encodeURIComponent(currentWorker.name));
-    const d=await r.json();
-    if(!d.ok||!d.einsaetze||!d.einsaetze.length)return;
-
-    const box=document.getElementById('trello-einsatz-box');
-    const liste=document.getElementById('trello-einsatz-liste');
-    if(!box||!liste)return;
-
-    // Nur heutige + nächste 7 Tage anzeigen
-    const heute=new Date().toISOString().slice(0,10);
-    const relevant=d.einsaetze.filter(e=>e.datum>=heute).slice(0,3);
-    if(!relevant.length)return;
-
-    box.style.display='block';
-    liste.innerHTML=relevant.map(e=>`
-      <div class="card" style="padding:10px 14px;margin-bottom:8px;border-left:3px solid ${e.heute?'var(--gx-green)':'var(--gx-gold)'}">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:var(--gx-text)">${e.name}</div>
-            ${e.beschreibung?`<div style="font-size:11px;color:var(--gx-muted);margin-top:2px">${e.beschreibung.slice(0,80)}</div>`:''}
-            <div style="font-size:11px;color:var(--gx-muted);margin-top:3px">📋 ${e.liste}</div>
-          </div>
-          <div style="text-align:right;flex-shrink:0;margin-left:8px">
-            ${e.heute ? '<span class="sbadge green">Aktiv</span>' : ''}
-            ${e.mehrtaegig
-              ? `<span style="font-size:10px;color:var(--gx-muted)">${new Date(e.datum+'T12:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'})} – ${new Date(e.datumBis+'T12:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'})}</span>`
-              : `<span style="font-size:10px;color:var(--gx-muted)">${new Date(e.datum+'T12:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'})}</span>`
-            }
-          </div>
-        </div>
-      </div>`).join('');
-  }catch(err){
-    // Trello nicht verfügbar — kein Problem
-  }
+  let sigBase64='';if(sigSaved){sigBase64=document.getElementById('sig-canvas').toDataURL('image/png').split(',')[1];}
+  if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL'))try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveRegiebericht',bericht:{datum,kunde,baustelle,von,bis,pause,netto:nettoH,taetigkeit:document.getElementById('rg-taetigkeit').value,notiz:document.getElementById('rg-notiz').value,ersteller:currentWorker.name,mitarbeiter:anwesend,material:rgGetMatRows('rg-mat-rows'),maschinen:rgGetMatRows('rg-masch-rows'),rueckgabe:rgGetMatRows('rg-rueck-rows'),unterschrift:sigBase64,savedAt:new Date().toISOString()}})});}catch{}
+  showMsg('rg-ok',3000);setStatus('Regiebericht gespeichert ✓','ok');
+  setTimeout(()=>{document.getElementById('rg-kunde').value='';document.getElementById('rg-baustelle').value='';document.getElementById('rg-taetigkeit').value='';document.getElementById('rg-notiz').value='';sigClear();sigSaved=false;rgGoStep('allgemein');},2500);
 }
 
 init();
