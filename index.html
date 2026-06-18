@@ -436,13 +436,13 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
     </div>
     <div class="tb-section">
       <div class="tb-sec-label">Maschineneinsatz</div>
-      <div id="tb-masch-rows"><div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. LKW Arocs"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div></div></div>
+      <div id="tb-masch-rows"><div class="tb-mat-grid" style="position:relative"><input class="tb-mat-inp name" type="text" placeholder="z.B. LKW Arocs" oninput="tbShowVorschlaege(this,'tb-masch-0')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div></div></div>
       <button class="tb-add-btn" onclick="tbAddMaschRow()">+ Maschine hinzufuegen</button>
     </div>
     <div class="tb-section">
       <div class="tb-sec-label">Materialrueckgabe</div>
       <div class="tb-mat-grid" style="margin-bottom:4px"><div class="tb-mat-head">Material</div><div class="tb-mat-head">Menge</div><div class="tb-mat-head">Einheit</div><div class="tb-mat-head" style="background:#fdf8f0;border-radius:5px;padding:2px;color:#633806">Intern</div></div>
-      <div id="tb-rueck-rows"><div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Gartenabfall"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="cbm"><input class="tb-mat-intern" type="text" placeholder="GO/LA"></div></div>
+      <div id="tb-rueck-rows"><div class="tb-mat-grid" style="position:relative"><input class="tb-mat-inp name" type="text" placeholder="z.B. Gartenabfall" oninput="tbShowVorschlaege(this,'tb-rueck-0')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="cbm"><input class="tb-mat-intern" type="text" placeholder="GO/LA"></div></div>
       <button class="tb-add-btn" onclick="tbAddMatRow('tb-rueck-rows','cbm','GO/LA')">+ Rueckgabe hinzufuegen</button>
     </div>
     <div class="row2"><button class="btn-outline" onclick="tbGoStep('team')">Zurueck</button><button class="btn-primary" onclick="tbGoStep('abschluss')">Weiter</button></div>
@@ -715,19 +715,24 @@ function renderDashboard(){
   const recent=mine.slice().reverse().slice(0,5);
   const list=document.getElementById('dash-entries');
   if(!recent.length){list.innerHTML='<div class="empty-hint">Noch keine Einträge</div>';return;}
-  list.innerHTML=recent.map(e=>`
-    <div class="entry-row">
-      <div><div class="entry-main">${e.proj.split(',')[0]}</div><div class="entry-sub">${e.datum} · ${e.von}–${e.bis}</div></div>
-      <div class="entry-right"><div class="entry-h">${(+e.netto).toFixed(1)} h</div>${statusBadge(e.status)}</div>
-    </div>`).join('');
+  list.innerHTML=recent.map(e=>{
+    const artIcon=e.art==='Krank'?'🤒 ':e.art==='Regiebericht'?'📋 ':e.art==='Tagesbericht'?'📝 ':e.art==='Stempel'?'⏱ ':'✏️ ';
+    const proj=(e.proj||'–').split(',')[0];
+    const zeit=e.art==='Krank'?e.datum:(e.datum+(e.von?' · '+e.von+'–'+e.bis:''));
+    const h=e.netto>0?`<div class="entry-h">${(+e.netto).toFixed(1)} h</div>`:'';
+    return `<div class="entry-row">
+      <div><div class="entry-main">${artIcon}${proj}</div><div class="entry-sub">${zeit}</div></div>
+      <div class="entry-right">${h}${statusBadge(e.status)}</div>
+    </div>`;
+  }).join('');
 }
 
 function statusBadge(s){
-  if(s==='approved')return '<span class="sbadge green">✓ Freigegeben</span>';
+  if(s==='approved'||s==='auto'||!s)return '<span class="sbadge green">✓ Freigegeben</span>';
   if(s==='pending')return '<span class="sbadge amber">⏳ Ausstehend</span>';
   if(s==='rejected')return '<span class="sbadge red">✗ Abgelehnt</span>';
   if(s==='locked')return '<span class="sbadge gray">🔒 Gesperrt</span>';
-  return '<span class="sbadge green">✓ Auto</span>';
+  return '<span class="sbadge green">✓</span>';
 }
 
 function checkLateWarning(){
@@ -1086,7 +1091,8 @@ function renderKalender(){
     }else if(eintrag){
       const s=eintrag.status;
       let dot='#e0e0e0',badge='',bc='';
-      if(s==='approved'||s==='auto'||s==='Tagesbericht'){dot='#4caf50';badge='✓';bc='approved';}
+      if(eintrag.art==='Krank'){dot='#d32f2f';badge='Krank';bc='krank';}
+      else if(s==='approved'||s==='auto'||s==='Tagesbericht'||!s){dot='#4caf50';badge='✓';bc='approved';}
       else if(s==='pending'){dot='#f59f00';badge='Ausstehend';bc='pending';}
       totalH+=parseFloat(eintrag.netto)||0;
       zeilen.push({dot,info:eintrag.proj?eintrag.proj.split(',')[0]:'–',
@@ -1261,8 +1267,8 @@ function tbAddMatRow(cid,einheit,intern){
 }
 
 function tbAddMaschRow(){
-  const c=document.getElementById('tb-masch-rows');const div=document.createElement('div');div.className='tb-mat-grid';
-  div.innerHTML='<input class="tb-mat-inp name" type="text" placeholder="Maschine…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div>';c.appendChild(div);
+  const c=document.getElementById('tb-masch-rows');const rid='tb-masch-'+Date.now();const div=document.createElement('div');div.className='tb-mat-grid';div.style.position='relative';
+  div.innerHTML=`<input class="tb-mat-inp name" type="text" placeholder="Maschine…" oninput="tbShowVorschlaege(this,'${rid}')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div>`;c.appendChild(div);
 }
 
 function tbGetMatRows(cid){
@@ -1333,7 +1339,32 @@ async function uploadMedia(kat){
   pf.style.width='80%';
   if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL')){
     try{const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});const d=await r.json();pf.style.width='100%';
-      if(d.ok){ok.style.display='block';fi.value='';document.getElementById('preview-'+kat).style.display='none';document.getElementById('upload-hint-'+kat).style.display='block';document.getElementById('upload-box-'+kat).classList.remove('has-file');}
+      if(d.ok){ok.style.display='block';fi.value='';document.getElementById('preview-'+kat).style.display='none';document.getElementById('upload-hint-'+kat).style.display='block';document.getElementById('upload-box-'+kat).classList.remove('has-file');
+        // Krankmeldung auch als Eintrag für Kalender + letzte Einträge
+        if(kat==='krank'){
+          const von=document.getElementById('med-krank-von').value;
+          const bis=document.getElementById('med-krank-bis').value;
+          if(von){
+            // Für jeden Krank-Tag einen Eintrag erzeugen
+            const start=new Date(von),end=new Date(bis||von);
+            for(let dt=new Date(start);dt<=end;dt.setDate(dt.getDate()+1)){
+              const datum=dt.toISOString().slice(0,10);
+              const kEntry={worker:currentWorker.name,datum,von:'',bis:'',pause:0,netto:0,
+                proj:'Krankmeldung',art:'Krank',status:'approved',savedAt:new Date().toISOString()};
+              allEntries=allEntries.filter(e=>!(e.worker===currentWorker.name&&e.datum===datum&&e.art==='Krank'));
+              allEntries.push(kEntry);
+            }
+            localStorage.setItem('gx_entries',JSON.stringify(allEntries));
+            renderDashboard();
+          }
+        }
+        // Notizfelder leeren
+        if(kat==='baudoku'){const n=document.getElementById('med-notiz-baudoku');if(n)n.value='';}
+        if(kat==='problem'){const n=document.getElementById('med-problem-text');if(n)n.value='';}
+        if(kat==='krank'){
+          const v=document.getElementById('med-krank-von');if(v)v.value='';
+          const b=document.getElementById('med-krank-bis');if(b)b.value='';
+        }}
       else{err.textContent='Fehler: '+(d.error||'Unbekannt');err.style.display='block';}
     }catch{err.textContent='Verbindungsfehler';err.style.display='block';}
   }else{pf.style.width='100%';ok.style.display='block';}
