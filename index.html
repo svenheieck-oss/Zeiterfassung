@@ -388,8 +388,8 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 <div class="view" id="v-tagesbericht">
   <div class="tb-step-bar">
     <div class="tb-step active" id="tbstep-allgemein" onclick="tbGoStep('allgemein')">Allgemein</div>
-    <div class="tb-step" id="tbstep-positionen" onclick="tbGoStep('positionen')">Positionen</div>
     <div class="tb-step" id="tbstep-team" onclick="tbGoStep('team')">Team</div>
+    <div class="tb-step" id="tbstep-positionen" onclick="tbGoStep('positionen')">Positionen</div>
     <div class="tb-step" id="tbstep-material" onclick="tbGoStep('material')">Material</div>
     <div class="tb-step" id="tbstep-abschluss" onclick="tbGoStep('abschluss')">Abschluss</div>
   </div>
@@ -410,7 +410,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
         <div class="field"><label>Nettostunden</label><input type="text" id="tb-netto" readonly style="color:var(--gx-green-dark);font-weight:700"></div>
       </div>
     </div>
-    <button class="btn-primary" onclick="tbGoStep('positionen')">Weiter: Positionen</button>
+    <button class="btn-primary" onclick="tbGoStep('team')">Weiter: Team</button>
   </div>
   <div id="tbp-positionen" style="display:none">
     <div class="tb-section">
@@ -418,11 +418,11 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
       <div class="field"><select id="tb-lv-select" onchange="tbLadeLVPositionen()"><option value="">-- LV auswaehlen --</option></select></div>
       <div id="tb-pos-liste"><div class="empty-hint" style="padding:12px 0">Bitte LV auswaehlen</div></div>
     </div>
-    <div class="row2"><button class="btn-outline" onclick="tbGoStep('allgemein')">Zurueck</button><button class="btn-primary" onclick="tbGoStep('team')">Weiter: Team</button></div>
+    <div class="row2"><button class="btn-outline" onclick="tbGoStep('team')">Zurueck</button><button class="btn-primary" onclick="tbGoStep('material')">Weiter: Material</button></div>
   </div>
   <div id="tbp-team" style="display:none">
     <div class="tb-section"><div class="tb-sec-label">Anwesende Mitarbeiter</div><div id="tb-ma-liste"></div></div>
-    <div class="row2"><button class="btn-outline" onclick="tbGoStep('positionen')">Zurueck</button><button class="btn-primary" onclick="tbGoStep('material')">Weiter</button></div>
+    <div class="row2"><button class="btn-outline" onclick="tbGoStep('allgemein')">Zurueck</button><button class="btn-primary" onclick="tbGoStep('positionen')">Weiter: Positionen</button></div>
   </div>
   <div id="tbp-material" style="display:none">
     <div class="tb-section">
@@ -445,7 +445,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
       <div id="tb-rueck-rows"><div class="tb-mat-grid" style="position:relative"><input class="tb-mat-inp name" type="text" placeholder="z.B. Gartenabfall" oninput="tbShowVorschlaege(this,'tb-rueck-0')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="cbm"><input class="tb-mat-intern" type="text" placeholder="GO/LA"></div></div>
       <button class="tb-add-btn" onclick="tbAddMatRow('tb-rueck-rows','cbm','GO/LA')">+ Rueckgabe hinzufuegen</button>
     </div>
-    <div class="row2"><button class="btn-outline" onclick="tbGoStep('team')">Zurueck</button><button class="btn-primary" onclick="tbGoStep('abschluss')">Weiter</button></div>
+    <div class="row2"><button class="btn-outline" onclick="tbGoStep('positionen')">Zurueck</button><button class="btn-primary" onclick="tbGoStep('abschluss')">Weiter</button></div>
   </div>
   <div id="tbp-abschluss" style="display:none">
     <div class="tb-section"><div class="tb-sec-label">Notizen</div><textarea id="tb-notiz" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;color:var(--gx-text);resize:none;height:80px" placeholder="z.B. Schlechtwetter ab 14 Uhr..."></textarea></div>
@@ -1201,7 +1201,14 @@ function tbGoStep(step){
     const p=document.getElementById('tbp-'+s),t=document.getElementById('tbstep-'+s);
     if(p)p.style.display=s===step?'block':'none';if(t)t.classList.toggle('active',s===step);
   });
-  if(step==='positionen')tbLadeLVListe();if(step==='team')tbRenderTeam();if(step==='abschluss')tbRenderZusammenfassung();
+  if(step==='team')tbRenderTeam();
+  if(step==='positionen'){
+    tbLadeLVListe();
+    // Wenn schon Positionen geladen → mit aktuellem Team neu rendern
+    if(lvPositionen&&lvPositionen.length)renderLVPositionen(lvPositionen);
+  }
+  if(step==='abschluss')tbRenderZusammenfassung();
+}
 }
 
 function tbInit(){
@@ -1280,8 +1287,34 @@ function tbRenderZusammenfassung(){
   const von=document.getElementById('tb-von').value,bis=document.getElementById('tb-bis').value;
   const netto=document.getElementById('tb-netto').value,auftr=document.getElementById('tb-auftraggeber').value;
   const anwesend=[];
-  document.getElementById('tb-ma-liste').querySelectorAll('.tb-ma-row').forEach(row=>{if(row.querySelector('.tb-check').classList.contains('checked')){anwesend.push(row.querySelector('.tb-ma-name').textContent+(row.querySelector('.tb-ma-h').value?' ('+row.querySelector('.tb-ma-h').value+' h)':''));}});
-  document.getElementById('tb-zusammenfassung').innerHTML=`<div style="font-size:12px;color:var(--gx-muted);margin-bottom:4px">Zusammenfassung</div><div style="font-size:13px;font-weight:700;margin-bottom:3px">${proj}</div><div style="font-size:12px;color:var(--gx-muted)">${datum} · ${von}–${bis} · ${netto}${auftr?' · '+auftr:''}</div><div style="font-size:12px;margin-top:6px">👥 ${anwesend.join(', ')||'Niemand'}</div>`;
+  document.getElementById('tb-ma-liste').querySelectorAll('.tb-ma-row').forEach(row=>{
+    if(row.querySelector('.tb-check').classList.contains('checked')){
+      anwesend.push(row.querySelector('.tb-ma-name').textContent+(row.querySelector('.tb-ma-h').value?' ('+row.querySelector('.tb-ma-h').value+' h)':''));
+    }
+  });
+  // Positionen sammeln
+  const positionen=tbGetPositionen();
+  const posHTML=positionen.length?`
+    <div style="margin-top:10px;border-top:0.5px solid var(--gx-border);padding-top:8px">
+      <div style="font-size:11px;font-weight:700;color:var(--gx-muted);margin-bottom:6px">📋 Positionen (${positionen.length})</div>
+      ${positionen.map(p=>{
+        const maList=Object.entries(p.maStunden).map(([name,h])=>`${name.split(' ')[0]}: ${h}h`).join(' · ');
+        return `<div style="font-size:11px;padding:4px 0;border-bottom:0.5px solid var(--gx-border)">
+          <span style="color:var(--gx-muted);font-weight:700">${p.posNr}</span>
+          <span style="margin-left:6px">${p.beschreibung}</span>
+          <span style="display:block;font-size:10px;color:var(--gx-green-dark);margin-top:2px">👷 ${maList} | Gesamt: ${p.gesamtH.toFixed(1)} h</span>
+        </div>`;
+      }).join('')}
+    </div>`:
+    '<div style="font-size:11px;color:var(--gx-muted);margin-top:6px">Keine Positionen erfasst</div>';
+
+  document.getElementById('tb-zusammenfassung').innerHTML=`
+    <div style="font-size:12px;color:var(--gx-muted);margin-bottom:4px">Zusammenfassung</div>
+    <div style="font-size:14px;font-weight:700;margin-bottom:3px">${proj}</div>
+    <div style="font-size:12px;color:var(--gx-muted)">${datum} · ${von}–${bis} · ${netto}${auftr?' · '+auftr:''}</div>
+    <div style="font-size:12px;margin-top:6px">👥 ${anwesend.join(', ')||'Niemand ausgewählt'}</div>
+    ${posHTML}
+  `;
 }
 
 async function saveTagesbericht(){
@@ -1396,9 +1429,76 @@ async function tbLadeLVPositionen(){
 
 function renderLVPositionen(pos){
   const liste=document.getElementById('tb-pos-liste');
-  if(!pos.length){liste.innerHTML='<div class="empty-hint" style="padding:12px 0">Keine Positionen</div>';return;}
-  liste.innerHTML=`<div style="display:grid;grid-template-columns:24px 60px 1fr 64px;gap:6px;padding:6px 0;font-size:10px;font-weight:700;color:var(--gx-muted);border-bottom:1px solid var(--gx-border)"><div></div><div>Pos.</div><div>Beschreibung</div><div style="text-align:center">Std.</div></div>`+
-  pos.map(p=>`<div class="tb-ma-row" style="grid-template-columns:24px 60px 1fr 64px"><div class="tb-check" onclick="tbTogglePos(this)" style="width:20px;height:20px;font-size:11px"></div><div style="font-size:11px;font-weight:700;color:var(--gx-muted)">${p.posNr}</div><div style="font-size:12px;color:var(--gx-text);line-height:1.3">${p.beschreibung}</div><input class="tb-ma-h" type="number" placeholder="h" min="0" max="24" step="0.5" disabled style="width:60px"></div>`).join('');
+  if(!pos||!pos.length){liste.innerHTML='<div class="empty-hint" style="padding:12px 0">Keine Positionen im LV</div>';return;}
+
+  // Ausgewählte Mitarbeiter aus Team-Schritt holen
+  const team=[];
+  document.getElementById('tb-ma-liste').querySelectorAll('.tb-ma-row').forEach(row=>{
+    if(row.querySelector('.tb-check').classList.contains('checked')){
+      team.push(row.querySelector('.tb-ma-name').textContent.trim());
+    }
+  });
+
+  if(!team.length){
+    liste.innerHTML='<div style="background:#fff3e0;border:1px solid #ffb74d;border-radius:10px;padding:14px;font-size:13px;color:#e65100;text-align:center">⚠️ Bitte zuerst im Team-Schritt Mitarbeiter auswählen</div>';
+    return;
+  }
+
+  // Tabellen-Header: Pos. | Beschreibung | MA1 | MA2 | MA3 ...
+  const colW = team.length > 2 ? '55px' : '70px';
+  const gridCols = `40px 1fr ${team.map(()=>colW).join(' ')}`;
+
+  let html = `<div style="font-size:11px;color:var(--gx-muted);margin-bottom:8px">
+    Stunden pro Mitarbeiter und Position eintragen (0 = nicht gearbeitet, leer = nicht zugewiesen)
+  </div>`;
+
+  html += `<div style="display:grid;grid-template-columns:${gridCols};gap:4px;margin-bottom:4px;align-items:center">
+    <div style="font-size:10px;font-weight:700;color:var(--gx-muted)">Pos.</div>
+    <div style="font-size:10px;font-weight:700;color:var(--gx-muted)">Beschreibung</div>
+    ${team.map(name=>`<div style="font-size:10px;font-weight:700;color:var(--gx-green-dark);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${name}">${name.split(' ')[0]}</div>`).join('')}
+  </div>`;
+
+  html += pos.map((p,pi)=>`
+    <div class="tb-pos-row" data-posnr="${p.posNr}" data-beschreibung="${p.beschreibung.replace(/"/g,'&quot;')}"
+      style="display:grid;grid-template-columns:${gridCols};gap:4px;align-items:center;padding:5px 0;border-bottom:0.5px solid var(--gx-border)">
+      <div style="font-size:10px;font-weight:700;color:var(--gx-muted)">${p.posNr}</div>
+      <div style="font-size:11px;color:var(--gx-text);line-height:1.3">${p.beschreibung}</div>
+      ${team.map((name,ti)=>`<input
+        type="number" min="0" max="24" step="0.5"
+        placeholder="–"
+        data-ma="${name}"
+        style="width:100%;text-align:center;padding:4px 2px;border:1px solid var(--gx-border);border-radius:6px;font-size:12px;background:#fafafa"
+        oninput="tbPosUpdateTotal()"
+        class="tb-pos-h"
+      >`).join('')}
+    </div>`).join('');
+
+  // Summenzeile
+  html += `<div style="display:grid;grid-template-columns:${gridCols};gap:4px;margin-top:8px;padding-top:8px;border-top:2px solid var(--gx-border);align-items:center">
+    <div></div>
+    <div style="font-size:11px;font-weight:700;color:var(--gx-text)">Gesamt</div>
+    ${team.map((name,ti)=>`<div id="pos-total-${ti}" style="font-size:12px;font-weight:700;color:var(--gx-green-dark);text-align:center">0 h</div>`).join('')}
+  </div>`;
+
+  liste.innerHTML = html;
+}
+
+function tbPosUpdateTotal(){
+  // Summe pro Mitarbeiter-Spalte berechnen
+  const rows=document.querySelectorAll('.tb-pos-row');
+  const totals={};
+  rows.forEach(row=>{
+    row.querySelectorAll('.tb-pos-h').forEach(inp=>{
+      const ma=inp.getAttribute('data-ma');
+      totals[ma]=(totals[ma]||0)+(parseFloat(inp.value)||0);
+    });
+  });
+  // Anzeige updaten
+  const team=Object.keys(totals);
+  team.forEach((name,ti)=>{
+    const el=document.getElementById('pos-total-'+ti);
+    if(el)el.textContent=(totals[name]||0).toFixed(1)+' h';
+  });
 }
 
 function tbTogglePos(el){
@@ -1407,8 +1507,22 @@ function tbTogglePos(el){
 }
 
 function tbGetPositionen(){
-  const rows=[];const liste=document.getElementById('tb-pos-liste');if(!liste)return rows;
-  liste.querySelectorAll('.tb-ma-row').forEach(row=>{const check=row.querySelector('.tb-check');if(check&&check.classList.contains('checked')){rows.push({posNr:row.querySelector('[style*="font-weight:700"]')?.textContent||'',beschreibung:row.querySelectorAll('div')[2]?.textContent||'',stunden:parseFloat(row.querySelector('input')?.value)||0});}});
+  const rows=[];
+  document.querySelectorAll('.tb-pos-row').forEach(row=>{
+    const posNr=row.getAttribute('data-posnr')||'';
+    const beschreibung=row.getAttribute('data-beschreibung')||'';
+    const maStunden={};
+    let hasEintrag=false;
+    row.querySelectorAll('.tb-pos-h').forEach(inp=>{
+      const ma=inp.getAttribute('data-ma');
+      const h=parseFloat(inp.value)||0;
+      if(h>0){maStunden[ma]=h;hasEintrag=true;}
+    });
+    if(hasEintrag){
+      rows.push({posNr,beschreibung,maStunden,
+        gesamtH:Object.values(maStunden).reduce((s,h)=>s+h,0)});
+    }
+  });
   return rows;
 }
 
