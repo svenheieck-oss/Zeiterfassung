@@ -65,6 +65,11 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
 .entry-h{font-size:14px;font-weight:700;color:var(--gx-green-dark)}
 .stamp-btn{width:100%;padding:16px;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px}
 .stamp-btn.ein{background:var(--gx-green);color:#fff} .stamp-btn.aus{background:#b71c1c;color:#fff} .stamp-btn:active{opacity:.85}
+.stamp-btn:disabled{opacity:.6;cursor:not-allowed}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;flex-shrink:0}
+.spinner-dark{border-color:rgba(0,0,0,0.15);border-top-color:var(--gx-green)}
+.btn-loading{opacity:.7;pointer-events:none}
 .running-row{display:flex;align-items:center;gap:10px;background:var(--gx-green-light);border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid #a5d6a7}
 .dot-live{width:9px;height:9px;border-radius:50%;background:var(--gx-green);animation:blink 1.4s infinite;flex-shrink:0}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
@@ -245,9 +250,13 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div id="running-block" style="display:none">
     <div class="running-row"><div class="dot-live"></div><div style="font-size:13px;color:var(--gx-green-dark);font-weight:600" id="running-label"></div></div>
     <div class="elapsed" id="elapsed">00:00:00</div>
+    <div id="pause-block" style="display:none;text-align:center;margin:-8px 0 8px">
+      <div style="font-size:12px;color:var(--gx-muted);margin-bottom:6px">Pause läuft: <span id="pause-elapsed" style="font-weight:700;color:var(--gx-gold)">00:00</span></div>
+    </div>
+    <button class="stamp-btn" id="btn-pause" onclick="togglePause()" style="background:#f5ecd4;color:#5c3d1e;border:1.5px solid var(--gx-gold);margin-bottom:6px">⏸ Pause starten</button>
   </div>
   <div class="field"><label>Baustelle / Projekt</label><select id="proj-stamp"></select></div>
-  <div class="success-msg" id="stamp-ok">Zeit gespeichert!</div>
+  <div class="success-msg" id="stamp-ok">Zeit gespeichert — wartet auf Freigabe ⏳</div>
   <div class="error-msg" id="stamp-err"></div>
   <button class="stamp-btn ein" id="btn-ein" onclick="einStempeln()">&#x25B6; Einloggen</button>
   <button class="stamp-btn aus" id="btn-aus" onclick="ausStempeln()" style="display:none">&#x23F9; Ausloggen &amp; speichern</button>
@@ -267,7 +276,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div class="field"><label>Notiz</label><input type="text" id="man-notiz" placeholder="z.B. Krankheit, Sonderaufgabe..."></div>
   <div class="error-msg" id="man-error"></div>
   <div class="success-msg" id="man-ok">Eintrag gespeichert - wartet auf Freigabe</div>
-  <button class="btn-primary" onclick="saveManual()">Eintrag speichern</button>
+  <button class="btn-primary" id="btn-save-manual" onclick="saveManual()">Eintrag speichern</button>
 </div>
 
 <!-- URLAUB -->
@@ -441,9 +450,9 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div id="tbp-abschluss" style="display:none">
     <div class="tb-section"><div class="tb-sec-label">Notizen</div><textarea id="tb-notiz" style="width:100%;font-size:14px;padding:10px 12px;border:1px solid var(--gx-border);border-radius:9px;background:#fff;color:var(--gx-text);resize:none;height:80px" placeholder="z.B. Schlechtwetter ab 14 Uhr..."></textarea></div>
     <div class="card" style="background:var(--gx-bg);padding:12px 14px;margin-bottom:14px" id="tb-zusammenfassung"></div>
-    <div class="success-msg" id="tb-ok">Tagesbericht gespeichert!</div>
+    <div class="success-msg" id="tb-ok">Tagesbericht gespeichert — wartet auf Freigabe ⏳</div>
     <div class="error-msg" id="tb-err">Bitte alle Pflichtfelder ausfuellen.</div>
-    <div class="row2" style="margin-bottom:10px"><button class="btn-outline" onclick="tbGoStep('material')">Zurueck</button><button class="btn-primary" onclick="saveTagesbericht()">Speichern</button></div>
+    <div class="row2" style="margin-bottom:10px"><button class="btn-outline" onclick="tbGoStep('material')">Zurueck</button><button class="btn-primary" id="btn-save-tb" onclick="saveTagesbericht()">Speichern</button></div>
   </div>
 </div>
 
@@ -479,13 +488,13 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
   <div id="rgp-material" style="display:none">
     <div class="tb-sec-label">Materialverbrauch</div>
     <div class="tb-mat-grid" style="margin-bottom:4px"><div class="tb-mat-head">Material</div><div class="tb-mat-head">Menge</div><div class="tb-mat-head">Einheit</div><div class="tb-mat-head" style="background:#fdf8f0;border-radius:5px;padding:2px;color:#633806">Intern</div></div>
-    <div id="rg-mat-rows"><div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="Material..."><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="to"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div></div>
+    <div id="rg-mat-rows"><div class="tb-mat-grid" style="position:relative"><input class="tb-mat-inp name" type="text" placeholder="Material..." oninput="tbShowVorschlaege(this,'rg-mat-0')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="to"><input class="tb-mat-intern" type="text" placeholder="EN/LA"></div></div>
     <button class="tb-add-btn" onclick="rgAddMatRow('rg-mat-rows')">+ Material hinzufuegen</button>
     <div class="tb-sec-label" style="margin-top:10px">Maschineneinsatz</div>
-    <div id="rg-masch-rows"><div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. LKW Arocs"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div></div></div>
+    <div id="rg-masch-rows"><div class="tb-mat-grid" style="position:relative"><input class="tb-mat-inp name" type="text" placeholder="z.B. LKW Arocs" oninput="tbShowVorschlaege(this,'rg-masch-0')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div></div></div>
     <button class="tb-add-btn" onclick="rgAddMaschRow()">+ Maschine hinzufuegen</button>
     <div class="tb-sec-label" style="margin-top:10px">Materialrueckgabe</div>
-    <div id="rg-rueck-rows"><div class="tb-mat-grid"><input class="tb-mat-inp name" type="text" placeholder="z.B. Gartenabfall"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="cbm"><input class="tb-mat-intern" type="text" placeholder="GO/LA"></div></div>
+    <div id="rg-rueck-rows"><div class="tb-mat-grid" style="position:relative"><input class="tb-mat-inp name" type="text" placeholder="z.B. Gartenabfall" oninput="tbShowVorschlaege(this,'rg-rueck-0')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="cbm"><input class="tb-mat-intern" type="text" placeholder="GO/LA"></div></div>
     <button class="tb-add-btn" onclick="rgAddMatRow('rg-rueck-rows','cbm','GO/LA')">+ Rueckgabe hinzufuegen</button>
     <div class="row2" style="margin-top:14px"><button class="btn-outline" onclick="rgGoStep('team')">Zurueck</button><button class="btn-primary" onclick="rgGoStep('abschluss')">Weiter</button></div>
   </div>
@@ -498,7 +507,8 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--gx-bg);min-
     <div id="sig-bestaetigt" class="success-msg">Unterschrift gespeichert</div>
     <div class="success-msg" id="rg-ok">Regiebericht gespeichert!</div>
     <div class="error-msg" id="rg-err">Bitte Kunde und Baustelle ausfuellen!</div>
-    <div class="row2" style="margin-bottom:10px"><button class="btn-outline" onclick="rgGoStep('material')">Zurueck</button><button class="btn-primary" onclick="saveRegiebericht()">Speichern</button></div>
+    <div class="row2" style="margin-bottom:10px"><button class="btn-outline" onclick="rgGoStep('material')">Zurueck</button><button class="btn-primary" id="btn-save-rg" onclick="saveRegiebericht()">Speichern</button></div>
+    <button id="rg-pdf-btn" style="display:none;width:100%;padding:12px;border-radius:12px;border:1px solid var(--gx-gold);background:var(--gx-gold-light);color:var(--gx-gold);font-size:14px;font-weight:600;cursor:pointer;margin-top:4px" onclick="exportRegiePDF()">🖨 Als PDF exportieren</button>
   </div>
 </div>
 
@@ -745,20 +755,85 @@ function einStempeln(){
   elapsedTimer=setInterval(()=>{const d=Math.floor((Date.now()-stampStart)/1000);document.getElementById('elapsed').textContent=`${pad(Math.floor(d/3600))}:${pad(Math.floor((d%3600)/60))}:${pad(d%60)}`;},1000);
 }
 
+// ── Spinner Hilfsfunktionen ──────────────────────────────
+function btnLoading(id, text='Wird gesendet…'){
+  const btn=document.getElementById(id);
+  if(!btn)return;
+  btn._origText=btn.innerHTML;
+  btn.innerHTML=`<span class="spinner"></span> ${text}`;
+  btn.classList.add('btn-loading');
+  btn.disabled=true;
+}
+function btnReset(id){
+  const btn=document.getElementById(id);
+  if(!btn||!btn._origText)return;
+  btn.innerHTML=btn._origText;
+  btn.classList.remove('btn-loading');
+  btn.disabled=false;
+}
+
+// ── Pause beim Stempeln ──────────────────────────────────
+let pauseStart=null,pauseTotal=0,pauseTimer=null;
+
+function togglePause(){
+  const btn=document.getElementById('btn-pause');
+  const block=document.getElementById('pause-block');
+  if(!pauseStart){
+    // Pause starten
+    pauseStart=Date.now();
+    btn.innerHTML='▶ Pause beenden';
+    btn.style.background='#e8f5e9';
+    btn.style.color='var(--gx-green-dark)';
+    btn.style.borderColor='var(--gx-green)';
+    block.style.display='block';
+    pauseTimer=setInterval(()=>{
+      const s=Math.floor((Date.now()-pauseStart)/1000);
+      document.getElementById('pause-elapsed').textContent=`${pad(Math.floor(s/60))}:${pad(s%60)}`;
+    },1000);
+    // Stoppuhr pausieren
+    clearInterval(elapsedTimer);elapsedTimer=null;
+  } else {
+    // Pause beenden
+    const pauseMin=Math.round((Date.now()-pauseStart)/60000);
+    pauseTotal+=pauseMin;
+    pauseStart=null;
+    clearInterval(pauseTimer);pauseTimer=null;
+    btn.innerHTML='⏸ Pause starten';
+    btn.style.background='#f5ecd4';
+    btn.style.color='#5c3d1e';
+    btn.style.borderColor='var(--gx-gold)';
+    block.style.display='none';
+    // Stoppuhr wieder starten
+    elapsedTimer=setInterval(()=>{
+      const d=Math.floor((Date.now()-stampStart-pauseTotal*60000)/1000);
+      document.getElementById('elapsed').textContent=`${pad(Math.floor(d/3600))}:${pad(Math.floor((d%3600)/60))}:${pad(d%60)}`;
+    },1000);
+  }
+}
+
 async function ausStempeln(){
+  // Laufende Pause beenden falls aktiv
+  if(pauseStart){
+    const pauseMin=Math.round((Date.now()-pauseStart)/60000);
+    pauseTotal+=pauseMin;
+    pauseStart=null;
+    clearInterval(pauseTimer);pauseTimer=null;
+  }
   clearInterval(elapsedTimer);elapsedTimer=null;
   const end=new Date(),start=new Date(stampStart);
-  const diffMin=Math.round((end-start)/60000);
+  const diffMin=Math.round((end-start)/60000)-pauseTotal;
   const entry={worker:currentWorker.name,datum:start.toISOString().slice(0,10),
     von:`${pad(start.getHours())}:${pad(start.getMinutes())}`,
     bis:`${pad(end.getHours())}:${pad(end.getMinutes())}`,
-    pause:0,netto:parseFloat((diffMin/60).toFixed(2)),
-    proj:document.getElementById('proj-stamp').value,art:'Stempel',status:'auto',savedAt:new Date().toISOString()};
-  stampStart=null;
+    pause:pauseTotal,netto:parseFloat((Math.max(0,diffMin)/60).toFixed(2)),
+    proj:document.getElementById('proj-stamp').value,art:'Stempel',status:'pending',savedAt:new Date().toISOString()};
+  stampStart=null;pauseTotal=0;
   document.getElementById('running-block').style.display='none';
+  document.getElementById('pause-block').style.display='none';
   document.getElementById('btn-ein').style.display='flex';
   document.getElementById('btn-aus').style.display='none';
   document.getElementById('elapsed').textContent='00:00:00';
+  document.getElementById('btn-pause').innerHTML='⏸ Pause starten';
   await saveEntry(entry,'stamp-ok');
 }
 
@@ -778,12 +853,14 @@ async function saveManual(){
   document.getElementById('man-error').style.display='none';document.getElementById('man-ok').style.display='none';
   const diff=timeToMin(bis)-timeToMin(von)-pause;
   if(!von||!bis||diff<=0||!datum){document.getElementById('man-error').textContent='Bitte alle Felder korrekt ausfüllen.';document.getElementById('man-error').style.display='block';return;}
+  btnLoading('btn-save-manual');
   const now=new Date();const diffH=(now-new Date(datum))/3600000;
   const status=diffH>36?'locked':'pending';
   const entry={worker:currentWorker.name,datum,von,bis,pause,netto:parseFloat((diff/60).toFixed(2)),
     proj:document.getElementById('proj-man').value,art:'Manuell',status,savedAt:now.toISOString(),
     notiz:document.getElementById('man-notiz').value};
   await saveEntry(entry,'man-ok');
+  btnReset('btn-save-manual');
   document.getElementById('man-notiz').value='';
   checkLateWarning();updateAdminBadge();
 }
@@ -1207,6 +1284,7 @@ async function saveTagesbericht(){
   const pause=parseInt(document.getElementById('tb-pause').value)||0;
   document.getElementById('tb-err').style.display='none';
   if(!datum||!proj||!von||!bis){document.getElementById('tb-err').style.display='block';return;}
+  btnLoading('btn-save-tb');
   const v=von.split(':').map(Number),b=bis.split(':').map(Number);
   const nettoH=parseFloat((((b[0]*60+b[1])-(v[0]*60+v[1])-pause)/60).toFixed(2));
   const anwesend=[];
@@ -1219,7 +1297,8 @@ async function saveTagesbericht(){
   }
   localStorage.setItem('gx_entries',JSON.stringify(allEntries));
   if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL'))try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveTagesbericht',bericht:{datum,proj,von,bis,pause,netto:nettoH,auftraggeber:auftr,ersteller:currentWorker.name,notiz,mitarbeiter:anwesend,positionen:tbGetPositionen(),material:tbGetMatRows('tb-mat-rows'),maschinen:tbGetMatRows('tb-masch-rows'),rueckgabe:tbGetMatRows('tb-rueck-rows'),savedAt:new Date().toISOString()}})});}catch{}
-  showMsg('tb-ok',3000);setStatus('Tagesbericht gespeichert ✓','ok');
+  btnReset('btn-save-tb');
+  showMsg('tb-ok',3000);setStatus('Tagesbericht gespeichert — wartet auf Freigabe ⏳','ok');
   setTimeout(()=>{document.getElementById('tb-auftraggeber').value='';document.getElementById('tb-notiz').value='';tbGoStep('allgemein');},2500);
 }
 
@@ -1340,13 +1419,13 @@ function rgToggleMA(el){
 }
 
 function rgAddMatRow(id,einheit,intern){
-  const c=document.getElementById(id);const d=document.createElement('div');d.className='tb-mat-grid';
-  d.innerHTML=`<input class="tb-mat-inp name" type="text" placeholder="Material…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="${einheit||'Einh.'}"><input class="tb-mat-intern" type="text" placeholder="${intern||'EN/LA'}">`;c.appendChild(d);
+  const c=document.getElementById(id);const rid=id+'_'+Date.now();const d=document.createElement('div');d.className='tb-mat-grid';d.style.position='relative';
+  d.innerHTML=`<input class="tb-mat-inp name" type="text" placeholder="Material…" oninput="tbShowVorschlaege(this,'${rid}')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" placeholder="${einheit||'Einh.'}"><input class="tb-mat-intern" type="text" placeholder="${intern||'EN/LA'}">`;c.appendChild(d);
 }
 
 function rgAddMaschRow(){
-  const c=document.getElementById('rg-masch-rows');const d=document.createElement('div');d.className='tb-mat-grid';
-  d.innerHTML='<input class="tb-mat-inp name" type="text" placeholder="Maschine…"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div>';c.appendChild(d);
+  const c=document.getElementById('rg-masch-rows');const rid='rg-masch-'+Date.now();const d=document.createElement('div');d.className='tb-mat-grid';d.style.position='relative';
+  d.innerHTML=`<input class="tb-mat-inp name" type="text" placeholder="Maschine…" oninput="tbShowVorschlaege(this,'${rid}')"><input class="tb-mat-inp" type="number" placeholder="0"><input class="tb-mat-inp" type="text" value="Std." readonly><div></div>`;c.appendChild(d);
 }
 
 function rgGetMatRows(id){
@@ -1381,6 +1460,7 @@ function sigBestaetigen(){const c=document.getElementById('sig-canvas');const da
 async function saveRegiebericht(){
   const kunde=document.getElementById('rg-kunde').value,baustelle=document.getElementById('rg-baustelle').value;
   document.getElementById('rg-err').style.display='none';if(!kunde||!baustelle){document.getElementById('rg-err').style.display='block';return;}
+  btnLoading('btn-save-rg');
   const datum=document.getElementById('rg-datum').value,von=document.getElementById('rg-von').value,bis=document.getElementById('rg-bis').value,pause=parseInt(document.getElementById('rg-pause').value)||0;
   const v=von.split(':').map(Number),b=bis.split(':').map(Number);
   const nettoH=parseFloat((((b[0]*60+b[1])-(v[0]*60+v[1])-pause)/60).toFixed(2));
@@ -1393,8 +1473,163 @@ async function saveRegiebericht(){
   localStorage.setItem('gx_entries',JSON.stringify(allEntries));
   let sigBase64='';if(sigSaved){sigBase64=document.getElementById('sig-canvas').toDataURL('image/png').split(',')[1];}
   if(SCRIPT_URL&&!SCRIPT_URL.includes('EURE_URL'))try{await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'saveRegiebericht',bericht:{datum,kunde,baustelle,von,bis,pause,netto:nettoH,taetigkeit:document.getElementById('rg-taetigkeit').value,notiz:document.getElementById('rg-notiz').value,ersteller:currentWorker.name,mitarbeiter:anwesend,material:rgGetMatRows('rg-mat-rows'),maschinen:rgGetMatRows('rg-masch-rows'),rueckgabe:rgGetMatRows('rg-rueck-rows'),unterschrift:sigBase64,savedAt:new Date().toISOString()}})});}catch{}
-  showMsg('rg-ok',3000);setStatus('Regiebericht gespeichert ✓','ok');
+  btnReset('btn-save-rg');
+  showMsg('rg-ok',3000);setStatus('Regiebericht gespeichert — wartet auf Freigabe ⏳','ok');
+  const pdfBtn=document.getElementById('rg-pdf-btn');
+  if(pdfBtn)pdfBtn.style.display='block';
   setTimeout(()=>{document.getElementById('rg-kunde').value='';document.getElementById('rg-baustelle').value='';document.getElementById('rg-taetigkeit').value='';document.getElementById('rg-notiz').value='';sigClear();sigSaved=false;rgGoStep('allgemein');},2500);
+}
+
+// ============================================================
+//  REGIEBERICHT PDF EXPORT
+// ============================================================
+function exportRegiePDF(){
+  const kunde   = document.getElementById('rg-kunde').value||'–';
+  const baust   = document.getElementById('rg-baustelle').value||'–';
+  const datum   = document.getElementById('rg-datum').value;
+  const von     = document.getElementById('rg-von').value;
+  const bis     = document.getElementById('rg-bis').value;
+  const netto   = document.getElementById('rg-netto').textContent;
+  const taet    = document.getElementById('rg-taetigkeit').value||'–';
+  const notiz   = document.getElementById('rg-notiz').value||'';
+  const datumFmt= datum?new Date(datum+'T12:00').toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'–';
+
+  // Team
+  const team=[];
+  document.getElementById('rg-team-liste').querySelectorAll('.tb-ma-row').forEach(row=>{
+    if(row.querySelector('.tb-check').classList.contains('checked')){
+      const name=row.querySelector('.tb-ma-name').textContent;
+      const h=row.querySelector('input').value;
+      team.push(name+(h?' ('+h+' h)':''));
+    }
+  });
+
+  // Material
+  const matRows=rgGetMatRows('rg-mat-rows');
+  const maschRows=rgGetMatRows('rg-masch-rows');
+  const rueckRows=rgGetMatRows('rg-rueck-rows');
+
+  // Unterschrift
+  const canvas=document.getElementById('sig-canvas');
+  const sigDataUrl=sigSaved?canvas.toDataURL('image/png'):'';
+
+  // PDF HTML aufbauen
+  const matHTML=matRows.length?`
+    <table class="pdf-table">
+      <tr><th>Material</th><th>Menge</th><th>Einheit</th><th>Intern</th></tr>
+      ${matRows.map(r=>`<tr><td>${r.name}</td><td>${r.menge}</td><td>${r.einheit}</td><td>${r.intern}</td></tr>`).join('')}
+    </table>`:'<p style="color:#999;font-size:12px">Kein Material</p>';
+
+  const maschHTML=maschRows.length?`
+    <table class="pdf-table">
+      <tr><th>Maschine</th><th>Stunden</th><th>Einheit</th></tr>
+      ${maschRows.map(r=>`<tr><td>${r.name}</td><td>${r.menge}</td><td>${r.einheit}</td></tr>`).join('')}
+    </table>`:'';
+
+  const rueckHTML=rueckRows.length?`
+    <h3>Materialrückgabe</h3>
+    <table class="pdf-table">
+      <tr><th>Material</th><th>Menge</th><th>Einheit</th><th>Intern</th></tr>
+      ${rueckRows.map(r=>`<tr><td>${r.name}</td><td>${r.menge}</td><td>${r.einheit}</td><td>${r.intern}</td></tr>`).join('')}
+    </table>`:'';
+
+  const html=`<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">
+  <title>Regiebericht – ${kunde} – ${datum}</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Arial,sans-serif;font-size:12px;color:#1a1a1a;padding:20mm 20mm 15mm 20mm}
+    .header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #1a2e1a;padding-bottom:12px;margin-bottom:16px}
+    .logo-block{display:flex;align-items:center;gap:12px}
+    .logo-box{width:44px;height:44px;background:#c8a84b;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#1a2e1a}
+    .company-name{font-size:18px;font-weight:800;color:#1a2e1a}
+    .company-sub{font-size:9px;letter-spacing:0.1em;color:#666;text-transform:uppercase}
+    .doc-title{text-align:right}
+    .doc-title h1{font-size:20px;font-weight:900;color:#1a2e1a}
+    .doc-title .date{font-size:11px;color:#666;margin-top:4px}
+    .section{margin-bottom:14px}
+    .section-label{font-size:9px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;border-bottom:0.5px solid #ddd;padding-bottom:3px}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .info-item label{font-size:9px;color:#999;display:block;margin-bottom:2px;text-transform:uppercase;letter-spacing:0.06em}
+    .info-item span{font-size:12px;font-weight:600}
+    h3{font-size:11px;font-weight:700;margin:12px 0 6px;color:#1a2e1a}
+    .pdf-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px}
+    .pdf-table th{background:#1a2e1a;color:#fff;padding:5px 8px;text-align:left;font-size:10px}
+    .pdf-table td{padding:5px 8px;border-bottom:0.5px solid #eee}
+    .pdf-table tr:nth-child(even) td{background:#f9f9f9}
+    .team-list{display:flex;flex-wrap:wrap;gap:6px}
+    .team-chip{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:20px;padding:3px 10px;font-size:11px;color:#2e7d32}
+    .taetigkeit{background:#f7f5f0;border-left:3px solid #c8a84b;padding:10px 12px;font-size:12px;line-height:1.6;border-radius:0 6px 6px 0}
+    .sig-section{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:20px;border-top:0.5px solid #ddd;padding-top:14px}
+    .sig-box{border-bottom:1px solid #1a1a1a;height:60px;position:relative}
+    .sig-label{font-size:9px;color:#999;margin-top:4px;text-transform:uppercase;letter-spacing:0.06em}
+    .sig-img{max-height:55px;max-width:100%}
+    .footer{margin-top:20px;border-top:0.5px solid #ddd;padding-top:8px;display:flex;justify-content:space-between;font-size:9px;color:#999}
+    @media print{body{padding:10mm 15mm}}
+  </style></head><body>
+  <div class="header">
+    <div class="logo-block">
+      <div class="logo-box">GX</div>
+      <div><div class="company-name">Gartenxclusiv</div><div class="company-sub">Regiebericht</div></div>
+    </div>
+    <div class="doc-title"><h1>Regiebericht</h1><div class="date">${datumFmt}</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Auftraggeber & Baustelle</div>
+    <div class="info-grid">
+      <div class="info-item"><label>Kunde</label><span>${kunde}</span></div>
+      <div class="info-item"><label>Baustelle / Adresse</label><span>${baust}</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Arbeitszeit</div>
+    <div class="info-grid">
+      <div class="info-item"><label>Von – Bis</label><span>${von} – ${bis} Uhr</span></div>
+      <div class="info-item"><label>Nettostunden</label><span>${netto}</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Team (${team.length} Personen)</div>
+    <div class="team-list">${team.map(t=>`<div class="team-chip">${t}</div>`).join('')||'–'}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Tätigkeiten</div>
+    <div class="taetigkeit">${taet}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Materialverbrauch</div>
+    ${matHTML}
+    ${maschRows.length?'<h3>Maschineneinsatz</h3>'+maschHTML:''}
+    ${rueckHTML}
+  </div>
+
+  ${notiz?`<div class="section"><div class="section-label">Notizen</div><div class="taetigkeit">${notiz}</div></div>`:''}
+
+  <div class="sig-section">
+    <div>
+      <div class="sig-box">${sigDataUrl?`<img src="${sigDataUrl}" class="sig-img">`:''}</div>
+      <div class="sig-label">Kundenunterschrift</div>
+    </div>
+    <div>
+      <div class="sig-box"></div>
+      <div class="sig-label">Gartenxclusiv – Erstellt von ${currentWorker?currentWorker.name:'–'}</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Gartenxclusiv Zeiterfassung · ${new Date().toLocaleDateString('de-DE')}</span>
+    <span>${kunde} · ${datum}</span>
+  </div>
+
+  <script>window.onload=()=>window.print();<\/script>
+  </body></html>`;
+
+  const win=window.open('','_blank');
+  if(win){win.document.write(html);win.document.close();}
 }
 
 init();
